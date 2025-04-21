@@ -1,0 +1,15 @@
+<div class="container text-center">
+    <h1 class="titulo">Nivel Actividad Física</h1>
+    <p class="descripcion">
+        Escoge tu nivel físico para determinar qué ejercicios con cierta técnica, dificultad son adecuados para ti.
+    </p><br><br>
+
+    <div class="botones">
+        <button *ngFor="let nivel of niveles" [ngClass]="{ activo: seleccionado === nivel }"
+            (click)="seleccionarNivel(nivel)">
+            {{ nivel }}
+        </button>
+    </div>
+
+    <button class="continuar" (click)="continuar()">Continuar</button>
+</div>

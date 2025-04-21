@@ -1,0 +1,93 @@
+$primary-color: #232323;
+$secondary-color: #D66433;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+
+.container {
+    background-color: $primary-color;
+    color: $quaternary-color;
+    padding: 2rem;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .titulo {
+    font-size: 1.8rem;
+    color: $secondary-color;
+    margin-bottom: 0.5rem;
+  }
+  
+  .descripcion {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    color: $quaternary-color;
+    max-width: 500px;
+  }
+  
+  .botones {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+  
+    button {
+      border: none;
+      border-radius: 2rem;
+      padding: 1rem;
+      font-weight: bold;
+      font-size: 1rem;
+      background-color: $quaternary-color;
+      color: $secondary-color;
+      transition: all 0.3s ease;
+      width: 100%;
+  
+      &.activo {
+        background-color: $secondary-color;
+        color: $quaternary-color;
+      }
+    }
+  }
+  
+  .continuar {
+    background-color: $secondary-color;
+    color: $quaternary-color;
+    padding: 1rem;
+    border: none;
+    border-radius: 2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 150px;
+    width: 100%;
+    max-width: 400px; 
+  }
+  
+  /* 📱 Media Queries para mejorar visual en escritorio y tablet */
+  @media (min-width: 768px) {
+    .container-fluid {
+      padding: 3rem;
+    }
+  
+    .botones button,
+    .continuar {
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-fluid {
+      padding: 4rem;
+    }
+  
+    .botones button,
+    .continuar {
+      max-width: 400px;
+    }
+  }
+  
