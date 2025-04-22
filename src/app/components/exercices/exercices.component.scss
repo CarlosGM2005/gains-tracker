@@ -1,46 +1,166 @@
 $primary-color: #232323;
-$secondary-color: #D66433;
+$secondary-color: #BA5326;
 $tertiary-color: #29292E;
 $quaternary-color: #F8F8F8;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.container {
+  padding: 20px;
+  width: 100%;
+}
 
 .container-fluid {
   background-color: $primary-color;
   color: $quaternary-color;
-  min-height: 100vh;
-  padding: 10%;
-
-  button{
-    padding: 14px 25px 14px 25px;
-    background-color: $secondary-color;
-    color: $quaternary-color;
-    border-radius: 5px;
-    border: none;
-  }
+  min-height: 100dvh;
+  padding: 2rem;
+  box-sizing: border-box;
 
   .scroll-container {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 1rem 0;
     scroll-behavior: smooth;
+    max-width: 100vw;
+    box-sizing: border-box;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    gap: 0.5rem;
+    justify-content: flex-start;
   }
-  
+
   .scroll-container::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
-  
+
   .scroll-container button {
-    font-size: 1rem; 
-    padding: 0.5rem 1rem;
+    flex-shrink: 0;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    padding: 0.8rem 1.5rem;
+    background-color: $secondary-color;
+    color: $quaternary-color;
+    border: none;
+    border-radius: 5px;
+    white-space: nowrap;
+    min-width: 110px;
   }
 
+  p {
+    font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  }
+}
 
-  
-  @media (max-width: 576px) { 
-    .scroll-container button {
-      font-size: 0.8rem; 
-      padding: 0.8em 0.9rem;
+// Estilo ejercicios
+#ejercicios-container {
+  margin-top: 5%;
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 1rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr); // solo en escritorio
+  }
+
+  .card {
+    background-color: $tertiary-color;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .card:hover {
+    background-color: $primary-color;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    overflow: hidden;
+  }
+
+  .header img {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  .header-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+
+    h3 {
+      margin: 0;
+      color: #f07d2b;
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      margin: 5px 0 0;
+      font-size: 0.8rem;
+      color: $quaternary-color;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
-  
+
+  .arrow {
+    flex-shrink: 0;
+    color: white;
+    font-size: 30px;
+  }
+
+  #msjInfoEj {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    color: #ee7823;
+    font-weight: bold;
+
+    #msjInfoEj_contador {
+      display: flex;
+      justify-content: end;
+    }
+  }
+}
+
+
+// Media queries al final
+@media (max-width: 576px) {
+  .container-fluid {
+    padding: 1rem;
+  }
+
+  .scroll-container {
+    padding: 0.5rem;
+  }
+
+  .scroll-container button {
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    padding: 0.6rem 1.2rem;
+    min-width: 90px;
+  }
+
+  p {
+    font-size: clamp(0.8rem, 2.2vw, 1rem);
+  }
+
+  #ejercicios-container {
+    margin-top: 20%;
+  }
 }

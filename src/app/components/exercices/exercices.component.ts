@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './exercices.component.scss'
 })
 export class ExercicesComponent {
-  musculos = ['Espalda','Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Lumbares', 'Abdominales', 'Piernas'];
+  musculos = ['ESPALDA','PECHO', 'HOMBROS', 'TRICEPS', 'BICEPS', 'ANTEBRAZOS', 'LUMBARES', 'ABDOMINALES', 'PIERNAS'];
 }

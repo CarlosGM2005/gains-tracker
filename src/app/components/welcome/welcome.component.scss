@@ -1,0 +1,32 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+
+h1, h2{
+    color: #f07d2b;
+}
+
+h4{
+    color: $quaternary-color;
+}
+
+.btn-entrar {
+    padding: 10px 60px;
+    font-size: 1.2rem;
+    background-color: rgba(255, 255, 255, 0.082); 
+    border: 1px solid white; 
+    color: white;
+    border-radius: 25px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease;
+}
+  
+.btn-entrar:hover {
+    background-color: rgba(255, 255, 255, 0.3); 
+    border-color: white; 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); 
+}
+
+  
+  
