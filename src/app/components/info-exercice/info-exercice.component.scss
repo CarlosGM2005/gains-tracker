@@ -1,0 +1,21 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+
+.container{
+    width: 100%;
+}
+
+.imgsEj{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3%;
+}
+
+.contenido{
+    margin-top: 10%;
+    background-color: #29292E;
+    color: $quaternary-color;
+}

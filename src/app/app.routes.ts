@@ -25,7 +25,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'exercices/:level', component: ExercicesComponent },
-      { path: 'info-exercice', component: InfoExerciceComponent }
+      { path: 'info-exercice/:nombre', component: InfoExerciceComponent }
     ]
   },
   { path: '**', redirectTo: '' }
