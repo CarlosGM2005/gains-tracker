@@ -1,5 +1,19 @@
-main{
-    display: grid;
-    min-height: 100dvh;
-    grid-template-rows: 1fr auto;
+/* Para pantallas más grandes (laptop o más grandes) */
+@media screen and (min-width: 992px) {
+    main {
+        padding-left: 250px; /* Esto controla el espacio de la sidebar */
+    }
+}
+
+/* Para pantallas medianas y pequeñas (incluyendo iPad Pro en modo vertical) */
+@media screen and (max-width: 1024px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    router-outlet {
+        flex-grow: 0;
+    }
 }

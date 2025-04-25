@@ -1,0 +1,34 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
+$badge-color: #666;
+$card-bg: #1f1f1f;
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    background-color: $secondary-color;
+}
+
+/* Contenido principal (por defecto para móvil/tablet) */
+.main-content {
+    padding: 20px;
+    padding-bottom: 70px;
+
+    @media (min-width: 992px) {
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+}
+
+nav{
+    background-color: $secondary-color;
+}
