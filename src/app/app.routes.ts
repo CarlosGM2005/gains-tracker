@@ -22,7 +22,8 @@ export const routes: Routes = [
     children: [
       { path: '', component: MainComponent },
       { path: 'level-exercice', component: LevelExerciceComponent },
-      { path: 'login', component: LoginComponent}
+      { path: 'login', component: LoginComponent},
+      
     ]
   },
   {

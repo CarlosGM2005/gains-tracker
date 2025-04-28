@@ -1,6 +1,18 @@
 <div class="container-fluid">
     <div class="container">
 
+
+        <!-- Sacar a un componente reutilizable para este, recomendados y registros-->
+        <div class="encabezado">
+            <div class="titulo_encabezado">
+                <img id="imgVolver" src="https://placehold.co/40x40" alt="">
+                <h2>Ejercicios</h2>
+            </div>
+            <div class="imgs_encabezado">
+                <img src="https://placehold.co/40x40" alt="">
+                <img src="https://placehold.co/40x40" alt="">
+            </div>
+        </div><br>
         <div class="scroll-container">
             @for(musculo of musculos; track musculo) {
             <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0">

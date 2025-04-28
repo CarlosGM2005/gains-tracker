@@ -1,11 +1,11 @@
-/* Para pantallas más grandes (laptop o más grandes) */
+// Para pantallas más grandes (laptop o más grandes) 
 @media screen and (min-width: 992px) {
     main {
-        padding-left: 250px; /* Esto controla el espacio de la sidebar */
+        padding-left: 250px; 
     }
 }
 
-/* Para pantallas medianas y pequeñas (incluyendo iPad Pro en modo vertical) */
+// Para pantallas medianas y pequeñas (incluyendo iPad Pro en modo vertical) 
 @media screen and (max-width: 1024px) {
     main {
         display: flex;

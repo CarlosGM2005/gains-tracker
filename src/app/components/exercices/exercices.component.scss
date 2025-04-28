@@ -2,6 +2,7 @@ $primary-color: #232323;
 $secondary-color: #BA5326;
 $tertiary-color: #29292E;
 $quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
 
 html,
 body {
@@ -10,10 +11,7 @@ body {
   overflow-x: hidden;
 }
 
-.container {
-  padding: 20px;
-  width: 100%;
-}
+
 
 .container-fluid {
   background-color: $primary-color;
@@ -21,6 +19,47 @@ body {
   min-height: 100dvh;
   padding: 2rem;
   box-sizing: border-box;
+
+  .container {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .encabezado {
+    display: grid;
+    grid-template-columns: 40% auto;
+    align-items: center;
+    width: 100%;
+
+    .titulo_encabezado {
+      display: flex;
+      justify-content: start;
+      gap: 10px;
+
+      h2{
+        color: $accent-color;
+      }
+
+      #imgVolver {
+        display: none;
+      }
+
+      /* Muestra la imagen solo en pantallas de hasta 768px (móviles y tabletas) */
+      @media (max-width: 768px) {
+        #imgVolver {
+          display: block;
+         
+        }
+      }
+    }
+
+    .imgs_encabezado {
+      display: flex;
+      justify-content: end;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+  }
 
   .scroll-container {
     display: flex;
@@ -60,7 +99,7 @@ body {
 #ejercicios-container {
   margin-top: 5%;
   display: grid;
-  grid-template-columns: 1fr; 
+  grid-template-columns: 1fr;
   gap: 1rem;
 
   @media (min-width: 1025px) {

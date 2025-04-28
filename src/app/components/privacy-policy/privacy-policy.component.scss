@@ -1,0 +1,17 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
+
+
+.container{
+    background-color: $tertiary-color;
+    border-radius: 15px;
+    margin-top: 2%;
+
+    h1{
+        color: $accent-color;
+    }
+}
+
