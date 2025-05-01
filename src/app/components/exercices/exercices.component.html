@@ -15,7 +15,7 @@
         </div><br>
         <div class="scroll-container">
             @for(musculo of musculos; track musculo) {
-            <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0">
+            <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0" (click)="seleccionarMusculo(musculo)">
                 {{ musculo }}
             </button>
             }
@@ -23,9 +23,11 @@
 
         <div id="ejercicios-container">
             <div id="msjInfoEj">
-                <p>Ejercicios de [espalda] - nivel [nivel]</p>
+                <p>Ejercicios de {{ musculoSeleccionado }} - nivel {{nivelSeleccionado}}</p>
                 <p id="msjInfoEj_contador">4</p>
             </div>
+
+            <!-- Sacar estas card a un modulo para no repetir codigo, luego con un for recrear que sean 5-->
             <div class="card">
                 <div class="header">
                     <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />

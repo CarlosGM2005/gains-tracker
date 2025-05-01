@@ -33,8 +33,8 @@ export const routes: Routes = [
       { path: 'exercices/:level', component: ExercicesComponent },
       { path: 'info-exercice/:nombre', component: InfoExerciceComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent},
-      { path: 'basic-profile', component: BasicProfileComponent},
-      { path: 'data-profile', component: DataProfileComponent}
+      { path: 'basic-profile', component: BasicProfileComponent, data: { hideSidebarDesktop: true }},
+      { path: 'data-profile', component: DataProfileComponent, data: { hideSidebarDesktop: true } }
     ]
   },
   { path: '**', redirectTo: '' }
