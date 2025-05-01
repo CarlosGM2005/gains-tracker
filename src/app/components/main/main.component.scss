@@ -1,0 +1,19 @@
+// Para pantallas más grandes (laptop o más grandes) 
+@media screen and (min-width: 992px) {
+    main {
+        padding-left: 250px; 
+    }
+}
+
+// Para pantallas medianas y pequeñas (incluyendo iPad Pro en modo vertical) 
+@media screen and (max-width: 1024px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .contenedorPrincipal {
+        flex-grow: 0;
+    }
+}
