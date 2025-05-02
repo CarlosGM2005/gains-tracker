@@ -14,11 +14,14 @@ import { getPerformance, providePerformance } from '@angular/fire/performance';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
 import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideAnimations(),
     provideFirebaseApp(() => initializeApp({ 
       apiKey: "AIzaSyCdnSPLxdAHI1_we1khXkVT4O-65QqjElA",
       authDomain: "proyectointegrado-3fd98.firebaseapp.com",

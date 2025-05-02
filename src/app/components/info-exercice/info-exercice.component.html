@@ -1,84 +1,85 @@
 <div class="container d-flex align-items-center">
-    <div class="detalle-ejercicio-wrapper d-flex align-items-center">
-        <div class="galeria-ejercicio">
-            <img src="https://placehold.co/300x300" alt="ejercicio" />
-            <img src="https://placehold.co/300x300" alt="ejercicio" />
-        </div>
-
-        <div class="ejercicio-container">
-            <h3>Jalon al Pecho</h3>
-            <p class="text-center">[musculos que trabajas. En %, tipo 70% espalda, 20% biceps y 10% antebrazos]</p>
-
-            <div class="badges">
-                <span>[nivel]</span>
-                <span>[dificultad]</span>
-                <span>[tiempo]</span>
-            </div>
-
-            <h5 class="text-center">Descripcion del ejercicio</h5>
-            <p class="descripcion">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua...
-            </p>
-
-            <div class="btn-group">
-                <!-- El botón que abre el modal -->
-                <button data-bs-toggle="modal" data-bs-target="#serieModal">Registrar serie</button>
-                <button>Añadir a favoritos</button>
-            </div>
-
-            <button class="volver-btn">Volver</button>
-        </div>
+  <div class="detalle-ejercicio-wrapper d-flex align-items-center">
+    <div class="galeria-ejercicio">
+      <img src="https://placehold.co/300x300" alt="ejercicio" />
+      <img src="https://placehold.co/300x300" alt="ejercicio" />
     </div>
+
+    <div class="ejercicio-container">
+      <h3>Jalon al Pecho</h3>
+      <p class="text-center">[musculos que trabajas. En %, tipo 70% espalda, 20% biceps y 10% antebrazos]</p>
+
+      <div class="badges">
+        <span>[nivel]</span>
+        <span>[dificultad]</span>
+        <span>[tiempo]</span>
+      </div>
+
+      <h5 class="text-center">Descripcion del ejercicio</h5>
+      <p class="descripcion">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua...
+      </p>
+
+      <div class="btn-group">
+        <!-- El botón que abre el modal -->
+        <button data-bs-toggle="modal" data-bs-target="#serieModal">Registrar serie</button>
+        <button>Añadir a favoritos</button>
+      </div>
+
+      <button class="volver-btn">Volver</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal fade" id="serieModal" tabindex="-1" aria-labelledby="serieModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- modal-sm para estrechar -->
-      <div class="modal-content rounded-4"> <!-- Bordes redondeados -->
-  
-        <div class="modal-header">
-          <h5 class="modal-title w-100 text-center" id="serieModalLabel">Registrar Serie</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-  
-        <div class="modal-body text-center">
-          <h6 class="mb-4">Registra tu serie del ejercicio para tener un mejor seguimiento</h6>
-  
-          <form class="text-center">
-            <div class="mb-3">
-              <label for="dia" class="form-label">Día</label>
-              <input type="date" class="form-control mx-auto" id="dia" name="dia" style="max-width: 100%;" required>
-            </div>
-  
-            <div class="row justify-content-center mb-3">
-              <div class="col-6">
-                <label for="series" class="form-label">Series</label>
-                <input type="number" class="form-control" id="series" name="series" min="1" required>
-              </div>
-              <div class="col-6">
-                <label for="repeticiones" class="form-label">Repeticiones</label>
-                <input type="number" class="form-control" id="repeticiones" name="repeticiones" min="1" required>
-              </div>
-            </div>
-  
-            <div class="mb-3">
-              <label for="peso" class="form-label">Peso (kg)</label>
-              <input type="number" step="0.01" class="form-control mx-auto" id="peso" name="peso" style="max-width: 100%;" min="0" required>
-            </div>
-  
-            <div class="mb-3">
-              <label for="descanso" class="form-label">Descanso (segundos)</label>
-              <input type="number" class="form-control mx-auto" id="descanso" name="descanso" style="max-width: 100%;" min="0" required>
-            </div>
-  
-            <div class="modal-footer justify-content-center border-0">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Registrar</button>
-            </div>
-          </form>
-        </div>
-  
+  <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- modal-sm para estrechar -->
+    <div class="modal-content rounded-4"> <!-- Bordes redondeados -->
+
+      <div class="modal-header">
+        <h5 class="modal-title w-100 text-center" id="serieModalLabel">Registrar Serie</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
+
+      <div class="modal-body text-center">
+        <h6 class="mb-4">Registra tu serie del ejercicio para tener un mejor seguimiento</h6>
+
+        <form class="text-center">
+          <div class="mb-3">
+            <label for="dia" class="form-label">Día</label>
+            <input type="date" class="form-control mx-auto" id="dia" name="dia" style="max-width: 100%;" required>
+          </div>
+
+          <div class="row justify-content-center mb-3">
+            <div class="col-6">
+              <label for="series" class="form-label">Series</label>
+              <input type="number" class="form-control" id="series" name="series" min="1" required>
+            </div>
+            <div class="col-6">
+              <label for="repeticiones" class="form-label">Repeticiones</label>
+              <input type="number" class="form-control" id="repeticiones" name="repeticiones" min="1" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="peso" class="form-label">Peso (kg)</label>
+            <input type="number" step="0.01" class="form-control mx-auto" id="peso" name="peso" style="max-width: 100%;"
+              min="0" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="descanso" class="form-label">Descanso (segundos)</label>
+            <input type="number" class="form-control mx-auto" id="descanso" name="descanso" style="max-width: 100%;"
+              min="0" required>
+          </div>
+
+          <div class="modal-footer justify-content-center border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn" id="btnRegistrar">Registrar</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
-  
+</div>

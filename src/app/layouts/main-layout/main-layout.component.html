@@ -1,7 +1,9 @@
 <main [ngClass]="{ 'con-barra': showSidebar() }">
-  <router-outlet></router-outlet>
+  <div [@routeAnimations]="getAnimationData()">
+    <router-outlet></router-outlet>
+  </div>
+
   @if (showSidebar()) {
     <app-barra-navegacion />
   }
 </main>
-

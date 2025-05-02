@@ -105,7 +105,6 @@ $card-bg: #1f1f1f;
   }
 
   .ejercicio-container {
-    //max-width: 600px;
     margin-left: auto;
     height: auto;
   }
@@ -135,4 +134,9 @@ $card-bg: #1f1f1f;
 .modal-content{
   background-color: $tertiary-color;
   color: $quaternary-color;
+
+  #btnRegistrar{
+    background-color: $accent-color;
+    color: white;
+  } 
 }
