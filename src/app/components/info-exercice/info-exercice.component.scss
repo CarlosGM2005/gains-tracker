@@ -129,3 +129,10 @@ $card-bg: #1f1f1f;
     height: 100%;
   }
 }
+
+
+//Estilos modal
+.modal-content{
+  background-color: $tertiary-color;
+  color: $quaternary-color;
+}
