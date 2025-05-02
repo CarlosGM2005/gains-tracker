@@ -1,5 +1,7 @@
-<main>
-    <router-outlet></router-outlet>
-    <app-barra-navegacion></app-barra-navegacion>
+<main [ngClass]="{ 'con-barra': showSidebar() }">
+  <router-outlet></router-outlet>
+  @if (showSidebar()) {
+    <app-barra-navegacion />
+  }
 </main>
 

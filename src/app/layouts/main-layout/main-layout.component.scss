@@ -1,19 +1,18 @@
-// Para pantallas más grandes (laptop o más grandes) 
-@media screen and (min-width: 992px) {
-    main {
-        padding-left: 250px; 
-    }
-}
-
-// Para pantallas medianas y pequeñas (incluyendo iPad Pro en modo vertical) 
-@media screen and (max-width: 1024px) {
-    main {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-
+main {
+    // Para móviles/tablets
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  
     router-outlet {
-        flex-grow: 0;
+      flex-grow: 0;
     }
-}
+  
+    // SOLO aplica cuando tenga la clase con-barra
+    &.con-barra {
+      @media screen and (min-width: 992px) {
+        padding-left: 250px;
+      }
+    }
+  }
+  
