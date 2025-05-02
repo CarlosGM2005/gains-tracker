@@ -10,11 +10,12 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { BasicProfileComponent } from './components/basic-profile/basic-profile.component';
 import { DataProfileComponent } from './components/data-profile/data-profile.component';
 import { LoginComponent } from './components/login/login.component';
+import { RecomendationsComponent } from './components/recomendations/recomendations.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: WelcomeComponent  // Esta será la pantalla inicial
+    component: WelcomeComponent  
   },
   {
     path: 'main',
@@ -23,7 +24,6 @@ export const routes: Routes = [
       { path: '', component: MainComponent },
       { path: 'level-exercice', component: LevelExerciceComponent },
       { path: 'login', component: LoginComponent},
-      
     ]
   },
   {
@@ -34,7 +34,8 @@ export const routes: Routes = [
       { path: 'info-exercice/:nombre', component: InfoExerciceComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent},
       { path: 'basic-profile', component: BasicProfileComponent, data: { hideSidebarDesktop: true }},
-      { path: 'data-profile', component: DataProfileComponent, data: { hideSidebarDesktop: true } }
+      { path: 'data-profile', component: DataProfileComponent, data: { hideSidebarDesktop: true } },
+      { path: 'recomendations', component: RecomendationsComponent},
     ]
   },
   { path: '**', redirectTo: '' }
