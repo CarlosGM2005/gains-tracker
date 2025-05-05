@@ -1,5 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, effect, inject, signal } from '@angular/core';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { BarraNavegacionComponent } from '../../components/barra-navegacion/barra-navegacion.component';
 import { NgClass } from '@angular/common';
 import {
@@ -10,6 +10,7 @@ import {
   query,
   group
 } from '@angular/animations';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-layout',
@@ -40,12 +41,37 @@ export class MainLayoutComponent {
   private router = inject(Router);
   private excludeRoutes = ['basic-profile', 'data-profile'];
 
-  readonly showSidebar = computed(() => {
-    const currentUrl = this.router.url;
+  private url = signal(this.router.url);
+  private screenWidth = signal(window.innerWidth);
+
+  readonly showSidebar = signal(this.shouldShowSidebar());
+
+  constructor() {
+    // 🔁 Detectar cambio de ruta
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.url.set(this.router.url);
+      this.updateSidebar();
+    });
+
+    // 🪟 Detectar cambio de tamaño de pantalla
+    window.addEventListener('resize', () => {
+      this.screenWidth.set(window.innerWidth);
+      this.updateSidebar();
+    });
+  }
+
+  private shouldShowSidebar(): boolean {
+    const currentUrl = this.url();
     const isExcluded = this.excludeRoutes.some(route => currentUrl.includes(route));
-    const isDesktop = window.innerWidth >= 992;
+    const isDesktop = this.screenWidth() >= 992;
     return !(isExcluded && isDesktop);
-  });
+  }
+
+  private updateSidebar() {
+    this.showSidebar.set(this.shouldShowSidebar());
+  }
 
   getAnimationData(): string {
     return this.router.url;
