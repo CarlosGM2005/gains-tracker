@@ -16,26 +16,6 @@ $accent-color: #ee7823;
   position: relative;
 }
 
-// Botón "< Volver"
-.back-button {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  color: $accent-color;
-  text-decoration: none;
-  font-size: 1rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  @media (max-width: 480px) {
-    top: 1rem;
-    left: 1rem;
-    font-size: 0.95rem;
-  }
-}
-
 // Formulario
 .login-form {
   color: $quaternary-color;

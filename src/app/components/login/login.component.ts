@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { VolverComponent } from '../../modules/volver/volver.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [VolverComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
