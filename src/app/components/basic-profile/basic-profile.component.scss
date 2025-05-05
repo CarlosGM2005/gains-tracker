@@ -1,0 +1,32 @@
+#contenedorPrincipal{
+    background-color: orangered;
+}
+
+#parteSuperior {
+    min-height: 175px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .infoEncabezado {
+        padding-top: 5%;
+        text-align: center;
+
+        .imagenRedonda {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #ccc;
+        }
+        
+        .imagenRedonda img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+    }
+}
