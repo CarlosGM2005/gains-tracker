@@ -8,17 +8,41 @@ $accent-color: #ee7823;
 // Contenedor centrado
 .login-container {
   background-color: $primary-color;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  position: relative;
+}
+
+// Botón "< Volver"
+.back-button {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  color: $accent-color;
+  text-decoration: none;
+  font-size: 1rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.95rem;
+  }
 }
 
 // Formulario
 .login-form {
   color: $quaternary-color;
-  padding: 2.5rem;
-  min-width: 400px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 
   h2 {
     text-align: center;
@@ -29,6 +53,15 @@ $accent-color: #ee7823;
   label {
     color: $quaternary-color;
     font-size: 1.1rem;
+  }
+
+  input.form-control {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 0.25rem;
   }
 
   small {
@@ -56,5 +89,18 @@ $accent-color: #ee7823;
     &:hover {
       background-color: darken($accent-color, 5%);
     }
+  }
+}
+
+// Media Queries
+@media (max-width: 768px) {
+  .login-form {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 1rem;
   }
 }
