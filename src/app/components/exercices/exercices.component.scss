@@ -11,8 +11,6 @@ body {
   overflow-x: hidden;
 }
 
-
-
 .container-fluid {
   background-color: $primary-color;
   color: $quaternary-color;
@@ -25,6 +23,7 @@ body {
     width: 100%;
   }
 
+  // Estilos encabezado
   .encabezado {
     display: grid;
     grid-template-columns: 40% auto;
@@ -34,21 +33,24 @@ body {
     .titulo_encabezado {
       display: flex;
       justify-content: start;
+      align-items: center;
       gap: 10px;
 
-      h2{
+      h2 {
         color: $accent-color;
+        margin: 0;
       }
 
       #imgVolver {
         display: none;
+        height: 100%;
       }
 
-      /* Muestra la imagen solo en pantallas de hasta 768px (móviles y tabletas) */
       @media (max-width: 768px) {
         #imgVolver {
           display: block;
-         
+          width: 26px;
+          height: 26px;
         }
       }
     }
@@ -58,9 +60,15 @@ body {
       justify-content: end;
       flex-wrap: wrap;
       gap: 15px;
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 
+  // Estilos scrolls
   .scroll-container {
     display: flex;
     overflow-x: auto;
@@ -103,7 +111,7 @@ body {
   gap: 1rem;
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(2, 1fr); // solo en escritorio
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .card {
@@ -178,8 +186,22 @@ body {
   }
 }
 
+// Media queries
+@media (max-width: 768px) {
+  .container-fluid .encabezado .imgs_encabezado img {
+    width: 30px ;
+    height: 30px;
+  }
+}
 
-// Media queries al final
+@media (max-width: 576px) {
+  .container-fluid .encabezado .imgs_encabezado img {
+    width: 25px ;
+    height: 25px;
+  }
+}
+
+
 @media (max-width: 576px) {
   .container-fluid {
     padding: 1rem;
@@ -201,5 +223,14 @@ body {
 
   #ejercicios-container {
     margin-top: 20%;
+  }
+
+  .encabezado {
+    .imgs_encabezado {
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
   }
 }
