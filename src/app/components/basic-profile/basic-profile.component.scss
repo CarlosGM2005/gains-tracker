@@ -101,78 +101,36 @@ $accent-color: #ee7823;
 
 //ESTILO SECCIONES
 #contenedorSecciones {
-    display: flex;
+    width: 90%;
+    background-color: red;
+    margin: auto;
+    margin-top: 3.5%;
+    display: grid;
+    grid-template-rows: auto;
     align-items: center;
-    min-height: 100%;
 
-    #secciones {
-        margin-top: 2%;
+    @media (max-width: 1024px) {
+        margin-top: 20%;
     }
 
-    .opciones {
-        color: white;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-
-        .opcionSeccion {
-            display: grid;
-            grid-template-columns: 10% 80% 10%;
-            align-items: center;
-            gap: 4%;
-
-            .contImgSeccion {
-                background-color: $secondary-color;
-                border-radius: 50%;
-                padding: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 60px;
-                height: 60px;
-                gap: 2%;
-
-                img {
-                    width: 30px;
-                    height: 30px;  
-                }
-                
-            }
-
-            p {
-                margin-bottom: 0;
-            }
-
-            img {
-                width: 25px;
-                height: 25px;
-            }
-        }
+    /* Móviles (ancho máximo de 768px) */
+    @media (max-width: 768px) {
+        margin-top: 20%;
     }
 
-    // Ajustes para pantallas móviles
-    @media (max-width: 425px) {
-        .opciones {
-            gap: 10px; // Menor espacio entre las opciones en pantallas pequeñas
+    .opcionSeccion{
+        background-color: green;
+        display: grid;
+        grid-template-columns: auto auto auto;
+
+        .contImgSeccion{
+           background-color: black;
+            align-items: end;
         }
 
-        .opcionSeccion {
-            grid-template-columns: 15% 70% 15%; // Ajuste de las columnas para más equilibrio
-
-            .contImgSeccion {
-                width: 40px; 
-                height: 40px; 
-                padding: 5px; 
-
-                img {
-                    width: 20px; //
-                    height: 20px; // Icono más pequeño
-                }
-            }
-
-            p {
-                font-size: 0.8rem; 
-            }
+       #contImgVerMas{
+        background-color: blue;
+            justify-content: end;
         }
     }
 }
