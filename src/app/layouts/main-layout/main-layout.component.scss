@@ -3,7 +3,7 @@ main {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding-bottom: 80px;
+    min-height: 100dvh;
   
     router-outlet {
       flex-grow: 0;
@@ -13,9 +13,10 @@ main {
     &.con-barra {
       @media screen and (min-width: 992px) {
         padding-left: 250px;
+        
       }
     }
-
+      
     .router-container {
       position: relative;
     }
