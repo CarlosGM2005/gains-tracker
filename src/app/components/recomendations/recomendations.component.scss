@@ -11,8 +11,6 @@ body {
   overflow-x: hidden;
 }
 
-
-
 .container-fluid {
   background-color: $primary-color;
   color: $quaternary-color;
@@ -26,30 +24,34 @@ body {
     width: 100%;
   }
 
+  // Estilos encabezado
   .encabezado {
     display: grid;
-    grid-template-columns: 40% auto;
+    grid-template-columns: 70% auto;
     align-items: center;
     width: 100%;
 
     .titulo_encabezado {
       display: flex;
       justify-content: start;
+      align-items: center;
       gap: 10px;
 
-      h2{
-        color: $accent-color;
+      h2 {
+        color: $quaternary-color;
+        margin: 0;
       }
 
       #imgVolver {
         display: none;
+        height: 100%;
       }
 
-      /* Muestra la imagen solo en pantallas de hasta 768px (móviles y tabletas) */
       @media (max-width: 768px) {
         #imgVolver {
           display: block;
-         
+          width: 26px;
+          height: 26px;
         }
       }
     }
@@ -59,9 +61,15 @@ body {
       justify-content: end;
       flex-wrap: wrap;
       gap: 15px;
+
+      img {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
 
+  // Estilos scrolls
   .scroll-container {
     display: flex;
     overflow-x: auto;
@@ -89,7 +97,32 @@ body {
     border-radius: 5px;
     white-space: nowrap;
     min-width: 110px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+      cursor: pointer;
+    }
+
+    //media para los dispositivos tablets y moviles 
+    @media(max-width: 991px) {
+      &:hover {
+        background-color: darken($secondary-color, 10%);
+        cursor: pointer;
+        border: 2px solid $quaternary-color;
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+      border: 2px solid $quaternary-color;
+      box-shadow: none;
+    }
+
+
   }
+
+
 
   p {
     font-size: clamp(0.9rem, 2.2vw, 1.1rem);
@@ -104,7 +137,7 @@ body {
   gap: 1rem;
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(2, 1fr); // solo en escritorio
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .card {
@@ -113,11 +146,18 @@ body {
     padding: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
+
+    &:hover {
+      background-color: $primary-color;
+    }
+
+    &:focus-visible {
+      outline: none;
+      background-color: darken($tertiary-color, 5%);
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.6);
+    }
   }
 
-  .card:hover {
-    background-color: $primary-color;
-  }
 
   .header {
     display: flex;
@@ -128,8 +168,8 @@ body {
   }
 
   .header img {
-    width: 60px;
-    height: 60px;
+    width: 67px;
+    height: 67px;
     flex-shrink: 0;
     border-radius: 6px;
     object-fit: cover;
@@ -179,8 +219,22 @@ body {
   }
 }
 
+// Media queries
+@media (max-width: 768px) {
+  .container-fluid .encabezado .imgs_encabezado img {
+    width: 30px;
+    height: 30px;
+  }
+}
 
-// Media queries al final
+@media (max-width: 576px) {
+  .container-fluid .encabezado .imgs_encabezado img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+
 @media (max-width: 576px) {
   .container-fluid {
     padding: 1rem;
@@ -202,5 +256,14 @@ body {
 
   #ejercicios-container {
     margin-top: 20%;
+  }
+
+  .encabezado {
+    .imgs_encabezado {
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
   }
 }

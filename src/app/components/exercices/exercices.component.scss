@@ -97,7 +97,32 @@ body {
     border-radius: 5px;
     white-space: nowrap;
     min-width: 110px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+      cursor: pointer;
+    }
+
+    //media para los dispositivos tablets y moviles 
+    @media(max-width: 991px) {
+      &:hover {
+        background-color: darken($secondary-color, 10%);
+        cursor: pointer;
+        border: 2px solid $quaternary-color;
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+      border: 2px solid $quaternary-color;
+      box-shadow: none;
+    }
+
+
   }
+
+
 
   p {
     font-size: clamp(0.9rem, 2.2vw, 1.1rem);
@@ -121,11 +146,18 @@ body {
     padding: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
+
+    &:hover {
+      background-color: $primary-color;
+    }
+
+    &:focus-visible {
+      outline: none;
+      background-color: darken($tertiary-color, 5%);
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.6);
+    }
   }
 
-  .card:hover {
-    background-color: $primary-color;
-  }
 
   .header {
     display: flex;
@@ -190,14 +222,14 @@ body {
 // Media queries
 @media (max-width: 768px) {
   .container-fluid .encabezado .imgs_encabezado img {
-    width: 30px ;
+    width: 30px;
     height: 30px;
   }
 }
 
 @media (max-width: 576px) {
   .container-fluid .encabezado .imgs_encabezado img {
-    width: 25px ;
+    width: 25px;
     height: 25px;
   }
 }

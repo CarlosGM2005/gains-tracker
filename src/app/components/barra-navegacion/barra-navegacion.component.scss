@@ -18,6 +18,32 @@ $card-bg: #1f1f1f;
     background-color: $secondary-color;
 }
 
+
+.nav-item {
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    padding: 0.4rem;
+    position: relative;
+
+    &:hover {
+        background-color: darken($secondary-color, 8%);
+        cursor: pointer;
+    }
+
+    &:focus-within {
+        background-color: lighten($secondary-color, 5%);
+        box-shadow: 0 0 0 2px rgba($quaternary-color, 0.4);
+    }
+}
+
+.nav-link:focus-visible {
+    box-shadow: none;
+    background-color: lighten($secondary-color, 5%);
+}
+
+
+
+
 /* Contenido principal (por defecto para móvil/tablet) */
 .main-content {
     padding: 20px;
@@ -27,20 +53,20 @@ $card-bg: #1f1f1f;
         padding-left: 0;
         padding-bottom: 0;
 
-        img{
+        img {
             width: 48px;
             height: 48px;
         }
     }
-    
-    
+
+
 }
 
-nav{
+nav {
     background-color: $secondary-color;
 }
 
-img{
+img {
     width: 36px;
     height: 36px;
 }
