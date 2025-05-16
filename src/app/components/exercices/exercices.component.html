@@ -3,12 +3,12 @@
         <!-- Sacar a un componente reutilizable para este, recomendados y registros-->
         <div class="encabezado">
             <div class="titulo_encabezado">
-                <img id="imgVolver" src="icons/logoVolver.png" alt="">
+                <a (click)="volver()"><img id="imgVolver" src="icons/logoVolver.png" alt=""></a>
                 <h2>Ejercicios</h2>
             </div>
             <div class="imgs_encabezado">
                 <img src="icons/logoBuscar.png" alt="">
-                <img src="icons/logoPerfil.png" alt="">
+                <a (click)="irPerfiloLogin()"><img src="icons/logoPerfil.png" alt=""></a>
             </div>
         </div><br>
         <div class="scroll-container">

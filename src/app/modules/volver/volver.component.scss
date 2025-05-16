@@ -1,14 +1,28 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
+
+
 .back-button {
+    display: flex;
+    align-items: center;
     position: absolute;
     top: 1.5rem;
     left: 1.5rem;
-    color: #ee7823;
+    color: $quaternary-color;
     text-decoration: none;
     font-size: 1rem;
     cursor: pointer;
   
     &:hover {
       text-decoration: underline;
+    }
+
+    img{
+      width: 30px;
+      height: 30px;
     }
   
     @media (max-width: 480px) {
