@@ -5,7 +5,7 @@ import { VolverComponent } from "../../modules/volver/volver.component";
 @Component({
   selector: 'app-recomendations',
   standalone: true,
-  imports: [RouterLink, VolverComponent],
+  imports: [],
   templateUrl: './recomendations.component.html',
   styleUrl: './recomendations.component.scss'
 })

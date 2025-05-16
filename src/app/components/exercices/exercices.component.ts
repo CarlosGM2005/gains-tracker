@@ -5,7 +5,7 @@ import { VolverComponent } from "../../modules/volver/volver.component";
 @Component({
   selector: 'app-exercices',
   standalone: true,
-  imports: [RouterLink, VolverComponent],
+  imports: [],
   templateUrl: './exercices.component.html',
   styleUrl: './exercices.component.scss'
 })
