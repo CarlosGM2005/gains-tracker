@@ -1,1 +1,73 @@
-<p>data-profile works!</p>
+<div id="contenedorPrincipal">
+    <div id="parteSuperior">
+        <div class="infoEncabezado">
+            <input type="file" id="imagenInput" style="display: none;">
+            <label for="imagenInput" class="imagenRedonda">
+                <img src="https://placehold.co/100x100" alt="subir imagen">
+            </label>
+
+            <h3>Nombre</h3>
+            <p>correo correo.es</p>
+
+            <div class="infoPersona">
+                <div class="info-box">
+                    <div>
+                        <h5>75 Kg</h5>
+                        <p>Peso</p>
+                    </div>
+                    <div>
+                        <h5>28 Años</h5>
+                        <p>Edad</p>
+                    </div>
+                    <div>
+                        <h5>1.65 CM</h5>
+                        <p>Altura</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-volver></app-volver>
+</div>
+
+<div id="contenedorSecciones" class="text-center">
+    <div class="datos">
+        <form class="login-form">
+
+            <div class="mb-4">
+                <label for="naln" class="form-label">Nombre y Apellidos</label>
+                <input type="text" id="naln" class="form-control" placeholder="Carlos Garcia" />
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="carlos@example.example" />
+            </div>
+
+            <div class="mb-4">
+                <label for="telefono" class="form-label">Número de teléfono</label>
+                <input type="tel" id="telefono" class="form-control" placeholder="+123 567 89000" />
+            </div>
+
+            <div class="mb-4">
+                <label for="edad" class="form-label">Edad</label>
+                <input type="text" id="edad" class="form-control" placeholder="28 Años" />
+            </div>
+
+            <div class="mb-4">
+                <label for="peso" class="form-label">Peso</label>
+                <input type="text" id="peso" class="form-control" placeholder="75 Kg" />
+            </div>
+
+            <div class="mb-4">
+                <label for="altura" class="form-label">Altura</label>
+                <input type="text" id="altura" class="form-control" placeholder="1.65 CM" />
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+
+</div>

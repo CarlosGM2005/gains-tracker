@@ -4,14 +4,24 @@ $tertiary-color: #29292E;
 $quaternary-color: #F8F8F8;
 $accent-color: #ee7823;
 
-
-.container{
+.container {
     background-color: $tertiary-color;
     border-radius: 15px;
     margin-top: 2%;
 
-    h1{
+    h1 {
         color: $accent-color;
     }
+
 }
 
+@media(max-width: 768px) {
+    .container-fluid {
+        margin-top: 15% !important;
+    }
+
+    .container{
+        margin-bottom: 100px;
+    }
+    
+}
