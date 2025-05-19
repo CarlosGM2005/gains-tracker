@@ -126,6 +126,15 @@ $accent-color: #ee7823;
             margin-bottom: 7%;
         }
 
+        &:hover{
+            background-color: $tertiary-color;
+        }
+
+        &:focus{
+            border: 2px solid white;
+            
+        }
+
         .contImgSeccion {
             background-color: $secondary-color;
             border-radius: 50%;
@@ -174,6 +183,10 @@ $accent-color: #ee7823;
     a{
         text-decoration: none;
         color: white;
+
+        &:focus{
+            outline: none;
+        }
     }
 }
 
