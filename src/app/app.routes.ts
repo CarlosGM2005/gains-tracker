@@ -11,6 +11,7 @@ import { BasicProfileComponent } from './components/basic-profile/basic-profile.
 import { DataProfileComponent } from './components/data-profile/data-profile.component';
 import { LoginComponent } from './components/login/login.component';
 import { RecomendationsComponent } from './components/recomendations/recomendations.component';
+import { RecordsComponent } from './components/records/records.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,7 @@ export const routes: Routes = [
       { path: 'basic-profile', component: BasicProfileComponent, data: { hideSidebarDesktop: true }},
       { path: 'data-profile', component: DataProfileComponent, data: { hideSidebarDesktop: true } },
       { path: 'recomendations', component: RecomendationsComponent},
+      { path: 'records', component: RecordsComponent}
     ]
   },
   { path: '**', redirectTo: '' }

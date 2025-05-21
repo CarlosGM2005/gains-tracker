@@ -100,14 +100,14 @@ body {
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: darken($secondary-color, 10%);
+      background-color: lighten($tertiary-color, 5%);
       cursor: pointer;
     }
 
     //media para los dispositivos tablets y moviles 
     @media(max-width: 991px) {
       &:hover {
-        background-color: darken($secondary-color, 10%);
+        background-color: lighten($tertiary-color, 5%);
         cursor: pointer;
         border: 2px solid $quaternary-color;
       }

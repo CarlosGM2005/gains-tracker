@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="container">
+    <br>
+    <h2>Mis Ejercicios</h2>
+
+    <div class="ejercicios-grid-container">
+      <div class="card" [ngClass]="{ 'open': ejercicio.isOpen }" *ngFor="let ejercicio of ejercicios; trackBy: trackByEjercicioId" tabindex="0">
+        <div class="header" (click)="toggleCard(ejercicio); $event.stopPropagation()">
+          <img [src]="ejercicio.imagen" [alt]="'Imagen de ' + ejercicio.nombre" />
+          <div class="header-info">
+            <h3>{{ ejercicio.nombre }}</h3>
+            <p>{{ ejercicio.series.length }} series registradas</p>
+          </div>
+          <span class="arrow">›</span>
+        </div>
+
+        <div class="series" *ngIf="ejercicio.isOpen">
+          <div class="series-entry" *ngFor="let serie of ejercicio.series">
+            <p><strong>Día:</strong> {{ serie.dia }}</p>
+            <p><strong>Serie:</strong> {{ serie.numero }}</p>
+            <p><strong>Repeticiones:</strong> {{ serie.repeticiones }}</p>
+            <p><strong>Peso:</strong> {{ serie.peso }} kg</p>
+            <p><strong>Descanso:</strong> {{ serie.descanso }} seg</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-volver></app-volver>
+</div>

@@ -148,7 +148,7 @@ body {
     transition: background 0.3s ease;
 
     &:hover {
-      background-color: $primary-color;
+      background-color: lighten($tertiary-color, 5%);
     }
 
     &:focus-visible {

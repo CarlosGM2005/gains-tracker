@@ -1,0 +1,158 @@
+// Variables (tus originales)
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  background-color: $primary-color;
+  color: $quaternary-color;
+  min-height: 100dvh;
+  padding: 2rem;
+  box-sizing: border-box;
+  padding-bottom: 80px !important; // Revisa si !important es necesario aquí
+
+  .container {
+    padding: 20px;
+    width: 100%;
+  }
+}
+
+
+h2 {
+  color: $accent-color;
+}
+
+#msjInfoEj {
+  margin-top: 5%;
+  display: grid;
+  grid-template-columns: 90% 10%;
+  color: $accent-color;
+  font-weight: bold;
+  margin-bottom: 1rem;
+
+  #msjInfoEj_contador {
+    display: flex;
+    justify-content: end;
+  }
+}
+
+.ejercicios-grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  .card {
+    background-color: $tertiary-color;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background-color: lighten($tertiary-color, 5%);
+    }
+
+    &:focus-visible {
+      outline: none;
+      background-color: darken($tertiary-color, 5%);
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.6);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      overflow: hidden;
+    }
+
+    .header img {
+      width: 67px;
+      height: 67px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .header-info {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+
+      h3 {
+        margin: 0;
+        color: $accent-color;
+        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      p {
+        margin: 5px 0 0;
+        font-size: 0.8rem;
+        color: $quaternary-color;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .arrow {
+      flex-shrink: 0;
+      color: $quaternary-color;
+      font-size: 30px;
+      transform: rotate(90deg);
+      transition: transform 0.2s ease;
+    }
+
+    &.open .arrow {
+      transform: rotate(270deg);
+    }
+
+    .series {
+      margin-top: 10px;
+      background-color: darken($tertiary-color, 3%);
+      border-radius: 8px;
+      padding: 10px;
+
+      &-entry {
+        border-bottom: 1px solid darken($tertiary-color, 10%);
+        padding: 8px 0;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        p {
+          margin: 4px 0;
+          font-size: 0.85rem;
+          color: $quaternary-color;
+        }
+      }
+    }
+  }
+}
+
+// Media queries (mantengo las que tenías para otros elementos)
+@media (max-width: 768px) {
+  .container-fluid .encabezado .imgs_encabezado img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container-fluid .encabezado .imgs_encabezado img {
+    width: 25px;
+    height: 25px;
+  }
+}
