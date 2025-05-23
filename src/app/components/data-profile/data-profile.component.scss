@@ -19,6 +19,10 @@ $accent-color: #ee7823;
         padding-top: 2.5%;
         text-align: center;
 
+         #correoElec{
+            color: $quaternary-color;
+        }
+
         .imagenRedonda {
             width: 100px;
             height: 100px;
@@ -172,7 +176,7 @@ $accent-color: #ee7823;
             transition: background-color 0.3s ease;
 
             &:hover {
-                background-color: darken($accent-color, 5%);
+                background-color: darken($secondary-color, 5%);
             }
 
            

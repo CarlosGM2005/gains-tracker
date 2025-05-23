@@ -3,15 +3,21 @@
     <br>
     <h2>Mis Ejercicios</h2>
 
-    <div class="ejercicios-grid-container">
-      <div class="card" [ngClass]="{ 'open': ejercicio.isOpen }" *ngFor="let ejercicio of ejercicios; trackBy: trackByEjercicioId" tabindex="0">
+    <div *ngIf="ejercicios.length === 0" class="no-records-message">
+      <p>No tienes registros guardados</p>
+    </div>
+
+    <div class="ejercicios-grid-container" *ngIf="ejercicios.length > 0">
+      <div class="card" [ngClass]="{ 'open': ejercicio.isOpen }"
+        *ngFor="let ejercicio of ejercicios; trackBy: trackByEjercicioId" tabindex="0">
         <div class="header" (click)="toggleCard(ejercicio); $event.stopPropagation()">
           <img [src]="ejercicio.imagen" [alt]="'Imagen de ' + ejercicio.nombre" />
           <div class="header-info">
             <h3>{{ ejercicio.nombre }}</h3>
             <p>{{ ejercicio.series.length }} series registradas</p>
           </div>
-          <span class="arrow">›</span>
+          <span class="arrow">&#x25B8;</span>
+          
         </div>
 
         <div class="series" *ngIf="ejercicio.isOpen">

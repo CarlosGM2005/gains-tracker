@@ -1,4 +1,4 @@
-// Variables (tus originales)
+// Variables
 $primary-color: #232323;
 $secondary-color: #BA5326;
 $tertiary-color: #29292E;
@@ -22,6 +22,20 @@ body {
   .container {
     padding: 20px;
     width: 100%;
+
+    .no-records-message {
+      text-align: center;
+      color: $accent-color; 
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 50px;
+      
+      width: 100%; 
+    }
+
+    .no-records-message p {
+      margin: 0; 
+    }
   }
 }
 
@@ -71,7 +85,7 @@ h2 {
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      overflow: hidden;
+      //overflow: hidden;
     }
 
     .header img {
@@ -109,13 +123,15 @@ h2 {
     .arrow {
       flex-shrink: 0;
       color: $quaternary-color;
-      font-size: 30px;
+      font-weight: bold;
+      font-size: 23px;
+      display: inline-block;
       transform: rotate(90deg);
       transition: transform 0.2s ease;
     }
 
     &.open .arrow {
-      transform: rotate(270deg);
+      transform: rotate(-90deg);
     }
 
     .series {

@@ -1,11 +1,9 @@
+// Variables (tus originales)
 $primary-color: #232323;
 $secondary-color: #BA5326;
 $tertiary-color: #29292E;
 $quaternary-color: #F8F8F8;
 $accent-color: #ee7823;
-$badge-color: #666;
-$card-bg: #1f1f1f;
-
 
 .detalle-ejercicio-wrapper {
   display: flex;
@@ -37,7 +35,7 @@ $card-bg: #1f1f1f;
     justify-content: center;
 
     span {
-      background-color: $badge-color;
+      background-color: rgb(109, 109, 109);
       color: $quaternary-color;
       padding: 0.3rem 0.8rem;
       border-radius: 1rem;
@@ -59,22 +57,23 @@ $card-bg: #1f1f1f;
     button {
       border-radius: 20px;
       padding: 0.5rem 1rem;
-      background-color: $accent-color;
+      background-color: $secondary-color;
       color: white;
       font-weight: bold;
       border: none;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease;
+      transition: all 0.2s ease;
 
       &:hover {
-        transform: scale(1.05);
+        background-color: darken($secondary-color, 10%);
+        cursor: pointer;
       }
     }
   }
 }
 
 .volver-btn {
-  background-color: $accent-color;
+  background-color: $secondary-color;
   color: white;
   border-radius: 45px;
   width: fit-content;
@@ -131,12 +130,21 @@ $card-bg: #1f1f1f;
 
 
 //Estilos modal
-.modal-content{
+.modal-content {
   background-color: $tertiary-color;
   color: $quaternary-color;
 
-  #btnRegistrar{
-    background-color: $accent-color;
+  #btnRegistrar {
+    background-color: $secondary-color;
     color: white;
-  } 
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+      cursor: pointer;
+    }
+
+    &:focus{
+      border: 1px solid white;
+    }
+  }
 }
