@@ -17,9 +17,8 @@
             <p>{{ ejercicio.series.length }} series registradas</p>
           </div>
           <span class="arrow">&#x25B8;</span>
-          
         </div>
-
+         
         <div class="series" *ngIf="ejercicio.isOpen">
           <div class="series-entry" *ngFor="let serie of ejercicio.series">
             <p><strong>Día:</strong> {{ serie.dia }}</p>

@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="container">
-        
+
         <div class="encabezado">
             <div class="titulo_encabezado">
                 <a (click)="volver()"><img id="imgVolver" src="icons/logoVolver.png" alt="Icono para volver"></a>
@@ -13,7 +13,8 @@
         </div><br>
         <div class="scroll-container">
             @for(musculo of musculos; track musculo) {
-            <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0" (click)="seleccionarMusculo(musculo)">
+            <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0"
+                (click)="seleccionarMusculo(musculo)">
                 {{ musculo }}
             </button>
             }
@@ -22,163 +23,18 @@
         <div id="ejercicios-container">
             <div id="msjInfoEj">
                 <p>Ejercicios de {{ musculoSeleccionado.toLowerCase() }} - nivel {{nivelSeleccionado}}</p>
-                <p id="msjInfoEj_contador">4</p>
+                <p id="msjInfoEj_contador">{{ejercicios.length}}</p>
             </div>
 
-            <!-- Sacar estas card a un modulo para no repetir codigo, luego con un for recrear que sean 5-->
-            <div class="card" tabindex="0">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Elevaciones laterales con mancuernas</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
+           @for (ejercicio of ejercicios; track ejercicio.nombre) {
+            <app-exercice-card
+                [nombre]="ejercicio.nombre"
+                [series]="ejercicio.series"
+                [imagen]="ejercicio.imagen">
+            </app-exercice-card>
+            }
 
-            <div class="card" tabindex="0">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
 
-            <div class="card" tabindex="0">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card" tabindex="0">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card" tabindex="0">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card" tabindex="0">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <img src="https://placehold.co/67x67" alt="Imagen del ejercicio" />
-                    <div class="header-info">
-                        <h3>Nombre del Ejercicio</h3>
-                        <p>n series registradas</p>
-                    </div>
-                    <span class="arrow">›</span>
-                </div>
-            </div>
         </div>
     </div>
 </div>

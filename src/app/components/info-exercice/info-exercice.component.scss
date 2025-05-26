@@ -148,3 +148,17 @@ $accent-color: #ee7823;
     }
   }
 }
+
+.mensaje-confirmacion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: black;
+    padding: 3rem 4rem;
+    border-radius: 8px;
+    border: 3px solid $secondary-color;
+    text-align: center;
+    font-size: 1.2rem;
+}

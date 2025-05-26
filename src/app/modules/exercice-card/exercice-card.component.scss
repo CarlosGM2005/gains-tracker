@@ -1,0 +1,71 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
+
+.card {
+  background-color: $tertiary-color;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: lighten($tertiary-color, 5%);
+  }
+
+  &:focus-visible {
+    outline: none;
+    background-color: darken($tertiary-color, 5%);
+    box-shadow: 0 0 0 3px rgba($accent-color, 0.6);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+
+  img {
+    width: 67px;
+    height: 67px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  .header-info {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+
+    h3 {
+      margin: 0;
+      color: #f07d2b;
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+      //white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%; // <--- ¡AÑADIR ESTO!
+    }
+
+    p {
+      margin: 5px 0 0;
+      font-size: 0.8rem;
+      color: $quaternary-color;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%; // <--- ¡AÑADIR ESTO! (Para las series, si también pudieran desbordarse)
+    }
+  }
+
+  .arrow {
+    flex-shrink: 0;
+    font-size: 30px;
+    color: white;
+    margin-left: auto;
+  }
+}
