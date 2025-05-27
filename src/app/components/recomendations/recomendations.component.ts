@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ExerciceCardComponent } from '../../modules/exercice-card/exercice-card.component';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-recomendations',
@@ -11,7 +14,10 @@ import { ExerciceCardComponent } from '../../modules/exercice-card/exercice-card
 export class RecomendationsComponent {
   musculos = ['ESPALDA','PECHO', 'HOMBROS', 'TRICEPS', 'BICEPS', 'ANTEBRAZOS', 'LUMBARES', 'ABDOMINALES', 'PIERNAS'];
   musculoSeleccionado = 'Espalda';
+  private userSub?: Subscription;
   
+  constructor(private authService: AuthService, private router: Router){}
+
   seleccionarMusculo(musculo: string): void {
     this.musculoSeleccionado = musculo;
   }
@@ -20,8 +26,14 @@ export class RecomendationsComponent {
     window.history.back(); // Navega a la página anterior
   }
 
-  irPerfiloLogin(){
-    //Logica con firebase si se ha autenticado
+  irPerfiloLogin() {
+    this.userSub = this.authService.user$.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/main/basic-profile']);
+      } else {
+        this.router.navigate(['/main/login']);
+      }
+    });
   }
 
   ejercicios = [

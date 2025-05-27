@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ExerciceCardComponent } from '../../modules/exercice-card/exercice-card.component';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-exercices',
@@ -13,9 +15,10 @@ export class ExercicesComponent implements OnInit {
   musculos = ['ESPALDA', 'PECHO', 'HOMBROS', 'TRICEPS', 'BICEPS', 'ANTEBRAZOS', 'LUMBARES', 'ABDOMINALES', 'PIERNAS'];
   musculoSeleccionado = 'Espalda';
   nivelSeleccionado: string = "";
+   private userSub?: Subscription;
 
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.nivelSeleccionado = this.route.snapshot.paramMap.get('level')!;
@@ -35,8 +38,15 @@ export class ExercicesComponent implements OnInit {
   }
 
   irPerfiloLogin() {
-    //Logica con firebase si se ha autenticado
+    this.userSub = this.authService.user$.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/main/basic-profile']);
+      } else {
+        this.router.navigate(['/main/login']);
+      }
+    });
   }
+
   ejercicios = [
     {
       nombre: 'Elevaciones laterales con mancuernas',

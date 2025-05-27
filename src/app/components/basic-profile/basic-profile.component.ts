@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { VolverComponent } from '../../modules/volver/volver.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-basic-profile',
@@ -10,5 +11,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './basic-profile.component.scss'
 })
 export class BasicProfileComponent {
+  
+  
+constructor(private authService: AuthService, private router: Router) {}
 
+async cerrarSesion() {
+  await this.authService.logout();
 }
+} 

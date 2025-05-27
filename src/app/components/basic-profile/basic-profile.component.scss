@@ -122,6 +122,10 @@ $accent-color: #ee7823;
         margin-top: 20%;
     }
 
+    #cerrarSesion{
+        cursor: pointer;
+    }
+
     .opcionSeccion {
         display: grid;
         grid-template-columns: 15% auto 10%;

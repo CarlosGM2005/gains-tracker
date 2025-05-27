@@ -21,7 +21,7 @@ export class LevelExerciceComponent {
   }
 
   continuar() {
-    // Aquí puedes navegar o guardar el nivel
+    
     console.log('Nivel seleccionado:', this.seleccionado);
     this.router.navigate(['main/exercices', this.seleccionado]); 
 
