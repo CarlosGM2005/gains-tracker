@@ -18,8 +18,20 @@
       <small>¿No tienes cuenta? <a routerLink="/main/register">Regístrate aquí</a></small>
     </div>
 
+    <div class="d-grid mt-3">
+      <button type="button" class="btn-google" (click)="loginWithGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+        Iniciar sesión con Google
+      </button>
+    </div>
+    <br>
+
     <div class="d-grid">
       <button type="submit" class="btn btn-submit" [disabled]="loginForm.invalid">Continuar</button>
     </div>
+
+    
   </form>
+
+
 </div>

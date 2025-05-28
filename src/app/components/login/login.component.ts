@@ -37,4 +37,14 @@ export class LoginComponent {
       alert('Correo o contraseña incorrectos');
     }
   }
+
+  async loginWithGoogle() {
+    try {
+      await this.authService.loginWithGoogle();
+    } catch (error) {
+      console.error('Error al iniciar sesión con Google:', error);
+      alert('Ocurrió un error al iniciar sesión con Google.');
+    }
+  }
+
 }

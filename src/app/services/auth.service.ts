@@ -11,9 +11,12 @@ import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 export class AuthService {
 
   private googleProvider = new GoogleAuthProvider();
-
   private userSubject = new BehaviorSubject<User | null>(null);
+
+  private uid: any 
+
   user$: Observable<User | null> = this.userSubject.asObservable();
+
 
   constructor(
     private auth: Auth,
@@ -33,7 +36,7 @@ export class AuthService {
       const uid = credential.user.uid;
 
       const userRef = doc(this.firestore, `usuarios/${uid}`);
-      await setDoc(userRef, {
+      /* UserCredential usuario = */ await setDoc(userRef, {
         ...userData,
         uid,
         createdAt: new Date()
@@ -52,7 +55,7 @@ export class AuthService {
       await signInWithEmailAndPassword(this.auth, email, password);
       this.router.navigate(['/main']);
     } catch (error) {
-      console.error('Error en login:', error);
+      console.error('Error en login:', error, );
       throw error;
     }
   }
@@ -63,14 +66,14 @@ export class AuthService {
     try {
       const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
       const user = credential.user;
-      const uid = user.uid;
+      this.uid = user.uid;
 
-      const userRef = doc(this.firestore, `usuarios/${uid}`);
+      const userRef = doc(this.firestore, `usuarios/${this.uid}`);
       const userSnap = await getDoc(userRef);
 
       if (!userSnap.exists()) {
         const userData: UserData = {
-          uid,
+          uid: this.uid,
           nombre: user.displayName || '',
           email: user.email || '',
           telefono: '',
@@ -123,5 +126,10 @@ export class AuthService {
       })
     );
   }
+
+  getUidUser(){
+    return this.uid;
+  }
+  //Metodo que me devuelva 
 
 }

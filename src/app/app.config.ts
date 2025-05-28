@@ -25,21 +25,19 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideFirebaseApp(() =>
       initializeApp({
-        apiKey: 'AIzaSyCdnSPLxdAHI1_we1khXkVT4O-65QqjElA',
-        authDomain: 'proyectointegrado-3fd98.firebaseapp.com',
-        projectId: 'proyectointegrado-3fd98',
-        storageBucket: 'proyectointegrado-3fd98.firebasestorage.app',
-        messagingSenderId: '667267585234',
-        appId: '1:667267585234:web:b3f11f08b62a5b2f1e490b',
-        measurementId: 'G-TPVPBXPWBG',
+        apiKey: "AIzaSyBN8GGpXi4fUV5iZ4fWskI2DM2c49LzfPM",
+        authDomain: "gainstracker-21592.firebaseapp.com",
+        projectId: "gainstracker-21592",
+        storageBucket: "gainstracker-21592.firebasestorage.app",
+        messagingSenderId: "825525128907",
+        appId: "1:825525128907:web:65f2ae1ed99973340e954e",
+        measurementId: "G-JZX067XBJC"
       })
     ),
-    provideAuth(() => getAuth()),
-    provideAnalytics(() => getAnalytics()),
     ScreenTrackingService,
     UserTrackingService,
 
-    // 🔒 App Check configurado para Dev y Producción
+    /*
     provideAppCheck(() => {
       const provider = isDev
         ? new CustomProvider({
@@ -49,21 +47,19 @@ export const appConfig: ApplicationConfig = {
           })
 
         })
-        : new ReCaptchaEnterpriseProvider('6LcVqR8rAAAAAKk_F-IudZJf8nhjJsgF3Oifu3rW');
+        : new ReCaptchaEnterpriseProvider('C8234AEF-11E1-420F-AA53-8529BE4E831F');
 
       return initializeAppCheck(undefined, {
         provider,
         isTokenAutoRefreshEnabled: true,
       });
     }),
-
+    */
+   
+    provideAuth(() => getAuth()),
+    provideAnalytics(() => getAnalytics()),
     provideFirestore(() => getFirestore()),
-    provideDatabase(() => getDatabase()),
-    provideFunctions(() => getFunctions()),
-    provideMessaging(() => getMessaging()),
-    providePerformance(() => getPerformance()),
     provideStorage(() => getStorage()),
-    provideRemoteConfig(() => getRemoteConfig()),
-    provideVertexAI(() => getVertexAI()),
+
   ],
 };
