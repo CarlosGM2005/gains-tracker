@@ -25,6 +25,7 @@ export class AuthService {
     });
   }
 
+  
   // Registro con correo y contraseña + datos personalizados
   async register(userData: UserData, password: string): Promise<void> {
     try {
@@ -55,6 +56,7 @@ export class AuthService {
       throw error;
     }
   }
+
 
   // Inicio de sesión con Google
   async loginWithGoogle(): Promise<void> {

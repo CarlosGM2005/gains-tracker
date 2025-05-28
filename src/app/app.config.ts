@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
-import { initializeAppCheck, ReCaptchaEnterpriseProvider, provideAppCheck } from '@angular/fire/app-check';
+import { initializeAppCheck, provideAppCheck, ReCaptchaEnterpriseProvider, CustomProvider } from '@angular/fire/app-check';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
@@ -16,29 +16,47 @@ import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-confi
 import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
+const isDev = location.hostname === 'localhost';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimations(),
-    provideFirebaseApp(() => initializeApp({ 
-      apiKey: "AIzaSyCdnSPLxdAHI1_we1khXkVT4O-65QqjElA",
-      authDomain: "proyectointegrado-3fd98.firebaseapp.com",
-      projectId: "proyectointegrado-3fd98",
-      storageBucket: "proyectointegrado-3fd98.firebasestorage.app",
-      messagingSenderId: "667267585234",
-      appId: "1:667267585234:web:b3f11f08b62a5b2f1e490b",
-      measurementId: "G-TPVPBXPWBG"
-    })),
+    provideFirebaseApp(() =>
+      initializeApp({
+        apiKey: 'AIzaSyCdnSPLxdAHI1_we1khXkVT4O-65QqjElA',
+        authDomain: 'proyectointegrado-3fd98.firebaseapp.com',
+        projectId: 'proyectointegrado-3fd98',
+        storageBucket: 'proyectointegrado-3fd98.firebasestorage.app',
+        messagingSenderId: '667267585234',
+        appId: '1:667267585234:web:b3f11f08b62a5b2f1e490b',
+        measurementId: 'G-TPVPBXPWBG',
+      })
+    ),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     ScreenTrackingService,
     UserTrackingService,
+
+    // 🔒 App Check configurado para Dev y Producción
     provideAppCheck(() => {
-      const provider = new ReCaptchaEnterpriseProvider('6LcVqR8rAAAAAKk_F-IudZJf8nhjJsgF3Oifu3rW');
-      return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: true });
+      const provider = isDev
+        ? new CustomProvider({
+          getToken: () => Promise.resolve({
+            token: 'fake-debug-token',
+            expireTimeMillis: Date.now() + 60 * 60 * 1000 // 1 hora en milisegundos
+          })
+
+        })
+        : new ReCaptchaEnterpriseProvider('6LcVqR8rAAAAAKk_F-IudZJf8nhjJsgF3Oifu3rW');
+
+      return initializeAppCheck(undefined, {
+        provider,
+        isTokenAutoRefreshEnabled: true,
+      });
     }),
+
     provideFirestore(() => getFirestore()),
     provideDatabase(() => getDatabase()),
     provideFunctions(() => getFunctions()),
@@ -46,6 +64,6 @@ export const appConfig: ApplicationConfig = {
     providePerformance(() => getPerformance()),
     provideStorage(() => getStorage()),
     provideRemoteConfig(() => getRemoteConfig()),
-    provideVertexAI(() => getVertexAI())
-  ]
+    provideVertexAI(() => getVertexAI()),
+  ],
 };

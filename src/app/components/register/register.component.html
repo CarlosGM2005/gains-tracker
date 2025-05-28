@@ -1,0 +1,46 @@
+<div class="register-container">
+  <app-volver></app-volver>
+
+  <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <h2>Registro</h2>
+
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Tu nombre">
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="email" formControlName="email" placeholder="nombre@ejemplo.com">
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="password" formControlName="password" placeholder="Tu contraseña">
+    </div>
+
+    <div class="mb-3">
+      <label for="telefono" class="form-label">Teléfono</label>
+      <input type="tel" class="form-control" id="telefono" formControlName="telefono" placeholder="Ej. 600123456">
+    </div>
+
+    <div class="mb-3">
+      <label for="edad" class="form-label">Edad</label>
+      <input type="number" class="form-control" id="edad" formControlName="edad">
+    </div>
+
+    <div class="mb-3">
+      <label for="peso" class="form-label">Peso (kg)</label>
+      <input type="number" class="form-control" id="peso" formControlName="peso">
+    </div>
+
+    <div class="mb-3">
+      <label for="altura" class="form-label">Altura (cm)</label>
+      <input type="number" class="form-control" id="altura" formControlName="altura">
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-submit" [disabled]="registerForm.invalid">Crear cuenta</button>
+    </div>
+  </form>
+</div>

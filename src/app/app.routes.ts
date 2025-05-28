@@ -12,6 +12,7 @@ import { DataProfileComponent } from './components/data-profile/data-profile.com
 import { LoginComponent } from './components/login/login.component';
 import { RecomendationsComponent } from './components/recomendations/recomendations.component';
 import { RecordsComponent } from './components/records/records.component';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: '', component: MainComponent },
       { path: 'level-exercice', component: LevelExerciceComponent },
       { path: 'login', component: LoginComponent},
+      { path: 'register', component: RegisterComponent}
     ]
   },
   {

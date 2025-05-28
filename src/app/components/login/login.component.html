@@ -1,25 +1,25 @@
 <div class="login-container">
   <app-volver></app-volver>
 
-  <form class="login-form">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <h2>Iniciar Sesión</h2>
 
     <div class="mb-4">
       <label for="email" class="form-label">Correo electrónico</label>
-      <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
+      <input type="email" class="form-control" id="email" formControlName="email" placeholder="nombre@ejemplo.com">
     </div>
 
     <div class="mb-4">
       <label for="password" class="form-label">Contraseña</label>
-      <input type="password" class="form-control" id="password" placeholder="Tu contraseña">
+      <input type="password" class="form-control" id="password" formControlName="password" placeholder="Tu contraseña">
     </div>
 
     <div class="mb-4 text-center">
-      <small>¿No tienes cuenta? <a href="#">Regístrate aquí</a></small>
+      <small>¿No tienes cuenta? <a routerLink="/main/register">Regístrate aquí</a></small>
     </div>
 
     <div class="d-grid">
-      <button type="submit" class="btn btn-submit">Continuar</button>
+      <button type="submit" class="btn btn-submit" [disabled]="loginForm.invalid">Continuar</button>
     </div>
   </form>
 </div>
