@@ -1,7 +1,117 @@
+$primary-color: #232323;
+$secondary-color: #BA5326;
+$tertiary-color: #29292E;
+$quaternary-color: #F8F8F8;
+$accent-color: #ee7823;
+
+// Estilos encabezado
+.container-fluid {
+    background-color: $primary-color;
+    color: $quaternary-color;
+    min-height: 100dvh;
+    padding: 2rem;
+    box-sizing: border-box;
+    padding-bottom: 80px !important;
+
+    .container {
+        padding: 10px;
+        width: 100%;
+    }
+
+    // Estilos encabezado
+    .encabezado {
+        display: grid;
+        grid-template-columns: 70% auto;
+        align-items: center;
+        width: 100%;
+
+        .titulo_encabezado {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 10px;
+
+            h2 {
+                color: $quaternary-color;
+                margin: 0;
+            }
+
+            #imgVolver {
+                display: none;
+                height: 100%;
+            }
+
+            @media (max-width: 768px) {
+                #imgVolver {
+                    display: block;
+                    width: 26px;
+                    height: 26px;
+                }
+            }
+        }
+
+        .imgs_encabezado {
+            display: flex;
+            justify-content: end;
+            flex-wrap: wrap;
+            gap: 15px;
+            cursor: pointer;
+
+            img {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    }
+}
+
+
+//Carrusel
+.apartadosCarrusel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $quaternary-color;
+    height: 250px;
+    text-align: center;
+    background-color: $tertiary-color;
+    margin: 5%;
+    border-radius: 15px;
+
+    div {
+        padding: 12.3px;
+
+        h3 {
+            color: $accent-color;
+        }
+    }
+}
+
+.dia-card {
+  width: 90%;
+}
+
+@media (min-width: 768px) {
+  .dia-card {
+    width: 45%;
+  }
+}
+
+@media (min-width: 992px) {
+  .dia-card {
+    width: 30%;
+  }
+}
+
+
+
+
+
+
 // Para pantallas más grandes (laptop o más grandes) 
 @media screen and (min-width: 992px) {
     main {
-        padding-left: 250px; 
+        padding-left: 250px;
     }
 }
 
