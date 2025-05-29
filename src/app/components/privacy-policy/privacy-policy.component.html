@@ -1,72 +1,97 @@
-<div class="container-fluid text-white text-center">
+<div class="container-fluid text-white">
   <app-volver></app-volver>
   <div class="container">
-    <br>
-    <section>
-      <h1>Política de Privacidad – Gains Tracker</h1>
-      <p><strong>Última actualización:</strong> [fecha actualízala tú mismo si quieres]</p>
+    <div class="privacy-container">
+      <h1>Política de Privacidad</h1>
+      <p><strong>Última actualización:</strong> 13 de mayo de 2025</p>
 
-      <p>
-        En Gains Tracker, nos tomamos en serio la privacidad de nuestros usuarios. Esta política describe cómo
-        recogemos, usamos y almacenamos tus datos personales dentro de nuestra aplicación web de entrenamiento físico.
-      </p>
-      <br>
+      <section>
+        <h2>1. Información general</h2>
+        <p>
+          Gains Tracker es una aplicación desarrollada como Trabajo de Fin de Grado (TFG), cuyo objetivo es ayudar a los
+          usuarios a registrar y visualizar su progreso en ejercicios de gimnasio. Está alojada en
+          <strong>Vercel</strong> y utiliza <strong>Firebase</strong> para la autenticación, almacenamiento y servicios
+          relacionados.
+        </p>
+      </section>
 
-      <h2>1. ¿Qué datos recogemos?</h2>
-      <p>Al utilizar Gains Tracker, puedes proporcionarnos la siguiente información:</p>
-      <p>Nombre y apellidos</p>
-      <p>Correo electrónico (obligatorio para iniciar sesión)</p>
-      <p>Número de teléfono (opcional)</p>
-      <p>Edad</p>
-      <p>Peso</p>
-      <p>Altura</p>
-      <p>Imagen de perfil (opcional)</p>
-      <p>Fecha de registro</p>
-      <br>
+      <section>
+        <h2>2. Datos personales recopilados</h2>
+        <p>Durante el uso de la app se recopilan los siguientes datos:</p>
+        <ul>
+          <li>Nombre completo</li>
+          <li>Correo electrónico</li>
+          <li>Número de teléfono</li>
+          <li>Edad</li>
+          <li>Peso</li>
+          <li>Altura</li>
+          <li>Foto de perfil</li>
+          <li>Registros de ejercicios: día, series, repeticiones, peso y descanso</li>
+        </ul>
+      </section>
 
-      <h2>2. ¿Cómo obtenemos los datos?</h2>
-      <p>Recopilamos tus datos cuando:</p>
-      <p>Te registras manualmente mediante formulario (email y contraseña)</p>
-      <p>Inicias sesión con tu cuenta de Google</p>
-      <p>Rellenas o editas tu ficha de perfil</p>
-      <br>
+      <section>
+        <h2>3. Autenticación de usuarios</h2>
+        <p>Se permite iniciar sesión mediante:</p>
+        <ul>
+          <li>Correo electrónico y contraseña</li>
+          <li>Cuenta de Google (Firebase Auth)</li>
+        </ul>
+      </section>
 
-      <h2>3. ¿Dónde almacenamos los datos?</h2>
-      <p>Utilizamos Firebase como plataforma segura de backend:</p>
-      <p><strong>Firebase Authentication:</strong> almacena tus credenciales (email y login con Google)</p>
-      <p><strong>Cloud Firestore:</strong> guarda tu información de perfil bajo la ruta <code>/usuarios/{{ '{uid}' }}/fichaPerfil</code></p>
-      <p><strong>Firebase Storage:</strong> aloja tu imagen de perfil si decides subir una</p>
-      <br>
+      <section>
+        <h2>4. Uso de los datos</h2>
+        <p>La información se usa para:</p>
+        <ul>
+          <li>Personalizar el perfil del usuario</li>
+          <li>Mostrar progreso del entrenamiento</li>
+          <li>Recomendar ejercicios por nivel y categoría</li>
+        </ul>
+      </section>
 
-      <h2>4. ¿Cómo protegemos tus datos?</h2>
-      <p>
-        Tus datos están almacenados en servicios ofrecidos por Google Firebase, cumpliendo altos estándares de seguridad. Solo el propietario del proyecto tiene acceso a estos datos. No se comparten con terceros ni se utilizan con fines comerciales.
-      </p>
-      <br>
+      <section>
+        <h2>5. Propiedad de imágenes</h2>
+        <p>
+          Las imágenes mostradas en los ejercicios son propiedad exclusiva del desarrollador. Está prohibida su
+          reproducción o uso sin permiso.
+        </p>
+      </section>
 
-      <h2>5. ¿Por qué usamos estos datos?</h2>
-      <p>Usamos tu información para:</p>
-      <p>Personalizar tu experiencia en la app</p>
-      <p>Adaptar rutinas o funcionalidades a tus características físicas</p>
-      <p>Mostrarte información de tu progreso</p>
-      <br>
+      <section>
+        <h2>6. Seguridad y almacenamiento</h2>
+        <p>
+          Los datos se almacenan en <strong>Firebase Firestore</strong> y las imágenes en <strong>Firebase
+            Storage</strong>. Cada usuario solo puede acceder a su propia información mediante reglas de seguridad de
+          Firebase.
+        </p>
+      </section>
 
-      <h2>6. ¿Puedo borrar mis datos?</h2>
-      <p>
-        Sí. Puedes solicitar la eliminación de tu cuenta y todos tus datos asociados escribiendo al responsable del proyecto o utilizando la función de eliminación (si está habilitada en la app).
-      </p>
-      <br>
+      <section>
+        <h2>7. Derechos del usuario</h2>
+        <p>El usuario puede:</p>
+        <ul>
+          <li>Consultar y editar sus datos</li>
+          <li>Eliminar su cuenta y datos</li>
+          <li>Contactar con el desarrollador para más información</li>
+        </ul>
+      </section>
 
-      <h2>7. Alojamiento</h2>
-      <p>
-        Gains Tracker está alojada en la plataforma Vercel, lo que permite su acceso desde cualquier parte del mundo.
-      </p>
-      <br>
+      <section>
+        <h2>8. Cambios en la política</h2>
+        <p>
+          Esta política puede cambiar. Las modificaciones se notificarán en la aplicación.
+        </p>
+      </section>
 
-      <h2>8. Aceptación</h2>
-      <p>
-        Al usar Gains Tracker, aceptas esta política de privacidad y das tu consentimiento para el tratamiento de tus datos bajo los términos aquí descritos.
-      </p>
-    </section><br>
+      <section>
+        <h2>9. Contacto</h2>
+        <p>
+          Para cualquier consulta, contacta con el desarrollador a través del correo que figura en tu perfil.
+        </p>
+      </section>
+
+      <p class="thanks">Gracias por confiar en <strong>Gains Tracker</strong>.</p>
+    </div>
+
   </div>
 </div>
