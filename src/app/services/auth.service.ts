@@ -13,7 +13,6 @@ export class AuthService {
   private googleProvider = new GoogleAuthProvider();
   private userSubject = new BehaviorSubject<User | null>(null);
 
-  private uid: any 
 
   user$: Observable<User | null> = this.userSubject.asObservable();
 
@@ -36,7 +35,7 @@ export class AuthService {
       const uid = credential.user.uid;
 
       const userRef = doc(this.firestore, `usuarios/${uid}`);
-      /* UserCredential usuario = */ await setDoc(userRef, {
+      await setDoc(userRef, {
         ...userData,
         uid,
         createdAt: new Date()
@@ -66,14 +65,14 @@ export class AuthService {
     try {
       const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
       const user = credential.user;
-      this.uid = user.uid;
+      const uid = user.uid;
 
-      const userRef = doc(this.firestore, `usuarios/${this.uid}`);
+      const userRef = doc(this.firestore, `usuarios/${uid}`);
       const userSnap = await getDoc(userRef);
 
       if (!userSnap.exists()) {
         const userData: UserData = {
-          uid: this.uid,
+          uid,
           nombre: user.displayName || '',
           email: user.email || '',
           telefono: '',
@@ -127,9 +126,5 @@ export class AuthService {
     );
   }
 
-  getUidUser(){
-    return this.uid;
-  }
-  //Metodo que me devuelva 
-
+  
 }

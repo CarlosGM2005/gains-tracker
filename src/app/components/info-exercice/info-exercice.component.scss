@@ -10,27 +10,68 @@ $accent-color: #ee7823;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 90%;
+  width: 95%;
   margin: auto;
+
+  @media(max-width: 768px) {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    margin-bottom: 5%;
+  }
 }
 
 
 .contPrincipal {
-  width: 90%;
+
+  @media(max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5%;
+
+    .imagenesEj {
+      display: flex;
+      flex-direction: row; // por si acaso
+      justify-content: center; // opcional, si quieres centrarlas
+      align-items: center; // opcional
+      gap: 1rem;
+      margin-bottom: 5%;
+
+      img {
+        width: 150px;
+        height: 150px !important;
+        margin-bottom: 0 !important;
+      }
+    }
+
+  }
+
+  width: 95%;
   display: grid;
   grid-template-columns: 30% 70%;
-
+  gap: 3%;
 
   .imagenesEj {
+
+    img{
+      width: 100%;
+      height: 300px;
+    }
+
     img:nth-child(1) {
       display: block;
       margin-bottom: 5%;
     }
+
+
   }
 
 
   .infoEj {
     text-align: center;
+    background-color: $tertiary-color;
+    border-radius: 25px;
+    padding: 20px;
+
     h3 {
       color: $accent-color;
       margin-bottom: 0.5rem;
@@ -90,13 +131,32 @@ $accent-color: #ee7823;
       border: none;
 
       &:hover {
-          background-color: darken($secondary-color, 10%);
-          cursor: pointer;
-        }
+        background-color: darken($secondary-color, 10%);
+        cursor: pointer;
+      }
     }
   }
 }
 
+//Estilos modal
+.modal-content {
+  background-color: $tertiary-color;
+  color: $quaternary-color;
+
+  #btnRegistrar {
+    background-color: $secondary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+      cursor: pointer;
+    }
+
+    &:focus {
+      border: 1px solid white;
+    }
+  }
+}
 
 
 
