@@ -5,6 +5,103 @@ $tertiary-color: #29292E;
 $quaternary-color: #F8F8F8;
 $accent-color: #ee7823;
 
+.alineador {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: auto;
+}
+
+
+.contPrincipal {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 30% 70%;
+
+
+  .imagenesEj {
+    img:nth-child(1) {
+      display: block;
+      margin-bottom: 5%;
+    }
+  }
+
+
+  .infoEj {
+    text-align: center;
+    h3 {
+      color: $accent-color;
+      margin-bottom: 0.5rem;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+
+      span {
+        background-color: rgb(109, 109, 109);
+        color: $quaternary-color;
+        padding: 0.3rem 0.8rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    .descripcion {
+      text-align: center;
+      font-size: 0.95rem;
+      padding: 0 0.5rem;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+
+      button {
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        background-color: $secondary-color;
+        color: white;
+        font-weight: bold;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: darken($secondary-color, 10%);
+          cursor: pointer;
+        }
+      }
+    }
+
+    .volver-btn {
+      background-color: $secondary-color;
+      color: white;
+      border-radius: 45px;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 0.5rem 2rem;
+      margin-top: 1rem;
+      border: none;
+
+      &:hover {
+          background-color: darken($secondary-color, 10%);
+          cursor: pointer;
+        }
+    }
+  }
+}
+
+
+
+
+
+/*
 .detalle-ejercicio-wrapper {
   display: flex;
   flex-direction: column;
@@ -23,53 +120,7 @@ $accent-color: #ee7823;
   gap: 1rem;
   width: 100%;
 
-  h3 {
-    color: $accent-color;
-    margin-bottom: 0.5rem;
-  }
-
-  .badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-
-    span {
-      background-color: rgb(109, 109, 109);
-      color: $quaternary-color;
-      padding: 0.3rem 0.8rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
-    }
-  }
-
-  .descripcion {
-    text-align: center;
-    font-size: 0.95rem;
-    padding: 0 0.5rem;
-  }
-
-  .btn-group {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-
-    button {
-      border-radius: 20px;
-      padding: 0.5rem 1rem;
-      background-color: $secondary-color;
-      color: white;
-      font-weight: bold;
-      border: none;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: all 0.2s ease;
-
-      &:hover {
-        background-color: darken($secondary-color, 10%);
-        cursor: pointer;
-      }
-    }
-  }
+  
 }
 
 .volver-btn {
@@ -83,6 +134,8 @@ $accent-color: #ee7823;
   border: none;
 }
 
+
+/*
 // Responsive layout
 @media (min-width: 768px) {
   .detalle-ejercicio-wrapper {
@@ -127,7 +180,7 @@ $accent-color: #ee7823;
     height: 100%;
   }
 }
-
+*
 
 //Estilos modal
 .modal-content {
@@ -162,3 +215,4 @@ $accent-color: #ee7823;
     text-align: center;
     font-size: 1.2rem;
 }
+*/

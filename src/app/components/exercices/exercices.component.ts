@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './exercices.component.scss'
 })
 export class ExercicesComponent implements OnInit {
-  musculos = ['ESPALDA', 'PECHO', 'HOMBROS', 'TRICEPS', 'BICEPS', 'ANTEBRAZOS', 'LUMBARES', 'ABDOMINALES', 'PIERNAS'];
+  musculos = ['Espalda', 'Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Lumbares', 'Abdominales', 'Piernas'];
   musculoSeleccionado = 'Espalda';
   nivelSeleccionado: string = "";
    private userSub?: Subscription;

@@ -15,14 +15,14 @@
             @for(musculo of musculos; track musculo) {
             <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0"
                 (click)="seleccionarMusculo(musculo)">
-                {{ musculo }}
+                {{ musculo.toUpperCase() }}
             </button>
             }
         </div>
 
         <div id="ejercicios-container">
             <div id="msjInfoEj">
-                <p>Ejercicios de {{ musculoSeleccionado.toLowerCase() }} - nivel {{nivelSeleccionado}}</p>
+                <p>Ejercicios de {{ musculoSeleccionado }} - nivel {{nivelSeleccionado}}</p>
                 <p id="msjInfoEj_contador">{{ejercicios.length}}</p>
             </div>
 

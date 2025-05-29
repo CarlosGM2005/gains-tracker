@@ -1,19 +1,17 @@
-<div class="container d-flex justify-content-center align-items-center">
-  <div class="detalle-ejercicio-wrapper">
-    <div class="galeria-ejercicio">
+<div class="alineador" style="background-color: rgb(216, 243, 167);">
+  <div class="contPrincipal">
+    <div class="imagenesEj" style="background-color: aquamarine;">
       <img src="https://placehold.co/300x300" alt="ejercicio" />
       <img src="https://placehold.co/300x300" alt="ejercicio" />
     </div>
-
-    <div class="ejercicio-container">
+    <div class="infoEj" style="background-color: chartreuse;">
       <h3>{{nombreEjercicio}}</h3>
       <p class="text-center">[musculos que trabajas. En %, tipo 70% espalda, 20% biceps y 10% antebrazos]</p>
 
       <div class="badges">
-        <span>[nivel]</span>
+        <span>[grupo muscular]</span>
         <span>[dificultad]</span>
-        <span>[tiempo]</span>
-      </div>
+      </div><br>
 
       <h5 class="text-center">Descripcion del ejercicio</h5>
       <p class="descripcion">
@@ -22,16 +20,12 @@
       </p>
 
       <div class="btn-group">
-        <!-- El botón que abre el modal -->
         <button data-bs-toggle="modal" data-bs-target="#serieModal">Registrar serie</button>
       </div>
 
       <button class="volver-btn" (click)="volver()">Volver</button>
     </div>
   </div>
-  <div *ngIf="mensajeVisible" class="mensaje-confirmacion">
-        <p><strong>¡Serie registrada con éxito! <br></strong></p>
-    </div>
 </div>
 
 <div class="modal fade" id="serieModal" tabindex="-1" aria-labelledby="serieModalLabel" aria-hidden="true">
@@ -86,3 +80,134 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="detalle-ejercicio-wrapper">
+    <div class="galeria-ejercicio">
+      <img src="https://placehold.co/300x300" alt="ejercicio" />
+      <img src="https://placehold.co/300x300" alt="ejercicio" />
+    </div>
+
+    <div class="ejercicio-container">
+      <h3>{{nombreEjercicio}}</h3>
+      <p class="text-center">[musculos que trabajas. En %, tipo 70% espalda, 20% biceps y 10% antebrazos]</p>
+
+      <div class="badges">
+        <span>[grupo muscular]</span>
+        <span>[dificultad]</span>
+      </div>
+
+      <h5 class="text-center">Descripcion del ejercicio</h5>
+      <p class="descripcion">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua...
+      </p>
+
+
+
+      <button class="volver-btn" (click)="volver()">Volver</button>
+    </div>
+  </div>
+  <div *ngIf="mensajeVisible" class="mensaje-confirmacion">
+    <p><strong>¡Serie registrada con éxito! <br></strong></p>
+  </div>
+</div>
+      -->

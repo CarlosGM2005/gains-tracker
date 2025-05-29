@@ -5,38 +5,110 @@
     <h2>Registro</h2>
 
     <div class="mb-3">
-      <label for="nombre" class="form-label">Nombre</label>
+      <label for="nombre" class="form-label">Nombre <span><strong style="color: red;">*</strong></span></label>
       <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Tu nombre">
+      <div
+        *ngIf="registerForm.get('nombre')?.invalid && (registerForm.get('nombre')?.dirty || registerForm.get('nombre')?.touched)">
+        <div *ngIf="registerForm.get('nombre')?.errors?.['required']" class="text-danger">
+          El nombre es obligatorio.
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="email" class="form-label">Correo electrónico</label>
+      <label for="email" class="form-label">Correo electrónico <span><strong style="color: red;">*</strong></span></label>
       <input type="email" class="form-control" id="email" formControlName="email" placeholder="nombre@ejemplo.com">
+      <div
+        *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
+        <div *ngIf="registerForm.get('email')?.errors?.['required']" class="text-danger">
+          El correo electrónico es obligatorio.
+        </div>
+        <div *ngIf="registerForm.get('email')?.errors?.['email']" class="text-danger">
+          Introduce un formato de correo electrónico válido.
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="password" class="form-label">Contraseña</label>
+      <label for="password" class="form-label">Contraseña <span><strong style="color: red;">*</strong></span></label>
       <input type="password" class="form-control" id="password" formControlName="password" placeholder="Tu contraseña">
+      <div
+        *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+        <div *ngIf="registerForm.get('password')?.errors?.['required']" class="text-danger">
+          La contraseña es obligatoria.
+        </div>
+        <div *ngIf="registerForm.get('password')?.errors?.['minlength']" class="text-danger">
+          La contraseña debe tener al menos 8 caracteres.
+        </div>
+        <div *ngIf="registerForm.get('password')?.errors?.['pattern']" class="text-danger">
+          La contraseña solo puede contener letras y números.
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="telefono" class="form-label">Teléfono</label>
+      <label for="telefono" class="form-label">Teléfono <span><strong style="color: red;">*</strong></span></label>
       <input type="tel" class="form-control" id="telefono" formControlName="telefono" placeholder="Ej. 600123456">
+      <div
+        *ngIf="registerForm.get('telefono')?.invalid && (registerForm.get('telefono')?.dirty || registerForm.get('telefono')?.touched)">
+        <div *ngIf="registerForm.get('telefono')?.errors?.['required']" class="text-danger">
+          El número de teléfono es obligatorio.
+        </div>
+        <div *ngIf="registerForm.get('telefono')?.errors?.['pattern']" class="text-danger">
+          El teléfono debe tener 9 dígitos numéricos (Ej. 600123456).
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="edad" class="form-label">Edad</label>
+      <label for="edad" class="form-label">Edad <span><strong style="color: red;">*</strong></span></label>
       <input type="number" class="form-control" id="edad" formControlName="edad">
+      <div
+        *ngIf="registerForm.get('edad')?.invalid && (registerForm.get('edad')?.dirty || registerForm.get('edad')?.touched)">
+        <div *ngIf="registerForm.get('edad')?.errors?.['required']" class="text-danger">
+          La edad es obligatoria.
+        </div>
+        <div *ngIf="registerForm.get('edad')?.errors?.['min']" class="text-danger">
+          Debes tener al menos 18 años.
+        </div>
+        <div *ngIf="registerForm.get('edad')?.errors?.['max']" class="text-danger">
+          La edad máxima permitida es 99 años.
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="peso" class="form-label">Peso (kg)</label>
+      <label for="peso" class="form-label">Peso (kg) <span><strong style="color: red;">*</strong></span></label>
       <input type="number" class="form-control" id="peso" formControlName="peso">
+      <div
+        *ngIf="registerForm.get('peso')?.invalid && (registerForm.get('peso')?.dirty || registerForm.get('peso')?.touched)">
+        <div *ngIf="registerForm.get('peso')?.errors?.['required']" class="text-danger">
+          El peso es obligatorio.
+        </div>
+        <div *ngIf="registerForm.get('peso')?.errors?.['min']" class="text-danger">
+          El peso mínimo es 30 kg.
+        </div>
+        <div *ngIf="registerForm.get('peso')?.errors?.['max']" class="text-danger">
+          El peso máximo es 300 kg.
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="altura" class="form-label">Altura (cm)</label>
-      <input type="number" class="form-control" id="altura" formControlName="altura">
+      <label for="altura" class="form-label">Altura (metros) <span><strong style="color: red;">*</strong></span></label>
+      <input type="number" class="form-control" id="altura" formControlName="altura" step="0.01">
+      <div
+        *ngIf="registerForm.get('altura')?.invalid && (registerForm.get('altura')?.dirty || registerForm.get('altura')?.touched)">
+        <div *ngIf="registerForm.get('altura')?.errors?.['required']" class="text-danger">
+          La altura es obligatoria.
+        </div>
+        <div *ngIf="registerForm.get('altura')?.errors?.['min']" class="text-danger">
+          La altura mínima es 1.00 metro.
+        </div>
+        <div *ngIf="registerForm.get('altura')?.errors?.['max']" class="text-danger">
+          La altura máxima es 2.50 metros.
+        </div>
+      </div>
     </div>
 
     <div class="d-grid">

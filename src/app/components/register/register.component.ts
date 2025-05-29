@@ -23,11 +23,30 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      telefono: ['', Validators.required],
-      edad: ['', Validators.required],
-      peso: ['', Validators.required],
-      altura: ['', Validators.required]
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^[A-Za-z0-9]+$/)
+      ]],
+      telefono: ['', [
+        Validators.required,
+        Validators.pattern(/^\d{9}$/)
+      ]],
+      edad: ['', [
+        Validators.required,
+        Validators.min(12),
+        Validators.max(99)
+      ]],
+      peso: ['', [
+        Validators.required,
+        Validators.min(30),
+        Validators.max(300)
+      ]],
+      altura: ['', [
+        Validators.required,
+        Validators.min(1.00), 
+        Validators.max(2.50) 
+      ]]
     });
   }
 
