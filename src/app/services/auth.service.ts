@@ -1,9 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, UserCredential, onAuthStateChanged, User } from '@angular/fire/auth';
-import { Firestore, doc, setDoc, getDoc, docData } from '@angular/fire/firestore';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  UserCredential,
+  onAuthStateChanged,
+  User
+} from '@angular/fire/auth';
+
+import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
+
 import { Router } from '@angular/router';
 import { UserData } from '../interfaces/user.interface';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +24,7 @@ export class AuthService {
   private googleProvider = new GoogleAuthProvider();
   private userSubject = new BehaviorSubject<User | null>(null);
 
-
   user$: Observable<User | null> = this.userSubject.asObservable();
-
 
   constructor(
     private auth: Auth,
@@ -27,8 +36,7 @@ export class AuthService {
     });
   }
 
-  
-  // Registro con correo y contraseña + datos personalizados
+  //Registarse con correo electronico, contraseña + datos 
   async register(userData: UserData, password: string): Promise<void> {
     try {
       const credential = await createUserWithEmailAndPassword(this.auth, userData.email, password);
@@ -48,19 +56,18 @@ export class AuthService {
     }
   }
 
-  // Inicio de sesión con correo y contraseña
+  //Iniciar sesion con usuario y contraseña
   async login(email: string, password: string): Promise<void> {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
       this.router.navigate(['/main']);
     } catch (error) {
-      console.error('Error en login:', error, );
+      console.error('Error en login:', error);
       throw error;
     }
   }
 
-
-  // Inicio de sesión con Google
+  //Iniciar sesion con Google
   async loginWithGoogle(): Promise<void> {
     try {
       const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
@@ -91,7 +98,7 @@ export class AuthService {
     }
   }
 
-  // Logout
+  //Cerrar sesion
   async logout(): Promise<void> {
     try {
       await this.auth.signOut();
@@ -102,7 +109,7 @@ export class AuthService {
     }
   }
 
-  // Obtener uid actual (async porque auth puede tardar en cargar usuario)
+  //Obtener el uid del usuario
   async getUid(): Promise<string | null> {
     return new Promise((resolve) => {
       const unsubscribe = onAuthStateChanged(this.auth, (user) => {
@@ -112,13 +119,21 @@ export class AuthService {
     });
   }
 
-  /// Devuelve los datos del usuario completos desde Firestore en tiempo real
+  //Obtener los datos del usuario
   getUserData(): Observable<UserData | null> {
     return this.user$.pipe(
       switchMap(user => {
         if (user?.uid) {
           const userDocRef = doc(this.firestore, `usuarios/${user.uid}`);
-          return docData(userDocRef) as Observable<UserData>;
+          return from(getDoc(userDocRef)).pipe(
+            switchMap(docSnap => {
+              if (docSnap.exists()) {
+                return of(docSnap.data() as UserData);
+              } else {
+                return of(null);
+              }
+            })
+          );
         } else {
           return of(null);
         }
@@ -126,5 +141,12 @@ export class AuthService {
     );
   }
 
-  
+  //Actualizar usuario
+  async actualizarUsuario(data: Partial<UserData>): Promise<void> {
+    const uid = await this.getUid();
+    if (!uid) throw new Error('Usuario no autenticado');
+
+    const userRef = doc(this.firestore, `usuarios/${uid}`);
+    await updateDoc(userRef, data);
+  }
 }

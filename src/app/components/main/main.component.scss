@@ -9,7 +9,7 @@ $accent-color: #ee7823;
     background-color: $primary-color;
     color: $quaternary-color;
     min-height: 100dvh;
-    padding: 2rem;
+    padding: 1rem;
     box-sizing: border-box;
     padding-bottom: 80px !important;
 
@@ -26,6 +26,7 @@ $accent-color: #ee7823;
         width: 100%;
 
         .titulo_encabezado {
+
             display: flex;
             justify-content: start;
             align-items: center;
@@ -67,42 +68,109 @@ $accent-color: #ee7823;
 
 
 //Carrusel
-.apartadosCarrusel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $quaternary-color;
-    height: 250px;
-    text-align: center;
-    background-color: $tertiary-color;
-    margin: 5%;
-    border-radius: 15px;
-
-    div {
-        padding: 12.3px;
-
-        h3 {
-            color: $accent-color;
-        }
-    }
+.carousel-item img {
+    max-width: 100%;
+    height: auto;
 }
 
 .dia-card {
-  width: 90%;
+    width: 90%;
 }
 
 @media (min-width: 768px) {
-  .dia-card {
-    width: 45%;
-  }
+    .dia-card {
+        width: 45%;
+    }
+
 }
 
 @media (min-width: 992px) {
-  .dia-card {
-    width: 30%;
+    .dia-card {
+        width: 30%;
+    }
+}
+
+
+//Recomendados
+.recomendados {
+    display: grid;
+    grid-template-columns: 60% auto;
+    align-items: center;
+    width: 100%;
+
+    .titulo_recomendaciones{
+        h3{
+            font-size: 1.5rem;
+        }
+    }
+
+    .verMas_recomendaciones {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 10px;
+        
+
+        h5{
+            margin: 0 !important;
+            font-size: 1rem;
+        }
+
+        img{
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    
+}
+
+
+.exercise-grid {
+  display: grid;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
+.exercise-card {
+  border-radius: 20px;
+  overflow: hidden;
+  text-align: center;
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid white;
+  }
+
+  .exercise-title {
+    padding: 0.8rem;
+    color: white;
+    font-weight: 500;
+    font-size: 1.1rem;
+    border-top: 1px solid #fff;
+    border-radius: 0 0 20px 20px;
+    background-color: transparent;
+  }
+}
 
 
 

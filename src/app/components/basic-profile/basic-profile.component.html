@@ -1,92 +1,108 @@
 <div id="contenedorPrincipal">
-    <div id="parteSuperior">
-        <div class="infoEncabezado">
-            <input type="file" id="imagenInput" style="display: none;">
-            <label for="imagenInput" class="imagenRedonda">
-                <img src="https://placehold.co/100x100" alt="subir imagen">
-            </label>
+  <div id="parteSuperior">
+    <div class="infoEncabezado">
+      <input type="file" id="imagenInput" style="display: none;">
+      <label for="imagenInput" class="imagenRedonda">
+        <img src="https://placehold.co/100x100" alt="subir imagen">
+      </label>
 
-            <h3>Nombre</h3>
-            <p id="correoElec">correo correo.es</p>
+      <h3 id="nombreUser">{{ (userData$ | async)?.nombre || '-' }}</h3>
+      <p id="correoElec">{{ (userData$ | async)?.email || '-' }}</p>
 
-            <div class="infoPersona">
-                <div class="info-box">
-                    <div>
-                        <h5>75 Kg</h5>
-                        <p>Peso</p>
-                    </div>
-                    <div>
-                        <h5>28 Años</h5>
-                        <p>Edad</p>
-                    </div>
-                    <div>
-                        <h5>1.65 CM</h5>
-                        <p>Altura</p>
-                    </div>
-                </div>
-            </div>
+      <div class="infoPersona">
+        <div class="info-box">
+          <div>
+            <h5>
+              {{
+                ((userData$ | async)?.peso || 0) > 0
+                  ? (userData$ | async)?.peso + ' Kg'
+                  : '-'
+              }}
+            </h5>
+            <p>Peso</p>
+          </div>
+          <div>
+            <h5>
+              {{
+                ((userData$ | async)?.edad || 0) > 0
+                  ? (userData$ | async)?.edad + ' Años'
+                  : '-'
+              }}
+            </h5>
+            <p>Edad</p>
+          </div>
+          <div>
+            <h5>
+              {{
+                ((userData$ | async)?.altura || 0) > 0
+                  ? (userData$ | async)?.altura + ' CM'
+                  : '-'
+              }}
+            </h5>
+            <p>Altura</p>
+          </div>
         </div>
+      </div>
     </div>
-    <app-volver></app-volver>
+  </div>
+  <app-volver></app-volver>
 </div>
 
 
 <div id="contenedorSecciones">
-    <a routerLink="/main/data-profile">
-       <div class="opcionSeccion" tabindex="0">
-            <div class="contImgSeccion">
-                <img src="icons/logoPerfil.png" alt="" class="imgSeccion">
-            </div>
-            <div class="contInfoSeccion">
-                <p>Datos Perfil</p>
-            </div>
-            <div id="contImgVerMas">
-                <img src="icons/logoVerMas.png" alt="Adios" id="imgVerMas">
-            </div>
-        </div>
-    </a>
+  <a routerLink="/main/data-profile">
+    <div class="opcionSeccion" tabindex="0">
+      <div class="contImgSeccion">
+        <img src="icons/logoPerfil.png" alt="" class="imgSeccion" />
+      </div>
+      <div class="contInfoSeccion">
+        <p>Datos Perfil</p>
+      </div>
+      <div id="contImgVerMas">
+        <img src="icons/logoVerMas.png" alt="Ver más" id="imgVerMas" />
+      </div>
+    </div>
+  </a>
 
-    <a routerLink="/main/records">
-        <div class="opcionSeccion" tabindex="0">
-            <div class="contImgSeccion">
-                <img src="icons/logoRegistros.png" alt="" class="imgSeccion">
-            </div>
-            <div class="contInfoSeccion">
-                <p>Mis registros</p>
-            </div>
-            <div id="contImgVerMas">
-                <img src="icons/logoVerMas.png" alt="Adios" id="imgVerMas">
-            </div>
-        </div>
-    </a>
+  <a routerLink="/main/records">
+    <div class="opcionSeccion" tabindex="0">
+      <div class="contImgSeccion">
+        <img src="icons/logoRegistros.png" alt="" class="imgSeccion" />
+      </div>
+      <div class="contInfoSeccion">
+        <p>Mis registros</p>
+      </div>
+      <div id="contImgVerMas">
+        <img src="icons/logoVerMas.png" alt="Ver más" id="imgVerMas" />
+      </div>
+    </div>
+  </a>
 
-    <!-- Opcion para que cierre sesion-->
-    <a (click)="cerrarSesion()" id="cerrarSesion">
-        <div class="opcionSeccion" tabindex="0">
-            <div class="contImgSeccion">
-                <img src="icons/logoLogout.png" alt="" class="imgSeccion">
-            </div>
-            <div class="contInfoSeccion">
-                <p>Cerrar Sesión</p>
-            </div>
-            <div id="contImgVerMas">
-                <img src="icons/logoVerMas.png" alt="Adios" id="imgVerMas">
-            </div>
-        </div>
-    </a>
+  <a (click)="cerrarSesion()" id="cerrarSesion">
+    <div class="opcionSeccion" tabindex="0">
+      <div class="contImgSeccion">
+        <img src="icons/logoLogout.png" alt="" class="imgSeccion" />
+      </div>
+      <div class="contInfoSeccion">
+        <p>Cerrar Sesión</p>
+      </div>
+      <div id="contImgVerMas">
+        <img src="icons/logoVerMas.png" alt="Ver más" id="imgVerMas" />
+      </div>
+    </div>
+  </a>
 
-    <a routerLink="/main/privacy-policy">
-        <div class="opcionSeccion" tabindex="0">
-            <div class="contImgSeccion">
-                <img src="icons/logoPoliticaPrivacidad.png" alt="" class="imgSeccion">
-            </div>
-            <div class="contInfoSeccion">
-                <p>Politica de Privacidad</p>
-            </div>
-            <div id="contImgVerMas">
-                <img src="icons/logoVerMas.png" alt="Adios" id="imgVerMas">
-            </div>
-        </div>
-    </a>
-
+  <a routerLink="/main/privacy-policy">
+    <div class="opcionSeccion" tabindex="0">
+      <div class="contImgSeccion">
+        <img src="icons/logoPoliticaPrivacidad.png" alt="" class="imgSeccion" />
+      </div>
+      <div class="contInfoSeccion">
+        <p>Política de Privacidad</p>
+      </div>
+      <div id="contImgVerMas">
+        <img src="icons/logoVerMas.png" alt="Ver más" id="imgVerMas" />
+      </div>
+    </div>
+  </a>
 </div>

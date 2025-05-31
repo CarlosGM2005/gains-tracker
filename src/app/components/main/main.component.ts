@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { BarraNavegacionComponent } from '../barra-navegacion/barra-navegacion.component';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [BarraNavegacionComponent],
+  imports: [BarraNavegacionComponent, RouterLink],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })

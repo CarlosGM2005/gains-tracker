@@ -1,73 +1,85 @@
-<div id="contenedorPrincipal">
-    <div id="parteSuperior">
-        <div class="infoEncabezado">
-            <input type="file" id="imagenInput" style="display: none;">
-            <label for="imagenInput" class="imagenRedonda">
-                <img src="https://placehold.co/100x100" alt="subir imagen">
-            </label>
+<div id="contenedorPrincipal" *ngIf="userData$ | async as userData">
+  <div id="parteSuperior">
+    <div class="infoEncabezado">
+      <input type="file" id="imagenInput" style="display: none;" />
+      <label for="imagenInput" class="imagenRedonda">
+        <img src="https://placehold.co/100x100" alt="subir imagen" />
+      </label>
 
-            <h3>Nombre</h3>
-            <p id="correoElec">correo correo.es</p>
+      <h3 id="nombreUser">{{ userData.nombre || '-' }}</h3>
+      <p id="correoElec">{{ userData.email || '-' }}</p>
 
-            <div class="infoPersona">
-                <div class="info-box">
-                    <div>
-                        <h5>75 Kg</h5>
-                        <p>Peso</p>
-                    </div>
-                    <div>
-                        <h5>28 Años</h5>
-                        <p>Edad</p>
-                    </div>
-                    <div>
-                        <h5>1.65 CM</h5>
-                        <p>Altura</p>
-                    </div>
-                </div>
-            </div>
+      <div class="infoPersona">
+        <div class="info-box">
+          <div>
+            <h5>{{ userData.peso ? (userData.peso + ' Kg') : '-' }}</h5>
+            <p>Peso</p>
+          </div>
+          <div>
+            <h5>{{ userData.edad ? (userData.edad + ' Años') : '-' }}</h5>
+            <p>Edad</p>
+          </div>
+          <div>
+            <h5>{{ userData.altura ? (userData.altura + ' m') : '-' }}</h5>
+            <p>Altura</p>
+          </div>
         </div>
+      </div>
     </div>
-    <app-volver></app-volver>
+  </div>
+
+  <app-volver></app-volver>
 </div>
 
-<div id="contenedorSecciones">
-    <div class="datos">
-        <form class="login-form">
+<div id="contenedorSecciones" *ngIf="userData$ | async as userData">
+  <div class="datos">
+    <form class="login-form" (ngSubmit)="guardarCambios()">
 
-            <div class="mb-4">
-                <label for="naln" class="form-label">Nombre y Apellidos</label>
-                <input type="text" id="naln" class="form-control" placeholder="Carlos Garcia" />
-            </div>
+      <div class="mb-4">
+        <label for="naln" class="form-label">Nombre y Apellidos</label>
+        <input type="text" id="naln" class="form-control"
+          [(ngModel)]="datosActualizados.nombre" name="nombre"
+          placeholder="{{ userData.nombre || '-' }}" />
+      </div>
 
-            <div class="mb-4">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="carlos@example.example" />
-            </div>
+      <div class="mb-4">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" class="form-control"
+          [(ngModel)]="datosActualizados.email" name="email"
+          placeholder="{{ userData.email || '-' }}" />
+      </div>
 
-            <div class="mb-4">
-                <label for="telefono" class="form-label">Número de teléfono</label>
-                <input type="tel" id="telefono" class="form-control" placeholder="+123 567 89000" />
-            </div>
+      <div class="mb-4">
+        <label for="telefono" class="form-label">Número de teléfono</label>
+        <input type="tel" id="telefono" class="form-control"
+          [(ngModel)]="datosActualizados.telefono" name="telefono"
+          placeholder="{{ userData.telefono || '-' }}" />
+      </div>
 
-            <div class="mb-4">
-                <label for="edad" class="form-label">Edad</label>
-                <input type="text" id="edad" class="form-control" placeholder="28 Años" />
-            </div>
+      <div class="mb-4">
+        <label for="edad" class="form-label">Edad</label>
+        <input type="number" id="edad" class="form-control"
+          [(ngModel)]="datosActualizados.edad" name="edad"
+          placeholder="{{ userData.edad ? (userData.edad + ' años') : '-' }}" />
+      </div>
 
-            <div class="mb-4">
-                <label for="peso" class="form-label">Peso</label>
-                <input type="text" id="peso" class="form-control" placeholder="75 Kg" />
-            </div>
+      <div class="mb-4">
+        <label for="peso" class="form-label">Peso</label>
+        <input type="number" id="peso" class="form-control"
+          [(ngModel)]="datosActualizados.peso" name="peso"
+          placeholder="{{ userData.peso ? (userData.peso + ' Kg') : '-' }}" />
+      </div>
 
-            <div class="mb-4">
-                <label for="altura" class="form-label">Altura</label>
-                <input type="text" id="altura" class="form-control" placeholder="1.65 CM" />
-            </div>
+      <div class="mb-4">
+        <label for="altura" class="form-label">Altura</label>
+        <input type="number" id="altura" class="form-control"
+          [(ngModel)]="datosActualizados.altura" name="altura"
+          placeholder="{{ userData.altura ? (userData.altura + ' Metros') : '-' }}" />
+      </div>
 
-            <div class="d-grid">
-                <button type="submit" class="btn btn-submit">Guardar</button>
-            </div>
-        </form>
-    </div>
-
+      <div class="d-grid">
+        <button type="submit" class="btn btn-submit">Guardar</button>
+      </div>
+    </form>
+  </div>
 </div>
