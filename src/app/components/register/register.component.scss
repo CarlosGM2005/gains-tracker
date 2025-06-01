@@ -8,7 +8,7 @@ $accent-color: #ee7823;
 
 .register-container {
   background-color: $primary-color;
-  height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
