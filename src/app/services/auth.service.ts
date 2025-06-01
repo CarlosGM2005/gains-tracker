@@ -7,7 +7,8 @@ import {
   GoogleAuthProvider,
   UserCredential,
   onAuthStateChanged,
-  User
+  User,
+  signInWithRedirect
 } from '@angular/fire/auth';
 
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
@@ -35,6 +36,27 @@ export class AuthService {
       this.userSubject.next(user);
     });
   }
+
+  private async guardarUsuarioSiEsNuevo(user: User): Promise<void> {
+    const uid = user.uid;
+    const userRef = doc(this.firestore, `usuarios/${uid}`);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      const userData: UserData = {
+        uid,
+        nombre: user.displayName || '',
+        email: user.email || '',
+        telefono: '',
+        edad: 0,
+        peso: 0,
+        altura: 0,
+        createdAt: new Date()
+      };
+      await setDoc(userRef, userData);
+    }
+  }
+
 
   //Registarse con correo electronico, contraseña + datos 
   async register(userData: UserData, password: string): Promise<void> {
@@ -70,33 +92,23 @@ export class AuthService {
   //Iniciar sesion con Google
   async loginWithGoogle(): Promise<void> {
     try {
-      const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
-      const user = credential.user;
-      const uid = user.uid;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      const userRef = doc(this.firestore, `usuarios/${uid}`);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        const userData: UserData = {
-          uid,
-          nombre: user.displayName || '',
-          email: user.email || '',
-          telefono: '',
-          edad: 0,
-          peso: 0,
-          altura: 0,
-          createdAt: new Date()
-        };
-        await setDoc(userRef, userData);
+      if (isMobile) {
+        // En móvil, redirige a Google
+        await signInWithRedirect(this.auth, this.googleProvider);
+      } else {
+        // En escritorio, usar popup como siempre
+        const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
+        await this.guardarUsuarioSiEsNuevo(credential.user);
+        this.router.navigate(['/main']);
       }
-
-      this.router.navigate(['/main']);
     } catch (error) {
       console.error('Error en login con Google:', error);
       throw error;
     }
   }
+
 
   //Cerrar sesion
   async logout(): Promise<void> {
