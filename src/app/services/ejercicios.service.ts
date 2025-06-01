@@ -1,67 +1,88 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Firestore, collection, collectionData, query, where, doc, docData, getDocs, getDoc } from '@angular/fire/firestore';
+import { from, map, Observable, of, switchMap } from 'rxjs';
 import { Ejercicio } from '../interfaces/ejercicio.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class EjerciciosService {
 
-  private readonly musculos = ['ESPALDA', 'PECHO', 'HOMBROS', 'TRICEPS', 'BICEPS', 'ANTEBRAZOS', 'LUMBARES', 'ABDOMINALES', 'PIERNAS'];
+  private readonly musculos = ['espalda', 'pecho', 'hombros', 'triceps', 'biceps', 'antebrazos', 'lumbares', 'abdominales', 'piernas'];
   private readonly niveles = ['principiante', 'intermedio', 'avanzado'];
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: Firestore) { }
 
-  //Puede usarse para el main
-  getEjerciciosPorMusculo(musculo: string): Observable<Ejercicio[]> {
-    if (!this.musculos.includes(musculo.toUpperCase())) {
-      throw new Error(`Músculo inválido: ${musculo}. Intenta con uno de los buenos 💪`);
-    }
-
-    return this.firestore.collection<Ejercicio>('ejercicios', ref =>
-      ref.where('musculo', '==', musculo.toLowerCase())
-    ).valueChanges({ idField: 'id' });
-  }
-
-  //Se usa para la parte de ejercicios dependiendo del nivel
+  // Obtener ejercicios filtrando por músculo y nivel (ambos en minúsculas)
   getEjerciciosPorMusculoYNivel(musculo: string, nivel: string): Observable<Ejercicio[]> {
-    const musculoUpper = musculo.toUpperCase();
-    const nivelLower = nivel.toLowerCase();
+    // Ref de la colección
+    const ejerciciosRef = collection(this.firestore, 'ejercicios');
 
-    if (!this.musculos.includes(musculoUpper)) {
-      throw new Error(`Músculo inválido: ${musculo}. Intenta con uno de los buenos 💪`);
-    }
+    // Query con filtros
+    const q = query(
+      ejerciciosRef,
+      where('musculo', '==', musculo.toLowerCase()),
+      where('nivel', '==', nivel.toLowerCase())
+    );
 
-    if (!this.niveles.includes(nivelLower)) {
-      throw new Error(`Nivel inválido: ${nivel}. Los niveles válidos son Principiante, Intermedio o Avanzado.`);
-    }
+    // De promise a observable y mapear resultados
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => {
+        const ejercicios: Ejercicio[] = [];
+        querySnapshot.forEach(docSnap => {
+          const data = docSnap.data() as Ejercicio;
+          const { id, ...rest } = data; // excluimos id del contenido
+          ejercicios.push({ id: docSnap.id, ...rest });
+        });
 
-    return this.firestore.collection<Ejercicio>('ejercicios', ref =>
-      ref
-        .where('musculo', '==', musculoUpper)
-        .where('nivel', '==', nivelLower)
-    ).valueChanges({ idField: 'id' });
+        return ejercicios;
+      })
+    );
   }
 
-  //Se usa en la parte de recomendados
+  // Obtener ejercicios recomendados filtrando por músculo (en minúsculas)
   getEjerciciosRecomendadosPorMusculo(musculo: string): Observable<Ejercicio[]> {
-    if (!this.musculos.includes(musculo.toUpperCase())) {
+    const musculoLower = musculo.toLowerCase();
+    if (!this.musculos.includes(musculoLower)) {
       throw new Error(`Músculo inválido: ${musculo}. Intenta con uno de los buenos 💪`);
     }
 
-    return this.firestore.collection<Ejercicio>('ejercicios', ref =>
-      ref
-        .where('recomendado', '==', 'si')
-        .where('musculo', '==', musculo.toLowerCase())
-    ).valueChanges({ idField: 'id' });
+    const ejerciciosRef = collection(this.firestore, 'ejercicios');
+    const q = query(
+      ejerciciosRef,
+      where('recomendado', '==', true),
+      where('musculo', '==', musculoLower)
+    );
+
+    return from(getDocs(q)).pipe(
+      map(snapshot => {
+        const ejercicios: Ejercicio[] = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data() as Ejercicio;
+          const { id, ...rest } = data;
+          ejercicios.push({ id: docSnap.id, ...rest });
+        });
+        return (ejercicios);
+      })
+    );
   }
 
-  getEjercicioPorId(id: string): Observable<Ejercicio | undefined> {
-    return this.firestore.doc<Ejercicio>(`ejercicios/${id}`).valueChanges({ idField: 'id' });
-  }
+  // Obtener un ejercicio por su ID
+  getEjercicioPorNombre(nombre: string): Observable<Ejercicio | undefined> {
+  const ejerciciosRef = collection(this.firestore, 'ejercicios');
+  const q = query(ejerciciosRef, where('nombre', '==', nombre));
 
+  return from(getDocs(q)).pipe(
+    map(snapshot => {
+      if (snapshot.empty) {
+        return undefined;
+      }
+      const docSnap = snapshot.docs[0]; // coger el primero que encuentre
+      const data = docSnap.data() as Ejercicio;
+      const { id: _id, ...rest } = data;
+      return { id: docSnap.id, ...rest };
+    })
+  );
+}
 
 }

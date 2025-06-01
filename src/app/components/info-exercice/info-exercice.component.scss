@@ -30,15 +30,15 @@ $accent-color: #ee7823;
 
     .imagenesEj {
       display: flex;
-      flex-direction: row; // por si acaso
-      justify-content: center; // opcional, si quieres centrarlas
-      align-items: center; // opcional
-      gap: 1rem;
+      flex-direction: row !important; 
+      justify-content: center; 
+      align-items: center; 
+      gap: 3rem;
       margin-bottom: 5%;
 
       img {
-        width: 150px;
-        height: 150px !important;
+        width: 200px;
+        height: 200px !important;
         margin-bottom: 0 !important;
       }
     }
@@ -51,14 +51,19 @@ $accent-color: #ee7823;
   gap: 3%;
 
   .imagenesEj {
-
+    text-align: center;
+    display: flex;
+    flex-direction: column;
     img{
-      width: 100%;
+      text-align: center;
+      display: block;
+      width: auto;
       height: 300px;
     }
 
     img:nth-child(1) {
-      display: block;
+      text-align: center !important;
+      justify-content: center;
       margin-bottom: 5%;
     }
 
@@ -75,6 +80,10 @@ $accent-color: #ee7823;
     h3 {
       color: $accent-color;
       margin-bottom: 0.5rem;
+    }
+
+    h5{
+      color: $accent-color;
     }
 
     .badges {

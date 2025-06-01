@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
+import { EjerciciosService } from '../../services/ejercicios.service'; // Ajusta ruta según tu estructura
+import { Ejercicio } from '../../interfaces/ejercicio.interface';
+import { switchMap } from 'rxjs/operators';
 
 declare var bootstrap: any;
 
@@ -14,7 +17,8 @@ declare var bootstrap: any;
   styleUrl: './info-exercice.component.scss'
 })
 export class InfoExerciceComponent implements OnInit {
-  nombreEjercicio!: string;
+  nombreEjercicio: string = '';
+  ejercicio!: Ejercicio | undefined;
   ejercicioForm!: FormGroup;
   mensajeVisible: boolean = false;
   isLoggedIn: boolean = false;
@@ -22,16 +26,14 @@ export class InfoExerciceComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private auth: Auth
+    private auth: Auth,
+    private ejerciciosService: EjerciciosService
   ) {}
 
   ngOnInit(): void {
-    // ✅ Detecta usuario logueado correctamente incluso tras refresh
     onAuthStateChanged(this.auth, (user: User | null) => {
       this.isLoggedIn = !!user;
     });
-
-    this.nombreEjercicio = this.route.snapshot.paramMap.get('nombre') || '';
 
     this.ejercicioForm = this.fb.group({
       dia: [null, Validators.required],
@@ -40,6 +42,14 @@ export class InfoExerciceComponent implements OnInit {
       peso: [null, [Validators.required, Validators.min(0)]],
       descanso: [null, [Validators.required, Validators.min(0)]]
     });
+
+    this.nombreEjercicio = this.route.snapshot.paramMap.get('nombre') || '';
+
+    if (this.nombreEjercicio) {
+      this.ejerciciosService.getEjercicioPorNombre(this.nombreEjercicio).subscribe(ejercicio => {
+        this.ejercicio = ejercicio;
+      });
+    }
   }
 
   onSubmit(): void {

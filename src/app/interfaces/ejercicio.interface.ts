@@ -3,10 +3,10 @@ export interface Ejercicio {
   nombre: string;
   musculo: string;
   nivel: string;
-  musculosImplicados: string
+  musculosImplicados: string;
   descripcion: string;
   imgInicio: string;
-  imgFinal: string;
-  recomendado: 'si' | 'no';
+  imgFin: string;  
+  recomendado: boolean;
   [key: string]: any;
 }

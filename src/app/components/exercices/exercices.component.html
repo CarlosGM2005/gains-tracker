@@ -1,41 +1,55 @@
 <div class="container-fluid">
-    <div class="container">
+  <div class="container">
 
-        <div class="encabezado">
-            <div class="titulo_encabezado">
-                <a (click)="volver()"><img id="imgVolver" src="icons/logoVolver.png" alt="Icono para volver"></a>
-                <h2>Ejercicios</h2>
-            </div>
-            <div class="imgs_encabezado">
-                <img src="icons/logoBuscar.png" alt="Icono para buscar un ejercicio">
-                <a (click)="irPerfiloLogin()"><img src="icons/logoPerfil.png" alt="Icono de ir al Perfil"></a>
-            </div>
-        </div><br>
-        <div class="scroll-container">
-            @for(musculo of musculos; track musculo) {
-            <button type="button" class="btn btn-outline-primary me-2 flex-shrink-0"
-                (click)="seleccionarMusculo(musculo)">
-                {{ musculo.toUpperCase() }}
-            </button>
-            }
-        </div>
-        
-
-        <div id="ejercicios-container">
-            <div id="msjInfoEj">
-                <p>Ejercicios de {{ musculoSeleccionado }} - nivel {{nivelSeleccionado}}</p>
-                <p id="msjInfoEj_contador">{{ejercicios.length}}</p>
-            </div>
-
-           @for (ejercicio of ejercicios; track ejercicio.nombre) {
-            <app-exercice-card
-                [nombre]="ejercicio.nombre"
-                [series]="ejercicio.series"
-                [imagen]="ejercicio.imagenInicio">
-            </app-exercice-card>
-            }
-
-
-        </div>
+    <!-- ENCABEZADO -->
+    <div class="encabezado">
+      <div class="titulo_encabezado">
+        <a (click)="volver()">
+          <img id="imgVolver" src="icons/logoVolver.png" alt="Icono para volver">
+        </a>
+        <h2>Ejercicios</h2>
+      </div>
+      <div class="imgs_encabezado">
+        <img src="icons/logoBuscar.png" alt="Icono para buscar un ejercicio">
+        <a (click)="irPerfiloLogin()">
+          <img src="icons/logoPerfil.png" alt="Icono de ir al Perfil">
+        </a>
+      </div>
     </div>
+    <br>
+
+    <!-- BOTONES DE MÚSCULOS -->
+    <div class="scroll-container">
+      @for (musculo of musculos; track musculo) {
+        <button type="button"
+                class="btn btn-outline-primary me-2 flex-shrink-0"
+                [class.active]="musculo === musculoSeleccionado"
+                (click)="seleccionarMusculo(musculo)">
+          {{ musculo.toUpperCase() }}
+        </button>
+      }
+    </div>
+
+    <!-- CONTENEDOR DE EJERCICIOS -->
+    <div id="ejercicios-container">
+      <div id="msjInfoEj">
+        <p>Ejercicios de {{ musculoSeleccionado }} - nivel {{ nivelSeleccionado }}</p>
+        <p id="msjInfoEj_contador">{{ ejerciciosFiltrados.length }}</p>
+      </div>
+
+      <!-- Si no hay ejercicios -->
+      <div *ngIf="ejerciciosFiltrados.length === 0" class="text-center mt-4">
+        No hay ejercicios disponibles para {{ musculoSeleccionado }} en nivel {{ nivelSeleccionado }} 😓
+      </div>
+
+      <!-- Tarjetas de ejercicio -->
+      @for (ejercicio of ejerciciosFiltrados; track ejercicio.id) {
+        <app-exercice-card
+          [nombre]="ejercicio.nombre"
+          [imagen]="ejercicio.imgInicio">
+        </app-exercice-card>
+      }
+
+    </div>
+  </div>
 </div>

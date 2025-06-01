@@ -53,4 +53,8 @@ export class DataProfileComponent implements OnInit {
         });
     });
   }
+
+  getInitial(name?: string): string {
+    return name && name.length > 0 ? name.charAt(0).toUpperCase() : '?';
+  }
 }

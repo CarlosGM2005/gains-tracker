@@ -1,9 +1,10 @@
 <div id="contenedorPrincipal" *ngIf="userData$ | async as userData">
   <div id="parteSuperior">
     <div class="infoEncabezado">
-      <input type="file" id="imagenInput" style="display: none;" />
       <label for="imagenInput" class="imagenRedonda">
-        <img src="https://placehold.co/100x100" alt="subir imagen" />
+        <div class="avatar-inicial">
+          {{ getInitial((userData$ | async)?.nombre) }}
+        </div>
       </label>
 
       <h3 id="nombreUser">{{ userData.nombre || '-' }}</h3>

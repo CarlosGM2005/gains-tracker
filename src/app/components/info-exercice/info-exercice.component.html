@@ -1,29 +1,25 @@
-<div class="alineador">
+<div class="alineador" *ngIf="ejercicio; else noEjercicio">
   <div class="contPrincipal">
     <div class="imagenesEj">
-      <img src="https://placehold.co/300x300" alt="ejercicio" />
-      <img src="https://placehold.co/300x300" alt="ejercicio" />
+      <img [src]="ejercicio['imgInicio']" [alt]="'Inicio ' + ejercicio.nombre" />
+      <img [src]="ejercicio['imgFin']" [alt]="'Final ' + ejercicio.nombre" />
+
     </div>
     <div class="infoEj" style="color: white;">
-      <h3>{{nombreEjercicio}}</h3>
-      <p class="text-center">[musculos que trabajas. En %, tipo 70% espalda, 20% biceps y 10% antebrazos]</p>
-
-      <div class="badges">
-        <span>[grupo muscular]</span>
-        <span>[dificultad]</span>
-      </div><br>
-
-      <h5 class="text-center">Descripcion del ejercicio</h5>
-      <p class="descripcion">
-        En términos biomecánicos, este movimiento implica una aducción del hombro en el plano frontal, es decir, acercar
-        el brazo hacia el centro del cuerpo. Su principal músculo objetivo es el dorsal ancho, aunque también se activan
-        otros grupos musculares secundarios. Es una excelente alternativa para quienes buscan fortalecer su tren
-        superior y aún no tienen la capacidad para realizar dominadas, ofreciendo un entrenamiento efectivo y
-        progresivo.
+      <h3>{{ ejercicio.nombre }}</h3>
+      <p class="text-center">
+        {{ ejercicio.musculosImplicados || 'Músculos no especificados' }}
       </p>
 
+      <div class="badges">
+        <span>{{ ejercicio.musculo }}</span>
+        <span>{{ ejercicio.nivel }}</span>
+      </div><br>
 
-
+      <h5 class="text-center">Descripción del ejercicio</h5>
+      <p class="descripcion">
+        {{ ejercicio.descripcion }}
+      </p>
 
       <div class="btn-group">
         <button data-bs-toggle="modal" data-bs-target="#serieModal">Registrar serie</button>
@@ -33,6 +29,12 @@
     </div>
   </div>
 </div>
+
+<ng-template #noEjercicio>
+  <p style="color: red; text-align: center; margin-top: 2rem;">
+    Ejercicio no encontrado 😢
+  </p>
+</ng-template>
 
 <div class="modal fade" id="serieModal" tabindex="-1" aria-labelledby="serieModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -50,30 +52,30 @@
           <form [formGroup]="ejercicioForm" (ngSubmit)="onSubmit()" class="text-center">
             <div class="mb-3">
               <label for="dia" class="form-label">Día</label>
-              <input type="date" class="form-control mx-auto" id="dia" formControlName="dia" style="max-width: 100%;">
+              <input type="date" class="form-control mx-auto" id="dia" formControlName="dia" style="max-width: 100%;" />
             </div>
 
             <div class="row justify-content-center mb-3">
               <div class="col-6">
                 <label for="series" class="form-label">Series</label>
-                <input type="number" class="form-control" id="series" formControlName="series" min="1">
+                <input type="number" class="form-control" id="series" formControlName="series" min="1" />
               </div>
               <div class="col-6">
                 <label for="repeticiones" class="form-label">Repeticiones</label>
-                <input type="number" class="form-control" id="repeticiones" formControlName="repeticiones" min="1">
+                <input type="number" class="form-control" id="repeticiones" formControlName="repeticiones" min="1" />
               </div>
             </div>
 
             <div class="mb-3">
               <label for="peso" class="form-label">Peso (kg)</label>
               <input type="number" step="0.01" class="form-control mx-auto" id="peso" formControlName="peso"
-                style="max-width: 100%;" min="0">
+                style="max-width: 100%;" min="0" />
             </div>
 
             <div class="mb-3">
               <label for="descanso" class="form-label">Descanso (minutos)</label>
               <input type="number" class="form-control mx-auto" id="descanso" formControlName="descanso"
-                style="max-width: 100%;" min="0">
+                style="max-width: 100%;" min="0" />
             </div>
 
             <div class="modal-footer justify-content-center border-0">
@@ -89,12 +91,11 @@
           </p>
         </ng-template>
       </div>
-      <br>
-
+      <br />
     </div>
   </div>
 </div>
 
 <div *ngIf="mensajeVisible" class="mensaje-confirmacion">
-        <p><strong>¡Serie registrada con éxito!</strong></p>
-    </div>
+  <p><strong>¡Serie registrada con éxito!</strong></p>
+</div>
