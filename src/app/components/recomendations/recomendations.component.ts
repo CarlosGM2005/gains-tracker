@@ -1,32 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ExerciceCardComponent } from '../../modules/exercice-card/exercice-card.component';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
+import { EjerciciosService } from '../../services/ejercicios.service';
+import { Ejercicio } from '../../interfaces/ejercicio.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-recomendations',
-  standalone: true,
-  imports: [ExerciceCardComponent],
+   standalone: true,
+  imports: [ExerciceCardComponent, CommonModule],
   templateUrl: './recomendations.component.html',
-  styleUrl: './recomendations.component.scss'
+  styleUrls: ['./recomendations.component.scss']
 })
-export class RecomendationsComponent {
-  musculos = ['ESPALDA','PECHO', 'HOMBROS', 'TRICEPS', 'BICEPS', 'ANTEBRAZOS', 'LUMBARES', 'ABDOMINALES', 'PIERNAS'];
+
+export class RecomendationsComponent implements OnInit {
+  musculos = ['Espalda', 'Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Lumbares', 'Abdominales', 'Piernas'];
   musculoSeleccionado = 'Espalda';
+  ejerciciosFiltrados: Ejercicio[] = [];
   private userSub?: Subscription;
-  
-  constructor(private authService: AuthService, private router: Router){}
+
+  constructor(private ejerciciosService: EjerciciosService, private router: Router, private authService: AuthService,) {}
+
+  ngOnInit(): void {
+    this.cargarEjercicios();
+  }
 
   seleccionarMusculo(musculo: string): void {
     this.musculoSeleccionado = musculo;
+    this.cargarEjercicios();
   }
 
-  volver() {
-    window.history.back(); // Navega a la página anterior
+  cargarEjercicios(): void {
+    // Asumo que getEjerciciosRecomendadosPorMusculo devuelve un Observable<Ejercicio[]>
+    this.ejerciciosService.getEjerciciosRecomendadosPorMusculo(this.musculoSeleccionado.toLowerCase())
+      .subscribe({
+        next: (ejercicios) => {
+          this.ejerciciosFiltrados = ejercicios;
+        },
+        error: (error) => {
+          console.error('Error cargando ejercicios recomendados:', error);
+          this.ejerciciosFiltrados = [];
+        }
+      });
   }
 
-  irPerfiloLogin() {
+  volver(): void {
+    window.history.back();
+  }
+
+ irPerfiloLogin() {
     this.userSub = this.authService.user$.subscribe(user => {
       if (user) {
         this.router.navigate(['/main/basic-profile']);
@@ -35,77 +59,4 @@ export class RecomendationsComponent {
       }
     });
   }
-
-  ejercicios = [
-    {
-      nombre: 'Elevaciones laterales con mancuernas',
-      series: 4,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Press militar con barra',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Remo con mancuerna',
-      series: 5,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Curl de bíceps con barra',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Extensión de tríceps en polea',
-      series: 4,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Sentadillas con barra',
-      series: 5,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Peso muerto rumano',
-      series: 4,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Press banca',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Pull-over con mancuerna',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Face pulls',
-      series: 4,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Zancadas con mancuernas',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Press Arnold',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Remo en polea baja',
-      series: 4,
-      imagen: 'https://placehold.co/67x67'
-    },
-    {
-      nombre: 'Dominadas asistidas',
-      series: 3,
-      imagen: 'https://placehold.co/67x67'
-    }
-  ];
 }
