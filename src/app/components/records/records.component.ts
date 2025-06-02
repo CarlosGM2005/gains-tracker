@@ -34,7 +34,7 @@ export class RecordsComponent implements OnInit {
   ngOnInit(): void {
     // Los datos de ejemplo con IDs únicos
     this.ejercicios = [
-      { id: 1, nombre: "Press inclinado", imagen: "press-inclinado.jpg", series: [{ dia: "2025-04-10", numero: 1, repeticiones: 12, peso: 45, descanso: 60 }, { dia: "2025-04-10", numero: 2, repeticiones: 12, peso: 45, descanso: 60 }], isOpen: false },
+      { id: 1, nombre: "Press inclinado", imagen: "assets/press-inclinado.jpg", series: [{ dia: "2025-04-10", numero: 1, repeticiones: 12, peso: 45, descanso: 60 }, { dia: "2025-04-10", numero: 2, repeticiones: 12, peso: 45, descanso: 60 }], isOpen: false },
       { id: 2, nombre: "Remo en barra", imagen: "https://placehold.co/67x67", series: [{ dia: "2025-04-10", numero: 1, repeticiones: 12, peso: 50, descanso: 70 }], isOpen: false },
       { id: 3, nombre: "Press de banca", imagen: "https://placehold.co/67x67", series: [{ dia: "2025-04-10", numero: 1, repeticiones: 10, peso: 60, descanso: 90 }], isOpen: false },
       { id: 4, nombre: "Sentadilla", imagen: "https://placehold.co/67x67", series: [{ dia: "2025-04-10", numero: 1, repeticiones: 8, peso: 80, descanso: 120 }], isOpen: false },
