@@ -5,12 +5,14 @@
             <app-barra-navegacion></app-barra-navegacion>
             <div class="encabezado">
                 <div class="titulo_encabezado">
-                    <a (click)="volver()"><img id="imgVolver" src="assets/icons/logoVolver.png" alt="Icono para volver"></a>
+                    <a (click)="volver()"><img id="imgVolver" src="assets/icons/logoVolver.png"
+                            alt="Icono para volver"></a>
                     <h2>Hola [usuario]</h2>
                 </div>
                 <div class="imgs_encabezado">
                     <img src="assets/icons/logoBuscar.png" alt="Icono para buscar un ejercicio">
-                    <a (click)="irPerfiloLogin()"><img src="assets/icons/logoPerfil.png" alt="Icono de ir al Perfil"></a>
+                    <a (click)="irPerfiloLogin()"><img src="assets/icons/logoPerfil.png"
+                            alt="Icono de ir al Perfil"></a>
                 </div>
             </div><br>
 
@@ -117,42 +119,12 @@
             </div>
 
             <div class="exercise-grid">
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
-                <div class="exercise-card">
-                    <img src="https://placehold.co/100x50" alt="Sentadillas">
-                    <div class="exercise-title">Sentadillas</div>
-                </div>
+                <div class="exercise-card" *ngFor="let ejercicio of ejerciciosRecomendados">
+                    <img [src]="ejercicio['imgInicio']" [alt]="ejercicio['nombre']">
 
-
+                    <div class="exercise-title">{{ ejercicio.nombre }}</div>
+                </div>
             </div>
-
         </div>
     </div>
 </main>

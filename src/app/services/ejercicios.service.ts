@@ -67,22 +67,45 @@ export class EjerciciosService {
     );
   }
 
+  getEjerciciosRecomendados(): Observable<Ejercicio[]> {
+    const ejerciciosRef = collection(this.firestore, 'ejercicios');
+    const q = query(ejerciciosRef, where('recomendado', '==', true));
+
+    return from(getDocs(q)).pipe(
+      map(snapshot => {
+        const ejercicios: Ejercicio[] = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data() as Ejercicio;
+          const { id, ...rest } = data; 
+          ejercicios.push({ id: docSnap.id, ...rest });
+        });
+
+        
+        const ejerciciosAleatorios = ejercicios.sort(() => Math.random() - 0.5);
+
+        // Devolver solo 8 (o menos si hay menos de 8)
+        return ejerciciosAleatorios.slice(0, 8);
+      })
+    );
+  }
+
+
   // Obtener un ejercicio por su ID
   getEjercicioPorNombre(nombre: string): Observable<Ejercicio | undefined> {
-  const ejerciciosRef = collection(this.firestore, 'ejercicios');
-  const q = query(ejerciciosRef, where('nombre', '==', nombre));
+    const ejerciciosRef = collection(this.firestore, 'ejercicios');
+    const q = query(ejerciciosRef, where('nombre', '==', nombre));
 
-  return from(getDocs(q)).pipe(
-    map(snapshot => {
-      if (snapshot.empty) {
-        return undefined;
-      }
-      const docSnap = snapshot.docs[0]; // coger el primero que encuentre
-      const data = docSnap.data() as Ejercicio;
-      const { id: _id, ...rest } = data;
-      return { id: docSnap.id, ...rest };
-    })
-  );
-}
+    return from(getDocs(q)).pipe(
+      map(snapshot => {
+        if (snapshot.empty) {
+          return undefined;
+        }
+        const docSnap = snapshot.docs[0]; // coger el primero que encuentre
+        const data = docSnap.data() as Ejercicio;
+        const { id: _id, ...rest } = data;
+        return { id: docSnap.id, ...rest };
+      })
+    );
+  }
 
 }

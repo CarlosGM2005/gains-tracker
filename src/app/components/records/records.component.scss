@@ -69,6 +69,7 @@ h2 {
     padding: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
+    width: 100%;
 
     &:hover {
       background-color: lighten($tertiary-color, 5%);
@@ -83,7 +84,6 @@ h2 {
     .header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 1rem;
       //overflow: hidden;
     }
@@ -97,17 +97,17 @@ h2 {
     }
 
     .header-info {
-      flex: 1;
+      flex: 1 1 auto;
       min-width: 0;
       overflow: hidden;
 
       h3 {
         margin: 0;
-        color: $accent-color;
+        color: #f07d2b;
         font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        width: 100%;
       }
 
       p {
@@ -160,6 +160,10 @@ h2 {
 
 // Media queries (mantengo las que tenías para otros elementos)
 @media (max-width: 768px) {
+  .container-fluid{
+    padding: 1rem;
+  }
+
   .container-fluid .encabezado .imgs_encabezado img {
     width: 30px;
     height: 30px;

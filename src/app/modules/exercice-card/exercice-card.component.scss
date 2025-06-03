@@ -45,10 +45,9 @@ $accent-color: #ee7823;
       margin: 0;
       color: #f07d2b;
       font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-      //white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 100%; // <--- ¡AÑADIR ESTO!
+      width: 100%;
     }
 
     p {
@@ -58,7 +57,7 @@ $accent-color: #ee7823;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 100%; // <--- ¡AÑADIR ESTO! (Para las series, si también pudieran desbordarse)
+      width: 100%; 
     }
   }
 

@@ -42,7 +42,7 @@ export class ExercicesComponent implements OnInit {
     }
 
     // Cargar ejercicios de ESPALDA por defecto
-    this.obtenerEjercicios('espalda');
+    this.obtenerEjercicios('Espalda');
   }
 
 

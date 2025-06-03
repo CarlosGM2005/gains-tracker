@@ -70,7 +70,7 @@ export class AuthService {
         uid,
         createdAt: new Date()
       });
-
+      alert("¡Registro exitoso!");
       this.router.navigate(['/main']);
     } catch (error) {
       console.error('Error en registro:', error);
@@ -97,6 +97,7 @@ export class AuthService {
       if (isMobile) {
         // En móvil, redirige a Google
         await signInWithRedirect(this.auth, this.googleProvider);
+        this.router.navigate(['/main']);
       } else {
         // En escritorio, usar popup como siempre
         const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);

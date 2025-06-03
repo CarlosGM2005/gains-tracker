@@ -57,10 +57,9 @@ export class RegisterComponent {
 
     try {
       await this.authService.register(userData, password);
-      // Redirige desde el servicio
+
     } catch (error) {
-      console.error('Error de registro:', error);
-      alert('No se pudo registrar el usuario. Revisa los datos.');
+      alert('No se pudo registrar el usuario. Revisa el correo electrónico.');
     }
   }
 }
