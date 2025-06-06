@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './exercices.component.scss'
 })
 export class ExercicesComponent implements OnInit {
-  musculos = ['Espalda', 'Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Lumbares', 'Abdominales', 'Piernas'];
+  musculos = ['Espalda', 'Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Abdominales', 'Piernas'];
   musculoSeleccionado = 'Espalda';
   nivelSeleccionado: string = "";
   private userSub?: Subscription;

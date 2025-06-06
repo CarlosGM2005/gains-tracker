@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 
 export class RecomendationsComponent implements OnInit {
-  musculos = ['Espalda', 'Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Lumbares', 'Abdominales', 'Piernas'];
+  musculos = ['Espalda', 'Pecho', 'Hombros', 'Triceps', 'Biceps', 'Antebrazos', 'Abdominales', 'Piernas'];
   musculoSeleccionado = 'Espalda';
   ejerciciosFiltrados: Ejercicio[] = [];
   private userSub?: Subscription;
