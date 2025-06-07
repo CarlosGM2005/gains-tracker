@@ -73,7 +73,7 @@ export class InfoExerciceComponent implements OnInit {
         await this.consumobbddService.agregarSerieAEjercicio(
           this.ejercicio.id,
           this.ejercicio.nombre,
-          this.ejercicio.imgFin,
+          this.ejercicio['imgFinal'],
           nuevaSerie
         );
 
