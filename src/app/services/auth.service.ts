@@ -110,18 +110,6 @@ export class AuthService {
     }
   }
 
-  async resolverRedireccionGoogle(): Promise<void> {
-    try {
-      const result = await getRedirectResult(this.auth);
-      if (result && result.user) {
-        await this.guardarUsuarioSiEsNuevo(result.user);
-        this.router.navigate(['/main']);
-      }
-    } catch (error) {
-      console.error('Error tras redirección con Google:', error);
-    }
-  }
-
 
   //Cerrar sesion
   async logout(): Promise<void> {

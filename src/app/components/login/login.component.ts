@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { VolverComponent } from '../../modules/volver/volver.component';
@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent{
   loginForm: FormGroup;
 
   constructor(
@@ -25,9 +25,7 @@ export class LoginComponent implements OnInit{
     });
   }
 
-  ngOnInit(): void {
-    this.authService.resolverRedireccionGoogle();
-  }
+
 
 
   async onSubmit() {
@@ -36,7 +34,8 @@ export class LoginComponent implements OnInit{
     const { email, password } = this.loginForm.value;
     try {
       await this.authService.login(email, password);
-      
+      this.router.navigate(['/main']);
+
     } catch (error) {
       console.error('Error de login:', error);
       alert('Correo o contraseña incorrectos');
