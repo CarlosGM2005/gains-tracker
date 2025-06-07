@@ -8,8 +8,7 @@ import {
   UserCredential,
   onAuthStateChanged,
   User,
-  signInWithRedirect,
-  getRedirectResult
+  signInWithRedirect
 } from '@angular/fire/auth';
 
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
@@ -98,6 +97,7 @@ export class AuthService {
       if (isMobile) {
         // En móvil, redirige a Google
         await signInWithRedirect(this.auth, this.googleProvider);
+        this.router.navigate(['/main']);
       } else {
         // En escritorio, usar popup como siempre
         const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
