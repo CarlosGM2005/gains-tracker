@@ -8,7 +8,8 @@ import {
   UserCredential,
   onAuthStateChanged,
   User,
-  signInWithRedirect
+  signInWithRedirect,
+  getRedirectResult
 } from '@angular/fire/auth';
 
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
@@ -97,7 +98,6 @@ export class AuthService {
       if (isMobile) {
         // En móvil, redirige a Google
         await signInWithRedirect(this.auth, this.googleProvider);
-        this.router.navigate(['/main']);
       } else {
         // En escritorio, usar popup como siempre
         const credential: UserCredential = await signInWithPopup(this.auth, this.googleProvider);
@@ -109,6 +109,19 @@ export class AuthService {
       throw error;
     }
   }
+
+  async handleRedirectResult(): Promise<void> {
+  try {
+    const result = await getRedirectResult(this.auth);
+    if (result?.user) {
+      // Usuario autenticado exitosamente
+      await this.guardarUsuarioSiEsNuevo(result.user);
+      this.router.navigate(['/main']);
+    }
+  } catch (error) {
+    console.error('Error manejando resultado de redirección:', error);
+  }
+}
 
 
   //Cerrar sesion

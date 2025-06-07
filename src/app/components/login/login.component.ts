@@ -25,8 +25,9 @@ export class LoginComponent{
     });
   }
 
-
-
+  ngOnInit(){
+    this.authService.handleRedirectResult();
+  }
 
   async onSubmit() {
     if (this.loginForm.invalid) return;
