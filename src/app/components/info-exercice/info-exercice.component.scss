@@ -54,11 +54,24 @@ $accent-color: #ee7823;
     text-align: center;
     display: flex;
     flex-direction: column;
+
     img{
       text-align: center;
       display: block;
       width: auto;
-      height: 300px;
+      height: 350px;
+      object-fit: contain;
+    }
+
+    @media(min-width: 768px){
+      /*
+      img{
+        text-align: center;
+        display: block;
+        width: auto;
+        object-fit: contain;
+      }
+        */
     }
 
     img:nth-child(1) {
