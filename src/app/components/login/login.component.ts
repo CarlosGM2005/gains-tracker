@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit{
     const { email, password } = this.loginForm.value;
     try {
       await this.authService.login(email, password);
-      // Redirección ya la hace el servicio
+      
     } catch (error) {
       console.error('Error de login:', error);
       alert('Correo o contraseña incorrectos');
