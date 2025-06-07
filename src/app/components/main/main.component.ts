@@ -30,6 +30,8 @@ export class MainComponent implements OnInit {
     this.ejercicioService.getEjerciciosRecomendados().subscribe(ejercicios => {
       this.ejerciciosRecomendados = ejercicios;
     });
+
+    
   }
 
   volver() {
