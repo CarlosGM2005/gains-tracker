@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() =>
       initializeApp({
         apiKey: "AIzaSyBN8GGpXi4fUV5iZ4fWskI2DM2c49LzfPM",
-        authDomain: "gains-tracker-tfg.netlify.app",
+        authDomain: "gainstracker-21592.firebaseapp.com",
         projectId: "gainstracker-21592",
         storageBucket: "gainstracker-21592.firebasestorage.app",
         messagingSenderId: "825525128907",
