@@ -39,13 +39,7 @@ export class BarraNavegacionComponent {
 
   irPerfiloLogin(): void {
     this.authService.user$.pipe(take(1)).subscribe(user => {
-    if (user) {
-      console.log('User authenticated, navigating to profile');
-      this.router.navigate(['/basic-profile']);
-    } else {
-      console.log('User not authenticated, navigating to login');
-      this.router.navigate(['/login']);
-    }
-  });
+      this.router.navigate([user ? '/main/basic-profile' : '/main/login']);
+    });
   }
 }
