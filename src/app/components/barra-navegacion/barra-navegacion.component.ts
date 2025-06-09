@@ -3,6 +3,7 @@ import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-barra-navegacion',
@@ -13,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class BarraNavegacionComponent {
   mostrarBarra = true;
-   private userSub?: Subscription;
+  private userSub?: Subscription;
 
   constructor(private router: Router, private authService: AuthService) {
     this.checkRuta(this.router.url);
@@ -36,13 +37,9 @@ export class BarraNavegacionComponent {
     this.mostrarBarra = !(esEscritorio && rutasSinBarra.includes(ruta));
   }
 
-  irPerfiloLogin() {
-    this.userSub = this.authService.user$.subscribe(user => {
-      if (user) {
-        this.router.navigate(['/main/basic-profile']);
-      } else {
-        this.router.navigate(['/main/login']);
-      }
+  irPerfiloLogin(): void {
+    this.authService.user$.pipe(take(1)).subscribe(user => {
+      this.router.navigate([user ? '/main/basic-profile' : '/main/login']);
     });
   }
 }
