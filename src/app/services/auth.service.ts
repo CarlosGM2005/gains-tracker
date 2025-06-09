@@ -111,17 +111,12 @@ export class AuthService {
   }
 
   async handleRedirectResult(): Promise<void> {
-  try {
     const result = await getRedirectResult(this.auth);
     if (result?.user) {
-      // Usuario autenticado exitosamente
       await this.guardarUsuarioSiEsNuevo(result.user);
       this.router.navigate(['/main']);
     }
-  } catch (error) {
-    console.error('Error manejando resultado de redirección:', error);
   }
-}
 
 
   //Cerrar sesion

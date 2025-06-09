@@ -25,9 +25,13 @@ export class LoginComponent implements OnInit{
     });
   }
 
-  ngOnInit(){
-    this.authService.handleRedirectResult();
+  async ngOnInit() {
+  try {
+    await this.authService.handleRedirectResult();
+  } catch (error) {
+    console.error('Error en manejo de redirect:', error);
   }
+}
 
   async onSubmit() {
     if (this.loginForm.invalid) return;
