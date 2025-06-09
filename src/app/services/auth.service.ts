@@ -36,7 +36,10 @@ export class AuthService {
     onAuthStateChanged(this.auth, user => {
       this.userSubject.next(user);
     });
+
+    this.handleRedirectResult();
   }
+
 
   private async guardarUsuarioSiEsNuevo(user: User): Promise<void> {
     const uid = user.uid;
@@ -111,10 +114,29 @@ export class AuthService {
   }
 
   async handleRedirectResult(): Promise<void> {
-    const result = await getRedirectResult(this.auth);
-    if (result?.user) {
-      await this.guardarUsuarioSiEsNuevo(result.user);
-      this.router.navigate(['/main']);
+    console.log('Checking redirect result...');
+
+    try {
+      // Add a small delay to ensure redirect is fully processed
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const result = await getRedirectResult(this.auth);
+      console.log('Redirect result:', result);
+
+      if (result && result.user) {
+        console.log('User from redirect:', result.user);
+        await this.guardarUsuarioSiEsNuevo(result.user);
+        console.log('User saved, navigating to /main');
+
+        // Use setTimeout to ensure navigation happens after auth state is updated
+        setTimeout(() => {
+          this.router.navigate(['/main']);
+        }, 500);
+      } else {
+        console.log('No redirect result or user found');
+      }
+    } catch (error) {
+      console.error('Error handling redirect result:', error);
     }
   }
 
