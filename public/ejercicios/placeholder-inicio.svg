@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Imagen de ejercicio (inicio)">
+  <rect width="400" height="300" fill="#29292e"/>
+  <rect x="60" y="140" width="280" height="20" rx="10" fill="#ee7823"/>
+  <rect x="40" y="110" width="30" height="80" rx="6" fill="#f8f8f8"/>
+  <rect x="330" y="110" width="30" height="80" rx="6" fill="#f8f8f8"/>
+  <text x="200" y="250" fill="#cccccc" font-family="Segoe UI, sans-serif" font-size="22" text-anchor="middle">inicio</text>
+</svg>

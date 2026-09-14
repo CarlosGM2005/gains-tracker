@@ -1,0 +1,59 @@
+@use 'breakpoints' as bp;
+
+.editar__top {
+  margin-bottom: var(--space-4);
+}
+
+.editar__layout,
+.editar__forms {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.bloque {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.bloque__titulo {
+  font-size: var(--font-size-lg);
+}
+
+.bloque__texto {
+  color: var(--color-text-muted);
+}
+
+// Edad, peso y altura: tres columnas cortas también en móvil.
+.editar__trio {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.editar__submit {
+  width: 100%;
+}
+
+@include bp.up(lg) {
+  .editar {
+    max-width: 64rem;
+  }
+
+  .editar__layout {
+    grid-template-columns: 22rem 1fr;
+    align-items: start;
+  }
+
+  .editar__layout app-perfil-resumen {
+    position: sticky;
+    top: var(--space-6);
+  }
+
+  .editar__submit {
+    width: auto;
+    justify-self: start;
+  }
+}

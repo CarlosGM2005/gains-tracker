@@ -1,0 +1,125 @@
+@use 'breakpoints' as bp;
+
+.intro {
+  max-width: 60ch;
+  margin-bottom: var(--space-8);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+.niveles {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.nivel {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  text-align: left;
+  transition:
+    border-color var(--duration-base) var(--easing-standard),
+    background-color var(--duration-base) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (hover: hover) {
+    &:not(.nivel--activo):hover {
+      border-color: var(--color-text-muted);
+    }
+  }
+}
+
+.nivel--activo {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+// Barras de intensidad: 1, 2 o 3 llenas según el nivel.
+.nivel__barras {
+  display: flex;
+  gap: 4px;
+}
+
+.nivel__barra {
+  width: 22px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+}
+
+.nivel__barra--llena {
+  background: var(--color-accent);
+}
+
+.nivel__nombre {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.nivel__texto {
+  color: var(--color-text-muted);
+}
+
+.nivel__check {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-on-accent);
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--duration-base) var(--easing-out),
+    transform var(--duration-base) var(--easing-out);
+}
+
+.nivel--activo .nivel__check {
+  opacity: 1;
+  transform: none;
+}
+
+.acciones {
+  display: flex;
+  margin-top: var(--space-8);
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@include bp.up(md) {
+  .niveles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nivel {
+    align-content: start;
+    min-height: 220px;
+    padding: var(--space-6);
+  }
+
+  .acciones {
+    justify-content: flex-end;
+
+    .btn {
+      width: auto;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<section class="welcome">
+  <div class="welcome__glow" aria-hidden="true"></div>
+
+  <div class="welcome__content">
+    <div class="welcome__badge stagger" style="--i: 0">
+      <img src="logo.png" alt="Logotipo de GainsTracker" width="500" height="499" />
+    </div>
+
+    <p class="text-label welcome__overline stagger" style="--i: 1">Bienvenidos a</p>
+
+    <h1 class="text-hero welcome__title">
+      <span class="welcome__mask"><span class="welcome__line" style="--i: 0">Gains</span></span>
+      <span class="welcome__mask"><span class="welcome__line welcome__line--accent" style="--i: 1">Tracker</span></span>
+    </h1>
+
+    <p class="welcome__tagline stagger" style="--i: 4">Mide. Mejora. Supera tus límites.</p>
+
+    <a class="btn btn--primary btn--lg welcome__cta stagger" style="--i: 5" routerLink="/inicio">
+      Entrar <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <app-marquee class="welcome__marquee" [items]="lema" />
+</section>

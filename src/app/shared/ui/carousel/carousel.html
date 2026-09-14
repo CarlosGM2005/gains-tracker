@@ -1,0 +1,54 @@
+<section
+  class="carousel"
+  aria-roledescription="carrusel"
+  [attr.aria-label]="etiqueta()"
+  (mouseenter)="pausar(true)"
+  (mouseleave)="pausar(false)"
+  (focusin)="pausar(true)"
+  (focusout)="pausar(false)"
+  (touchstart)="pausar(true)"
+>
+  <div #track class="carousel__track" (scroll)="alHacerScroll()">
+    @for (slide of slides(); track $index; let i = $index) {
+      <div
+        class="carousel__slide"
+        role="group"
+        aria-roledescription="diapositiva"
+        [attr.aria-label]="i + 1 + ' de ' + slides().length"
+      >
+        <picture>
+          <source media="(width >= 768px)" [attr.srcset]="slide.srcEscritorio" />
+          <img
+            class="carousel__img"
+            [src]="slide.srcMovil"
+            [alt]="slide.alt"
+            width="568"
+            height="307"
+            [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+          />
+        </picture>
+      </div>
+    }
+  </div>
+
+  <div class="carousel__controls">
+    <button type="button" class="btn btn--ghost btn--icon" aria-label="Anterior" (click)="ir(activo() - 1)">
+      ←
+    </button>
+    <div class="carousel__dots">
+      @for (slide of slides(); track $index; let i = $index) {
+        <button
+          type="button"
+          class="carousel__dot"
+          [class.carousel__dot--activo]="i === activo()"
+          [attr.aria-current]="i === activo() ? 'true' : null"
+          [attr.aria-label]="'Ir a la diapositiva ' + (i + 1)"
+          (click)="ir(i)"
+        ></button>
+      }
+    </div>
+    <button type="button" class="btn btn--ghost btn--icon" aria-label="Siguiente" (click)="ir(activo() + 1)">
+      →
+    </button>
+  </div>
+</section>

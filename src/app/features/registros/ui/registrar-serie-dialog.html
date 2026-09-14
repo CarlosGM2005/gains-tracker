@@ -1,0 +1,64 @@
+<section class="dialog" aria-labelledby="serie-titulo">
+  <header class="dialog__head">
+    <div>
+      <p class="text-label dialog__overline">{{ ejercicio.nombre }}</p>
+      <h2 id="serie-titulo" class="dialog__title">Registrar serie</h2>
+    </div>
+    <button type="button" class="dialog__close" aria-label="Cerrar" (click)="cerrar()">×</button>
+  </header>
+
+  @if (autenticado()) {
+    <p class="dialog__intro">Registra tu serie del ejercicio para tener un mejor seguimiento.</p>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+      <div class="field">
+        <label class="field__label" for="serie-dia">Día</label>
+        <input id="serie-dia" class="input" type="date" formControlName="dia" aria-describedby="serie-dia-error" />
+        <app-field-error [control]="form.controls.dia" [mensajes]="mensajes.dia" idError="serie-dia-error" />
+      </div>
+
+      <div class="form__row dialog__row">
+        <div class="field">
+          <label class="field__label" for="serie-series">Series</label>
+          <input id="serie-series" class="input" type="number" inputmode="numeric" min="1"
+            formControlName="series" aria-describedby="serie-series-error" />
+          <app-field-error [control]="form.controls.series" [mensajes]="mensajes.series" idError="serie-series-error" />
+        </div>
+        <div class="field">
+          <label class="field__label" for="serie-reps">Repeticiones</label>
+          <input id="serie-reps" class="input" type="number" inputmode="numeric" min="1"
+            formControlName="repeticiones" aria-describedby="serie-reps-error" />
+          <app-field-error [control]="form.controls.repeticiones" [mensajes]="mensajes.repeticiones" idError="serie-reps-error" />
+        </div>
+      </div>
+
+      <div class="form__row dialog__row">
+        <div class="field">
+          <label class="field__label" for="serie-peso">Peso (kg)</label>
+          <input id="serie-peso" class="input" type="number" inputmode="decimal" step="0.01" min="0"
+            formControlName="peso" aria-describedby="serie-peso-error" />
+          <app-field-error [control]="form.controls.peso" [mensajes]="mensajes.peso" idError="serie-peso-error" />
+        </div>
+        <div class="field">
+          <label class="field__label" for="serie-descanso">Descanso (min)</label>
+          <input id="serie-descanso" class="input" type="number" inputmode="numeric" min="0"
+            formControlName="descansoMin" aria-describedby="serie-descanso-error" />
+          <app-field-error [control]="form.controls.descansoMin" [mensajes]="mensajes.descansoMin" idError="serie-descanso-error" />
+        </div>
+      </div>
+
+      <div class="dialog__actions">
+        <button type="button" class="btn btn--ghost" (click)="cerrar()">Cancelar</button>
+        <button type="submit" class="btn btn--primary" [disabled]="enviando() || form.invalid">
+          {{ enviando() ? 'Guardando…' : 'Registrar' }}
+        </button>
+      </div>
+    </form>
+  } @else {
+    <p class="dialog__aviso" role="alert">No puedes registrar una serie porque no has iniciado sesión.</p>
+    <div class="dialog__actions">
+      <button type="button" class="btn btn--ghost" (click)="cerrar()">Cancelar</button>
+      <button type="button" class="btn btn--primary" (click)="irALogin()">Iniciar sesión</button>
+    </div>
+  }
+</section>

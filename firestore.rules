@@ -1,19 +1,62 @@
 rules_version = '2';
 
+// Reglas de GainsTracker (reconstrucción v2). Compatibles también con los datos y la app antigua.
+// Probar primero con `firebase emulators:start --only auth,firestore`.
+// Desplegar (lo hace el usuario): `firebase deploy --only firestore:rules`.
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 6, 27);
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    function esDueno(uid) {
+      return autenticado() && request.auth.uid == uid;
+    }
+
+    function textoONull(valor) {
+      return valor == null || valor is string;
+    }
+
+    function numeroONull(valor) {
+      return valor == null || valor is number;
+    }
+
+    // Catálogo: lectura pública (invitados incluidos). Se carga a mano desde la consola.
+    match /ejercicios/{ejercicioId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /usuarios/{uid} {
+      function perfilValido(datos) {
+        return datos.keys().hasOnly(['uid', 'nombre', 'email', 'telefono', 'edad', 'peso', 'altura', 'createdAt'])
+          && datos.uid == uid
+          && datos.nombre is string && datos.nombre.size() <= 80
+          && datos.email is string
+          && textoONull(datos.telefono)
+          && numeroONull(datos.edad)
+          && numeroONull(datos.peso)
+          && numeroONull(datos.altura);
+      }
+
+      allow read: if esDueno(uid);
+      allow create: if esDueno(uid) && perfilValido(request.resource.data);
+      allow update: if esDueno(uid)
+        && perfilValido(request.resource.data)
+        && (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
+      allow delete: if false;
+
+      // Un documento por ejercicio con el array `series`.
+      match /registros/{ejercicioId} {
+        allow read: if esDueno(uid);
+        allow create, update: if esDueno(uid)
+          && request.resource.data.keys().hasOnly(['id', 'nombre', 'imagen', 'series', 'isOpen'])
+          && request.resource.data.id == ejercicioId
+          && request.resource.data.series is list
+          && request.resource.data.series.size() <= 5000;
+        allow delete: if false;
+      }
     }
   }
 }

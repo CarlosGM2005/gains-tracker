@@ -1,0 +1,132 @@
+.card {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: border-color var(--duration-base) var(--easing-standard);
+}
+
+.card--abierta {
+  border-color: var(--color-accent);
+}
+
+.card__heading {
+  margin: 0;
+  font: inherit;
+  text-transform: none;
+}
+
+.card__header {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-3);
+  border: 0;
+  background: none;
+  text-align: left;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.card__img {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.card__info {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.card__name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.card__count {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+
+  strong {
+    color: var(--color-accent);
+  }
+}
+
+.card__chevron {
+  display: grid;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  transition: transform var(--duration-base) var(--easing-out);
+}
+
+.card--abierta .card__chevron {
+  transform: rotate(90deg);
+}
+
+.card__panel:not([hidden]) {
+  animation: rise-in var(--duration-base) var(--easing-out) both;
+}
+
+.series {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0 var(--space-3) var(--space-3);
+  list-style: none;
+}
+
+.serie {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+}
+
+.serie__dia {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.serie__datos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+
+  dt {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+  }
+
+  small {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+}

@@ -1,0 +1,103 @@
+<div class="page editar">
+  <div class="editar__top">
+    <app-back-button />
+  </div>
+
+  @if (store.error()) {
+    <app-empty-state tipo="error" titulo="No se pudo cargar tu perfil" detalle="Inténtalo más tarde." />
+  } @else if (store.cargando()) {
+    <app-spinner etiqueta="Cargando perfil" />
+  } @else {
+    <div class="editar__layout">
+      <app-perfil-resumen [perfil]="store.perfil()" />
+
+      <div class="editar__forms">
+        <section class="bloque stagger" style="--i: 3" aria-labelledby="datos-titulo">
+          <h2 id="datos-titulo" class="bloque__titulo">Datos del perfil</h2>
+
+          <form class="form" [formGroup]="datos" (ngSubmit)="guardar()" novalidate>
+            <div class="field">
+              <label class="field__label" for="ed-nombre">Nombre y apellidos</label>
+              <input id="ed-nombre" class="input" type="text" formControlName="nombre" autocomplete="name"
+                aria-describedby="ed-nombre-error" />
+              <app-field-error [control]="datos.controls.nombre" [mensajes]="mensajes.nombre" idError="ed-nombre-error" />
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="ed-telefono">Número de teléfono</label>
+              <input id="ed-telefono" class="input" type="tel" inputmode="numeric" formControlName="telefono"
+                autocomplete="tel-national" placeholder="Ej. 600123456" aria-describedby="ed-telefono-error" />
+              <app-field-error [control]="datos.controls.telefono" [mensajes]="mensajes.telefono" idError="ed-telefono-error" />
+            </div>
+
+            <div class="form__row editar__trio">
+              <div class="field">
+                <label class="field__label" for="ed-edad">Edad</label>
+                <input id="ed-edad" class="input" type="number" inputmode="numeric" min="14" max="99"
+                  formControlName="edad" aria-describedby="ed-edad-error" />
+                <app-field-error [control]="datos.controls.edad" [mensajes]="mensajes.edad" idError="ed-edad-error" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="ed-peso">Peso (kg)</label>
+                <input id="ed-peso" class="input" type="number" inputmode="decimal" min="30" max="300"
+                  formControlName="peso" aria-describedby="ed-peso-error" />
+                <app-field-error [control]="datos.controls.peso" [mensajes]="mensajes.peso" idError="ed-peso-error" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="ed-altura">Altura (m)</label>
+                <input id="ed-altura" class="input" type="number" inputmode="decimal" step="0.01" min="1" max="2.5"
+                  formControlName="altura" aria-describedby="ed-altura-error" />
+                <app-field-error [control]="datos.controls.altura" [mensajes]="mensajes.altura" idError="ed-altura-error" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--lg editar__submit" [disabled]="guardando() || datos.invalid || datos.pristine">
+              {{ guardando() ? 'Guardando…' : 'Guardar' }}
+            </button>
+          </form>
+        </section>
+
+        <section class="bloque stagger" style="--i: 4" aria-labelledby="email-titulo">
+          <h2 id="email-titulo" class="bloque__titulo">Correo electrónico</h2>
+
+          @if (store.puedeCambiarEmail()) {
+            <p class="bloque__texto">
+              Te enviaremos un enlace al nuevo correo. El cambio se aplica cuando lo confirmes.
+            </p>
+
+            <form class="form" [formGroup]="email" (ngSubmit)="cambiarEmail()" novalidate>
+              @if (errorEmail(); as mensaje) {
+                <p class="form__alert" role="alert">{{ mensaje }}</p>
+              }
+
+              <div class="field">
+                <label class="field__label" for="ed-email">Nuevo correo</label>
+                <input id="ed-email" class="input" type="email" formControlName="nuevo" autocomplete="email"
+                  [placeholder]="store.perfil()?.email ?? 'nombre@ejemplo.com'" aria-describedby="ed-email-error" />
+                <app-field-error [control]="email.controls.nuevo" [mensajes]="mensajes.email" idError="ed-email-error" />
+              </div>
+
+              @if (pideReautenticar()) {
+                <div class="field">
+                  <label class="field__label" for="ed-password">Contraseña actual</label>
+                  <input id="ed-password" class="input" type="password" formControlName="password"
+                    autocomplete="current-password" aria-describedby="ed-password-error" />
+                  <app-field-error [control]="email.controls.password" [mensajes]="mensajes.password"
+                    idError="ed-password-error" />
+                </div>
+              }
+
+              <button type="submit" class="btn btn--ghost editar__submit" [disabled]="enviandoEmail() || email.invalid">
+                {{ enviandoEmail() ? 'Enviando…' : 'Cambiar correo' }}
+              </button>
+            </form>
+          } @else {
+            <p class="bloque__texto">
+              Has entrado con Google: tu correo ({{ store.perfil()?.email }}) se gestiona desde tu cuenta de Google.
+            </p>
+          }
+        </section>
+      </div>
+    </div>
+  }
+</div>

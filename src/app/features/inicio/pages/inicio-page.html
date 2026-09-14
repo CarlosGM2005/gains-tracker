@@ -1,0 +1,48 @@
+<div class="page">
+  <app-page-header titulo="GainsTracker" antetitulo="Tu entrenamiento">
+    <a headerActions class="btn btn--ghost btn--icon" routerLink="/perfil" aria-label="Ir al perfil">
+      <img src="icons/logoPerfil.png" alt="" width="22" height="22" />
+    </a>
+  </app-page-header>
+
+  <section class="section" aria-labelledby="rutinas-titulo">
+    <div class="section__head">
+      <h2 id="rutinas-titulo" class="section__title">Rutinas</h2>
+      <p class="text-label">Semana tipo · 6 días</p>
+    </div>
+    <app-carousel [slides]="rutinas" etiqueta="Rutinas de la semana" />
+  </section>
+
+  <section class="section" aria-labelledby="recomendados-titulo" appReveal>
+    <div class="section__head">
+      <h2 id="recomendados-titulo" class="section__title">Recomendados</h2>
+      <a class="section__more" routerLink="/recomendados">
+        Ver todos <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    @if (recomendados.hasValue()) {
+      @if (recomendados.value().length > 0) {
+        <ul class="grid">
+          @for (ejercicio of recomendados.value(); track ejercicio.id; let i = $index) {
+            <li class="stagger" [style.--i]="i">
+              <app-recomendado-tile [ejercicio]="ejercicio" [indice]="i" />
+            </li>
+          }
+        </ul>
+      } @else {
+        <app-empty-state titulo="Todavía no hay ejercicios recomendados" />
+      }
+    } @else if (recomendados.error()) {
+      <app-empty-state
+        tipo="error"
+        titulo="No se pudieron cargar los recomendados"
+        detalle="Comprueba tu conexión e inténtalo de nuevo."
+      >
+        <button type="button" class="btn btn--ghost" (click)="recomendados.reload()">Reintentar</button>
+      </app-empty-state>
+    } @else {
+      <app-spinner etiqueta="Cargando recomendados" />
+    }
+  </section>
+</div>

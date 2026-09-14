@@ -1,0 +1,38 @@
+<div class="page perfil">
+  <div class="perfil__top">
+    <app-back-button />
+  </div>
+
+  @if (store.error()) {
+    <app-empty-state tipo="error" titulo="No se pudo cargar tu perfil" detalle="Inténtalo más tarde." />
+  } @else if (store.cargando()) {
+    <app-spinner etiqueta="Cargando perfil" />
+  } @else {
+    <div class="perfil__layout">
+      <app-perfil-resumen [perfil]="store.perfil()" />
+
+      <nav class="menu" aria-label="Opciones del perfil">
+        <a class="opcion stagger" style="--i: 3" routerLink="/perfil/editar">
+          <span class="opcion__icono"><img src="icons/logoPerfil.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__texto">Datos perfil</span>
+          <span class="opcion__flecha" aria-hidden="true">→</span>
+        </a>
+        <a class="opcion stagger" style="--i: 4" routerLink="/registros">
+          <span class="opcion__icono"><img src="icons/logoRegistros.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__texto">Mis registros</span>
+          <span class="opcion__flecha" aria-hidden="true">→</span>
+        </a>
+        <a class="opcion stagger" style="--i: 5" routerLink="/privacidad">
+          <span class="opcion__icono"><img src="icons/logoPoliticaPrivacidad.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__texto">Política de privacidad</span>
+          <span class="opcion__flecha" aria-hidden="true">→</span>
+        </a>
+        <button type="button" class="opcion opcion--peligro stagger" style="--i: 6" [disabled]="cerrando()" (click)="cerrarSesion()">
+          <span class="opcion__icono"><img src="icons/logoLogout.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__texto">{{ cerrando() ? 'Cerrando sesión…' : 'Cerrar sesión' }}</span>
+          <span class="opcion__flecha" aria-hidden="true">→</span>
+        </button>
+      </nav>
+    </div>
+  }
+</div>

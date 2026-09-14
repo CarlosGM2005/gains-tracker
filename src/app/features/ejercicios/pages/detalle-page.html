@@ -1,0 +1,58 @@
+<div class="page">
+  @if (ejercicio.error()) {
+    <app-page-header titulo="Ejercicio" />
+    <app-empty-state tipo="error" titulo="No se pudo cargar el ejercicio" detalle="Inténtalo de nuevo.">
+      <button type="button" class="btn btn--ghost" (click)="ejercicio.reload()">Reintentar</button>
+    </app-empty-state>
+  } @else if (ejercicio.isLoading()) {
+    <app-page-header titulo="Ejercicio" />
+    <app-spinner etiqueta="Cargando ejercicio" />
+  } @else {
+    @let detalle = ejercicio.hasValue() ? ejercicio.value() : null;
+    @if (detalle) {
+      <app-page-header
+        [titulo]="detalle.nombre"
+        [antetitulo]="etiquetaMusculo[detalle.musculo] + ' · ' + etiquetaNivel[detalle.nivel]"
+      />
+
+      <div class="detalle">
+        <div class="imagenes">
+          <figure class="imagen stagger" style="--i: 0">
+            <img [src]="detalle.imagenInicio" [alt]="'Posición inicial de ' + detalle.nombre" width="400" height="300" />
+            <figcaption class="imagen__etiqueta">Inicio</figcaption>
+          </figure>
+          <figure class="imagen stagger" style="--i: 1">
+            <img [src]="detalle.imagenFinal" [alt]="'Posición final de ' + detalle.nombre" width="400" height="300" />
+            <figcaption class="imagen__etiqueta">Final</figcaption>
+          </figure>
+        </div>
+
+        <div class="info stagger" style="--i: 2">
+          <div class="badges">
+            <span class="badge">{{ etiquetaMusculo[detalle.musculo] }}</span>
+            <span class="badge badge--nivel">{{ etiquetaNivel[detalle.nivel] }}</span>
+          </div>
+
+          <div class="bloque">
+            <h2 class="bloque__titulo">Músculos implicados</h2>
+            <p>{{ detalle.musculosImplicados || 'Músculos no especificados' }}</p>
+          </div>
+
+          <div class="bloque">
+            <h2 class="bloque__titulo">Descripción del ejercicio</h2>
+            <p>{{ detalle.descripcion }}</p>
+          </div>
+
+          <button type="button" class="btn btn--primary btn--lg registrar" (click)="abrirRegistro(detalle)">
+            <span aria-hidden="true">+</span> Registrar serie
+          </button>
+        </div>
+      </div>
+    } @else {
+      <app-page-header titulo="Ejercicio" />
+      <app-empty-state tipo="error" titulo="Ejercicio no encontrado">
+        <a class="btn btn--ghost" routerLink="/ejercicios">Ver ejercicios</a>
+      </app-empty-state>
+    }
+  }
+</div>

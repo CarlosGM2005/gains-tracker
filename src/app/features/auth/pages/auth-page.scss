@@ -1,0 +1,61 @@
+// Estilos compartidos por login y registro.
+
+.auth {
+  position: relative;
+  min-height: 100dvh;
+  padding: var(--space-4) var(--page-gutter) var(--space-12);
+  overflow-x: clip;
+  isolation: isolate;
+
+  // Resplandor naranja de fondo, como en la portada.
+  &::before {
+    position: absolute;
+    top: -20%;
+    right: -30%;
+    z-index: -1;
+    width: min(110vw, 760px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--color-accent-glow), transparent 70%);
+    content: '';
+    opacity: 0.25;
+  }
+}
+
+.auth__top {
+  width: min(100%, 30rem);
+  margin: 0 auto var(--space-4);
+}
+
+.auth__overline {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent);
+}
+
+.auth__title {
+  margin-bottom: var(--space-8);
+  font-size: var(--font-size-2xl);
+}
+
+.auth__submit {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.auth__switch {
+  margin-top: var(--space-6);
+  text-align: center;
+  color: var(--color-text-muted);
+
+  a {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent);
+  }
+}
+
+@media (width >= 992px) {
+  .auth {
+    display: grid;
+    align-content: center;
+  }
+}

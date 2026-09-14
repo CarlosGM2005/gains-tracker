@@ -1,65 +1,50 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import {
+  type ApplicationConfig,
+  ErrorHandler,
+  inject,
+  LOCALE_ID,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
+import {
+  provideRouter,
+  TitleStrategy,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+  withRouterConfig,
+  withViewTransitions,
+} from '@angular/router';
 
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { GlobalErrorHandler } from '@core/errors/global-error-handler';
+import { AppTitleStrategy } from '@core/routing/app-title-strategy';
+import { omitirTransicionEnMismaRuta } from '@core/routing/view-transitions';
+import { environment } from '@env/environment';
+
+import { provideDataLayer } from './app.data';
 import { routes } from './app.routes';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
-import { initializeAppCheck, provideAppCheck, ReCaptchaEnterpriseProvider, CustomProvider } from '@angular/fire/app-check';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getDatabase, provideDatabase } from '@angular/fire/database';
-import { getFunctions, provideFunctions } from '@angular/fire/functions';
-import { getMessaging, provideMessaging } from '@angular/fire/messaging';
-import { getPerformance, providePerformance } from '@angular/fire/performance';
-import { getStorage, provideStorage } from '@angular/fire/storage';
-import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
-import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
-import { provideAnimations } from '@angular/platform-browser/animations';
 
-const isDev = location.hostname === 'localhost';
+// Fechas y números en español (DatePipe, DecimalPipe).
+registerLocaleData(localeEs);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideAnimations(),
-    provideFirebaseApp(() =>
-      initializeApp({
-        apiKey: "AIzaSyBN8GGpXi4fUV5iZ4fWskI2DM2c49LzfPM",
-        authDomain: "gainstracker-21592.firebaseapp.com",
-        projectId: "gainstracker-21592",
-        storageBucket: "gainstracker-21592.firebasestorage.app",
-        messagingSenderId: "825525128907",
-        appId: "1:825525128907:web:65f2ae1ed99973340e954e",
-        measurementId: "G-JZX067XBJC"
-      })
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withViewTransitions({ skipInitialTransition: true, onViewTransitionCreated: omitirTransicionEnMismaRuta }),
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+      withRouterConfig({ paramsInheritanceStrategy: 'always' }),
     ),
-    ScreenTrackingService,
-    UserTrackingService,
-
-    /*
-    provideAppCheck(() => {
-      const provider = isDev
-        ? new CustomProvider({
-          getToken: () => Promise.resolve({
-            token: 'fake-debug-token',
-            expireTimeMillis: Date.now() + 60 * 60 * 1000 // 1 hora en milisegundos
-          })
-
-        })
-        : new ReCaptchaEnterpriseProvider('C8234AEF-11E1-420F-AA53-8529BE4E831F');
-
-      return initializeAppCheck(undefined, {
-        provider,
-        isTokenAutoRefreshEnabled: true,
-      });
-    }),
-    */
-   
-    provideAuth(() => getAuth()),
-    provideAnalytics(() => getAnalytics()),
-    provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage()),
-
+    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    provideDataLayer(environment),
+    provideAppInitializer(() => inject(AnalyticsService).iniciar()),
   ],
 };

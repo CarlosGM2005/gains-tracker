@@ -1,0 +1,98 @@
+@use 'breakpoints' as bp;
+
+.perfil__top {
+  margin-bottom: var(--space-4);
+}
+
+.perfil__layout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.menu {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.opcion {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    border-color var(--duration-base) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-accent);
+    }
+
+    &:hover .opcion__flecha {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.opcion__icono {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+}
+
+.opcion__texto {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.opcion__flecha {
+  color: var(--color-accent);
+  transition: transform var(--duration-base) var(--easing-out);
+}
+
+.opcion--peligro {
+  .opcion__icono {
+    background: rgb(from var(--color-danger) r g b / 15%);
+  }
+
+  .opcion__flecha {
+    color: var(--color-danger);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-danger);
+    }
+  }
+}
+
+// En escritorio la barra se oculta (nav mobile-only) y el perfil ocupa dos columnas.
+@include bp.up(lg) {
+  .perfil {
+    max-width: 60rem;
+  }
+
+  .perfil__layout {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}

@@ -1,0 +1,35 @@
+<div class="page">
+  <app-page-header titulo="Nivel actividad física" antetitulo="Paso 1 · Elige tu nivel" />
+
+  <p class="intro stagger">
+    Escoge tu nivel físico para determinar qué ejercicios con cierta técnica y dificultad son adecuados para ti.
+  </p>
+
+  <div class="niveles" role="group" aria-label="Nivel de actividad física">
+    @for (nivel of niveles; track nivel; let i = $index) {
+      <button
+        type="button"
+        class="nivel stagger"
+        [style.--i]="i + 1"
+        [class.nivel--activo]="seleccionado() === nivel"
+        [attr.aria-pressed]="seleccionado() === nivel"
+        (click)="seleccionado.set(nivel)"
+      >
+        <span class="nivel__barras" aria-hidden="true">
+          @for (barra of niveles; track barra; let b = $index) {
+            <span class="nivel__barra" [class.nivel__barra--llena]="b <= i"></span>
+          }
+        </span>
+        <span class="nivel__nombre">{{ etiquetas[nivel] }}</span>
+        <span class="nivel__texto">{{ descripciones[nivel] }}</span>
+        <span class="nivel__check" aria-hidden="true">✓</span>
+      </button>
+    }
+  </div>
+
+  <div class="acciones">
+    <button type="button" class="btn btn--primary btn--lg" (click)="continuar()">
+      Continuar <span aria-hidden="true">→</span>
+    </button>
+  </div>
+</div>

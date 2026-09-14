@@ -1,0 +1,14 @@
+// Capa de diálogos (Angular CDK Dialog). La estructura base viene de overlay-prebuilt.css.
+
+.gt-dialog-backdrop {
+  background: rgb(from var(--color-bg) r g b / 78%);
+  backdrop-filter: blur(4px);
+}
+
+// En móvil la ventana se apoya abajo, como una hoja; desde 576 px queda centrada.
+// CDK centra con estilos inline en el contenedor, por eso hace falta !important.
+@media (width < 576px) {
+  .cdk-global-overlay-wrapper:has(.gt-dialog-panel) {
+    align-items: flex-end !important;
+  }
+}

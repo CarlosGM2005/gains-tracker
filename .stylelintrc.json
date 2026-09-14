@@ -1,0 +1,14 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "color-no-hex": [true, { "message": "Usa los tokens de src/styles/_tokens.scss en lugar de colores hex." }],
+    "selector-class-pattern": null,
+    "scss/at-mixin-pattern": null
+  },
+  "overrides": [
+    {
+      "files": ["src/styles/_tokens.scss"],
+      "rules": { "color-no-hex": null }
+    }
+  ]
+}

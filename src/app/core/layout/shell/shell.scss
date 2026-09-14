@@ -1,0 +1,46 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+.shell__main {
+  min-width: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.shell__side {
+  display: none;
+}
+
+.shell__bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  align-self: end;
+}
+
+@include bp.up(lg) {
+  :host([data-nav='full']) {
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  }
+
+  .shell__side {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    overflow-y: auto;
+    background: var(--color-bg);
+  }
+
+  .shell__bottom {
+    display: none;
+  }
+}

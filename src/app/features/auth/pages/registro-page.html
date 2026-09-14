@@ -1,0 +1,75 @@
+<div class="auth">
+  <div class="auth__top">
+    <app-back-button />
+  </div>
+
+  <div class="auth-card stagger">
+    <p class="text-label auth__overline">Empieza a medir</p>
+    <h1 class="auth__title">Registro</h1>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="crearCuenta()" novalidate>
+      @if (error(); as mensaje) {
+        <p class="form__alert" role="alert">{{ mensaje }}</p>
+      }
+
+      <div class="field">
+        <label class="field__label" for="reg-nombre">Nombre <span class="field__required" aria-hidden="true">*</span></label>
+        <input id="reg-nombre" class="input" type="text" formControlName="nombre" autocomplete="name"
+          placeholder="Tu nombre" aria-describedby="reg-nombre-error" required />
+        <app-field-error [control]="form.controls.nombre" [mensajes]="mensajes.nombre" idError="reg-nombre-error" />
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="reg-email">Correo electrónico <span class="field__required" aria-hidden="true">*</span></label>
+        <input id="reg-email" class="input" type="email" formControlName="email" autocomplete="email"
+          placeholder="nombre@ejemplo.com" aria-describedby="reg-email-error" required />
+        <app-field-error [control]="form.controls.email" [mensajes]="mensajes.email" idError="reg-email-error" />
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="reg-password">Contraseña <span class="field__required" aria-hidden="true">*</span></label>
+        <input id="reg-password" class="input" type="password" formControlName="password" autocomplete="new-password"
+          placeholder="Mínimo 8 caracteres" aria-describedby="reg-password-error" required />
+        <app-field-error [control]="form.controls.password" [mensajes]="mensajes.password" idError="reg-password-error" />
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="reg-telefono">Teléfono <span class="field__required" aria-hidden="true">*</span></label>
+        <input id="reg-telefono" class="input" type="tel" inputmode="numeric" formControlName="telefono"
+          autocomplete="tel-national" placeholder="Ej. 600123456" aria-describedby="reg-telefono-error" required />
+        <app-field-error [control]="form.controls.telefono" [mensajes]="mensajes.telefono" idError="reg-telefono-error" />
+      </div>
+
+      <div class="form__row">
+        <div class="field">
+          <label class="field__label" for="reg-edad">Edad <span class="field__required" aria-hidden="true">*</span></label>
+          <input id="reg-edad" class="input" type="number" inputmode="numeric" formControlName="edad"
+            min="14" max="99" aria-describedby="reg-edad-error" required />
+          <app-field-error [control]="form.controls.edad" [mensajes]="mensajes.edad" idError="reg-edad-error" />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="reg-peso">Peso (kg) <span class="field__required" aria-hidden="true">*</span></label>
+          <input id="reg-peso" class="input" type="number" inputmode="decimal" formControlName="peso"
+            min="30" max="300" aria-describedby="reg-peso-error" required />
+          <app-field-error [control]="form.controls.peso" [mensajes]="mensajes.peso" idError="reg-peso-error" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="reg-altura">Altura (metros) <span class="field__required" aria-hidden="true">*</span></label>
+        <input id="reg-altura" class="input" type="number" inputmode="decimal" step="0.01" formControlName="altura"
+          min="1" max="2.5" placeholder="Ej. 1.75" aria-describedby="reg-altura-error" required />
+        <app-field-error [control]="form.controls.altura" [mensajes]="mensajes.altura" idError="reg-altura-error" />
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--lg auth__submit" [disabled]="enviando() || form.invalid">
+        {{ enviando() ? 'Creando cuenta…' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    <p class="auth__switch">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+</div>

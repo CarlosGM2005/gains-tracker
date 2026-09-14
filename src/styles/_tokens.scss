@@ -1,0 +1,75 @@
+// Tokens de diseño — dirección "deportivo enérgico" (fase 1).
+// ÚNICO sitio con colores literales (stylelint lo exige).
+
+:root {
+  color-scheme: dark;
+
+  // Color: base casi negra, un solo acento naranja de alta energía (derivado del logo).
+  --color-bg: #0e0e10;
+  --color-surface: #17171a;
+  --color-surface-2: #232323; // mismo gris que el fondo de las imágenes del carrusel
+  --color-border: #2c2c31;
+  --color-text: #f5f5f2;
+  --color-text-muted: #a1a1a8;
+  --color-accent: #ff7a1a;
+  --color-accent-strong: #e8620a;
+  --color-accent-soft: rgb(255 122 26 / 14%);
+  --color-accent-glow: rgb(255 122 26 / 45%);
+  --color-on-accent: #0e0e10; // el blanco sobre naranja no llega a AA
+  --color-success: #3dd68c;
+  --color-danger: #ff5a5f;
+  --color-focus: #ffb27a;
+
+  // Tipografía. Display condensada en mayúsculas; cuerpo con la fuente del sistema.
+  // 'Oswald Variable' viene de @fontsource-variable/oswald (angular.json → styles), autoalojada.
+  --font-display: 'Oswald Variable', oswald, 'Arial Narrow', 'Roboto Condensed', impact, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  --font-size-2xl: clamp(2.25rem, 1.4rem + 3.8vw, 4rem);
+  --font-size-hero: clamp(3.25rem, 1.5rem + 8.5vw, 7.5rem);
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 0.95;
+  --line-height-base: 1.55;
+  --letter-spacing-display: 0.01em;
+  --letter-spacing-label: 0.12em;
+
+  // Espaciado (escala de 4 px)
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --page-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --content-max: 72rem;
+
+  // Forma y profundidad
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+  --shadow-card: 0 10px 30px rgb(0 0 0 / 45%);
+
+  // Layout
+  --sidebar-width: 250px;
+  --bottom-nav-height: 68px;
+  --header-height: 64px;
+  --tap-target: 44px;
+
+  // Movimiento: rápido y con salida enérgica.
+  --duration-fast: 140ms;
+  --duration-base: 260ms;
+  --duration-slow: 520ms;
+  --easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}

@@ -1,0 +1,64 @@
+.dialog {
+  display: grid;
+  gap: var(--space-5);
+  width: 100%;
+  max-height: calc(100dvh - var(--space-8));
+  padding: var(--space-6);
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  animation: rise-in var(--duration-base) var(--easing-out) both;
+
+  @media (width >= 576px) {
+    border-radius: var(--radius-lg);
+  }
+}
+
+.dialog__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.dialog__overline {
+  margin-bottom: var(--space-1);
+  color: var(--color-accent);
+}
+
+.dialog__title {
+  font-size: var(--font-size-xl);
+}
+
+.dialog__close {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: none;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+.dialog__intro {
+  color: var(--color-text-muted);
+}
+
+// Dos columnas también en móvil: los campos son números cortos.
+.dialog__row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dialog__aviso {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-danger);
+}
+
+.dialog__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}

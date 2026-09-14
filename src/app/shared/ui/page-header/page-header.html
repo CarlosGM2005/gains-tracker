@@ -1,0 +1,19 @@
+<header class="header">
+  <div class="header__bar">
+    @if (mostrarVolver()) {
+      <app-back-button />
+    }
+    <div class="header__actions">
+      <ng-content select="[headerActions]" />
+    </div>
+  </div>
+
+  <div class="header__titles">
+    @if (antetitulo()) {
+      <p class="text-label header__overline stagger" style="--i: 0">{{ antetitulo() }}</p>
+    }
+    <h1 class="header__title">
+      <span class="header__line">{{ titulo() }}</span>
+    </h1>
+  </div>
+</header>

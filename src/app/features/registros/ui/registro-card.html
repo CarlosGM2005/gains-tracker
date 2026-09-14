@@ -1,0 +1,49 @@
+@let r = registro();
+<article class="card" [class.card--abierta]="abierto()">
+  <h2 class="card__heading">
+    <button
+      type="button"
+      class="card__header"
+      [attr.aria-expanded]="abierto()"
+      [attr.aria-controls]="'series-' + r.ejercicioId"
+      (click)="alternar.emit()"
+    >
+      <img class="card__img" [src]="r.imagen" alt="" width="64" height="64" />
+      <span class="card__info">
+        <span class="card__name">{{ r.nombre }}</span>
+        <span class="card__count">
+          <strong>{{ r.series.length }}</strong> {{ r.series.length === 1 ? 'serie registrada' : 'series registradas' }}
+        </span>
+      </span>
+      <span class="card__chevron" aria-hidden="true">▸</span>
+    </button>
+  </h2>
+
+  <div class="card__panel" [id]="'series-' + r.ejercicioId" [hidden]="!abierto()">
+    <ol class="series">
+      @for (serie of r.series; track serie.id) {
+        <li class="serie">
+          <p class="serie__dia">{{ serie.dia | date: 'EEE d MMM y' }}</p>
+          <dl class="serie__datos">
+            <div>
+              <dt>Series</dt>
+              <dd>{{ serie.series }}</dd>
+            </div>
+            <div>
+              <dt>Reps</dt>
+              <dd>{{ serie.repeticiones }}</dd>
+            </div>
+            <div>
+              <dt>Peso</dt>
+              <dd>{{ serie.peso | number: '1.0-2' }} <small>kg</small></dd>
+            </div>
+            <div>
+              <dt>Descanso</dt>
+              <dd>{{ serie.descansoMin }} <small>min</small></dd>
+            </div>
+          </dl>
+        </li>
+      }
+    </ol>
+  </div>
+</article>

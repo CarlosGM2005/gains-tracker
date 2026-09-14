@@ -1,47 +1,69 @@
-import { Routes } from '@angular/router';
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { LevelExerciceComponent } from './components/level-exercice/level-exercice.component';
-import { MainComponent } from './components/main/main.component';
-import { ExercicesComponent } from './components/exercices/exercices.component';
-import { InfoExerciceComponent } from './components/info-exercice/info-exercice.component';
-import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { WelcomeComponent } from './components/welcome/welcome.component';
-import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
-import { BasicProfileComponent } from './components/basic-profile/basic-profile.component';
-import { DataProfileComponent } from './components/data-profile/data-profile.component';
-import { LoginComponent } from './components/login/login.component';
-import { RecomendationsComponent } from './components/recomendations/recomendations.component';
-import { RecordsComponent } from './components/records/records.component';
-import { RegisterComponent } from './components/register/register.component';
+import { type Routes } from '@angular/router';
+
+import { authGuard, guestGuard } from '@core/auth/auth.guards';
+import { navData } from '@core/layout/route-data';
+import { Shell } from '@core/layout/shell/shell';
+
+import { LEGACY_ROUTES } from './app.legacy-routes';
 
 export const routes: Routes = [
+  ...LEGACY_ROUTES,
   {
     path: '',
-    component: WelcomeComponent  
-  },
-  {
-    path: 'main',
-    component: AuthLayoutComponent,
+    component: Shell,
     children: [
-      { path: '', component: MainComponent },
-      { path: 'level-exercice', component: LevelExerciceComponent },
-      { path: 'login', component: LoginComponent},
-      { path: 'register', component: RegisterComponent}
-    ]
+      {
+        path: '',
+        pathMatch: 'full',
+        data: navData('none'),
+        loadComponent: () => import('@features/inicio/pages/bienvenida-page').then((m) => m.BienvenidaPage),
+      },
+      {
+        path: 'inicio',
+        title: 'Inicio',
+        loadComponent: () => import('@features/inicio/pages/inicio-page').then((m) => m.InicioPage),
+      },
+      {
+        path: 'ejercicios',
+        loadChildren: () => import('@features/ejercicios/ejercicios.routes').then((m) => m.EJERCICIOS_ROUTES),
+      },
+      {
+        path: 'recomendados',
+        title: 'Recomendados',
+        loadComponent: () =>
+          import('@features/ejercicios/pages/recomendados-page').then((m) => m.RecomendadosPage),
+      },
+      {
+        path: 'registros',
+        title: 'Mis registros',
+        canActivate: [authGuard],
+        loadComponent: () => import('@features/registros/pages/registros-page').then((m) => m.RegistrosPage),
+      },
+      {
+        path: 'perfil',
+        canActivate: [authGuard],
+        loadChildren: () => import('@features/perfil/perfil.routes').then((m) => m.PERFIL_ROUTES),
+      },
+      {
+        path: 'privacidad',
+        title: 'Política de privacidad',
+        loadComponent: () => import('@features/legal/privacidad-page').then((m) => m.PrivacidadPage),
+      },
+      {
+        path: 'login',
+        title: 'Iniciar sesión',
+        canActivate: [guestGuard],
+        data: navData('none'),
+        loadComponent: () => import('@features/auth/pages/login-page').then((m) => m.LoginPage),
+      },
+      {
+        path: 'registro',
+        title: 'Registro',
+        canActivate: [guestGuard],
+        data: navData('none'),
+        loadComponent: () => import('@features/auth/pages/registro-page').then((m) => m.RegistroPage),
+      },
+    ],
   },
-  {
-    path: 'main',
-    component: MainLayoutComponent,
-    children: [
-      { path: 'exercices/:level', component: ExercicesComponent },
-      { path: 'info-exercice/:nombre', component: InfoExerciceComponent },
-      { path: 'privacy-policy', component: PrivacyPolicyComponent},
-      { path: 'basic-profile', component: BasicProfileComponent, data: { hideSidebarDesktop: true }},
-      { path: 'data-profile', component: DataProfileComponent, data: { hideSidebarDesktop: true } },
-      { path: 'recomendations', component: RecomendationsComponent},
-      { path: 'records', component: RecordsComponent}
-    ]
-  },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
-

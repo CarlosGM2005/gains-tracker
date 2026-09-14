@@ -1,0 +1,23 @@
+// Breakpoints únicos de la app (mobile-first). Uso en componentes:
+//   @use 'breakpoints' as bp;
+//   @include bp.up(lg) { ... }
+@use 'sass:map';
+
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
+
+@mixin up($name) {
+  @media (width >= #{map.get($breakpoints, $name)}) {
+    @content;
+  }
+}
+
+@mixin down($name) {
+  @media (width < #{map.get($breakpoints, $name)}) {
+    @content;
+  }
+}
