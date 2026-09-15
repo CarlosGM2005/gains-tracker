@@ -27,6 +27,39 @@
   color: var(--color-text-muted);
 }
 
+.foto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.foto__avatar {
+  --avatar-size: 5.5rem;
+}
+
+.foto__acciones {
+  display: grid;
+  flex: 1 1 12rem;
+  gap: var(--space-3);
+}
+
+.foto__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+
+  // El input está oculto: el foco se enseña en su etiqueta.
+  input:focus-visible + label {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  label {
+    cursor: pointer;
+  }
+}
+
 // Edad, peso y altura: tres columnas cortas también en móvil.
 .editar__trio {
   grid-template-columns: repeat(3, minmax(0, 1fr));

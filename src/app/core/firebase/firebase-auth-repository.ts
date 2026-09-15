@@ -1,11 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   EmailAuthProvider,
   getRedirectResult,
   GoogleAuthProvider,
   onAuthStateChanged,
   reauthenticateWithCredential,
+  reauthenticateWithPopup,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
@@ -90,6 +92,16 @@ export class FirebaseAuthRepository extends AuthRepository {
       const user = this.usuarioActual();
       await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email ?? '', password));
     });
+  }
+
+  reautenticarConGoogle(): Promise<void> {
+    return this.ejecutar(async () => {
+      await reauthenticateWithPopup(this.usuarioActual(), new GoogleAuthProvider());
+    });
+  }
+
+  eliminarCuenta(): Promise<void> {
+    return this.ejecutar(() => deleteUser(this.usuarioActual()));
   }
 
   private usuarioActual(): User {

@@ -13,7 +13,9 @@
       <app-page-header
         [titulo]="detalle.nombre"
         [antetitulo]="etiquetaMusculo[detalle.musculo] + ' · ' + etiquetaNivel[detalle.nivel]"
-      />
+      >
+        <app-favorito-button headerActions [ejercicioId]="detalle.id" [nombre]="detalle.nombre" />
+      </app-page-header>
 
       <div class="detalle">
         <div class="imagenes">

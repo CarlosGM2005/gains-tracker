@@ -22,6 +22,7 @@ describe('mapper de perfil', () => {
       edad: 30,
       peso: 60,
       altura: 1.65,
+      foto: null,
       creadoEn: createdAt,
     });
   });
@@ -42,10 +43,19 @@ describe('mapper de perfil', () => {
       edad: null,
       peso: 70,
       altura: 1.7,
+      foto: null,
       creadoEn,
     });
 
-    expect(dto).toEqual({ uid: 'u1', nombre: 'Ana', email: 'a@b.es', telefono: null, edad: null, peso: 70, altura: 1.7, createdAt: creadoEn });
+    expect(dto).toEqual({ uid: 'u1', nombre: 'Ana', email: 'a@b.es', telefono: null, edad: null, peso: 70, altura: 1.7, foto: null, createdAt: creadoEn });
+  });
+
+  it('lee la foto solo si es un data URL de imagen permitido', () => {
+    const webp = 'data:image/webp;base64,UklGRg==';
+
+    expect(perfilDesdeFirestore('u1', { foto: webp }).foto).toBe(webp);
+    expect(perfilDesdeFirestore('u1', { foto: 'https://example.com/a.png' }).foto).toBeNull();
+    expect(perfilDesdeFirestore('u1', { foto: 'data:image/svg+xml;base64,PHN2Zz4=' }).foto).toBeNull();
   });
 
   it('solo envía los cambios presentes', () => {

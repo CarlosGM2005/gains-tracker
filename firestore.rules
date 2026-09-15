@@ -29,15 +29,29 @@ service cloud.firestore {
     }
 
     match /usuarios/{uid} {
+      // Foto de perfil (fase 8): data URL WebP/JPEG pequeño dentro del propio documento, sin Storage.
+      // Mismo límite que REGLAS_FOTO en src/app/features/perfil/domain/perfil.rules.ts.
+      function fotoValida(valor) {
+        return valor == null
+          || (valor is string && valor.size() <= 150000 && valor.matches('^data:image/(webp|jpeg);base64,.+$'));
+      }
+
+      // Favoritos (fase 8): ids de ejercicios.
+      function favoritosValidos(valor) {
+        return valor is list && valor.size() <= 500;
+      }
+
       function perfilValido(datos) {
-        return datos.keys().hasOnly(['uid', 'nombre', 'email', 'telefono', 'edad', 'peso', 'altura', 'createdAt'])
+        return datos.keys().hasOnly(['uid', 'nombre', 'email', 'telefono', 'edad', 'peso', 'altura', 'createdAt', 'foto', 'favoritos'])
           && datos.uid == uid
           && datos.nombre is string && datos.nombre.size() <= 80
           && datos.email is string
           && textoONull(datos.telefono)
           && numeroONull(datos.edad)
           && numeroONull(datos.peso)
-          && numeroONull(datos.altura);
+          && numeroONull(datos.altura)
+          && fotoValida(datos.get('foto', null))
+          && favoritosValidos(datos.get('favoritos', []));
       }
 
       allow read: if esDueno(uid);
@@ -45,7 +59,8 @@ service cloud.firestore {
       allow update: if esDueno(uid)
         && perfilValido(request.resource.data)
         && (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
-      allow delete: if false;
+      // Eliminar cuenta (fase 8): el propio usuario borra su perfil.
+      allow delete: if esDueno(uid);
 
       // Un documento por ejercicio con el array `series`.
       match /registros/{ejercicioId} {
@@ -55,7 +70,8 @@ service cloud.firestore {
           && request.resource.data.id == ejercicioId
           && request.resource.data.series is list
           && request.resource.data.series.size() <= 5000;
-        allow delete: if false;
+        // Borrar la última serie de un ejercicio o eliminar la cuenta (fase 8).
+        allow delete: if esDueno(uid);
       }
     }
   }

@@ -62,4 +62,9 @@ export class PerfilStore {
   actualizar(cambios: CambiosPerfil): Promise<void> {
     return this.repo.actualizar(this.auth.uidActual(), cambios);
   }
+
+  /** Guarda una foto ya comprimida o la quita (`null`). */
+  cambiarFoto(foto: string | null): Promise<void> {
+    return this.repo.actualizar(this.auth.uidActual(), { foto });
+  }
 }

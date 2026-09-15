@@ -9,6 +9,7 @@ import {
   type NuevaSerie,
   type RegistroEjercicio,
   type Serie,
+  SerieNoEncontradaError,
 } from '../../domain/registro.model';
 import { RegistrosRepository } from '../registros-repository';
 
@@ -49,7 +50,7 @@ export class MockRegistrosRepository extends RegistrosRepository {
   async agregarSerie(uid: string, ejercicio: EjercicioRegistrable, nueva: NuevaSerie): Promise<void> {
     await esperar(this.latencia);
     const serie: Serie = { ...nueva, id: crypto.randomUUID(), creadaEn: new Date() };
-    const actuales = this.registros.value.get(uid) ?? [];
+    const actuales = this.actuales(uid);
     const existente = actuales.find((r) => r.ejercicioId === ejercicio.id);
 
     const siguientes: RegistroEjercicio[] = existente
@@ -59,8 +60,46 @@ export class MockRegistrosRepository extends RegistrosRepository {
           { ejercicioId: ejercicio.id, nombre: ejercicio.nombre, imagen: ejercicio.imagenFinal, series: [serie] },
         ];
 
+    this.guardar(uid, siguientes);
+  }
+
+  async actualizarSerie(uid: string, ejercicioId: string, serieId: string, cambios: NuevaSerie): Promise<void> {
+    await esperar(this.latencia);
+    const registro = this.buscar(uid, ejercicioId, serieId);
+    const series = registro.series.map((s) => (s.id === serieId ? { ...s, ...cambios } : s));
+    this.guardar(uid, this.actuales(uid).map((r) => (r === registro ? { ...r, series } : r)));
+  }
+
+  async borrarSerie(uid: string, ejercicioId: string, serieId: string): Promise<void> {
+    await esperar(this.latencia);
+    const registro = this.buscar(uid, ejercicioId, serieId);
+    const series = registro.series.filter((s) => s.id !== serieId);
+    const siguientes = this.actuales(uid)
+      .map((r) => (r === registro ? { ...r, series } : r))
+      .filter((r) => r.series.length > 0);
+    this.guardar(uid, siguientes);
+  }
+
+  async borrarTodos(uid: string): Promise<void> {
+    await esperar(this.latencia);
+    this.guardar(uid, []);
+  }
+
+  private actuales(uid: string): readonly RegistroEjercicio[] {
+    return this.registros.value.get(uid) ?? [];
+  }
+
+  private buscar(uid: string, ejercicioId: string, serieId: string): RegistroEjercicio {
+    const registro = this.actuales(uid).find((r) => r.ejercicioId === ejercicioId);
+    if (!registro?.series.some((s) => s.id === serieId)) {
+      throw new SerieNoEncontradaError(serieId);
+    }
+    return registro;
+  }
+
+  private guardar(uid: string, registros: readonly RegistroEjercicio[]): void {
     const mapa = new Map(this.registros.value);
-    mapa.set(uid, siguientes);
+    mapa.set(uid, registros);
     this.registros.next(mapa);
   }
 }

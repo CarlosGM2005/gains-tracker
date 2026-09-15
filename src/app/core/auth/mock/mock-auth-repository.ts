@@ -89,6 +89,19 @@ export class MockAuthRepository extends AuthRepository {
     }
   }
 
+  async reautenticarConGoogle(): Promise<void> {
+    await esperar(this.latencia);
+    if (this.usuarioActual().proveedor !== 'google') {
+      throw new AuthError('cuenta-distinta');
+    }
+  }
+
+  async eliminarCuenta(): Promise<void> {
+    await esperar(this.latencia);
+    this.cuentas.delete(this.usuarioActual().email);
+    this.usuario.next(null);
+  }
+
   private usuarioActual(): AuthUser {
     const actual = this.usuario.value;
     if (!actual) {

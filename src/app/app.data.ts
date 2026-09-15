@@ -10,6 +10,9 @@ import { provideFirebase } from '@core/firebase/firebase.providers';
 import { EjerciciosRepository } from '@features/ejercicios/data/ejercicios-repository';
 import { FirebaseEjerciciosRepository } from '@features/ejercicios/data/firebase/firebase-ejercicios-repository';
 import { MockEjerciciosRepository } from '@features/ejercicios/data/mock/mock-ejercicios-repository';
+import { FavoritosRepository } from '@features/favoritos/data/favoritos-repository';
+import { FirebaseFavoritosRepository } from '@features/favoritos/data/firebase/firebase-favoritos-repository';
+import { MockFavoritosRepository } from '@features/favoritos/data/mock/mock-favoritos-repository';
 import { FirebasePerfilRepository } from '@features/perfil/data/firebase/firebase-perfil-repository';
 import { MockPerfilRepository } from '@features/perfil/data/mock/mock-perfil-repository';
 import { PerfilRepository } from '@features/perfil/data/perfil-repository';
@@ -32,6 +35,7 @@ export function provideDataLayer(env: Environment): EnvironmentProviders {
       { provide: ANALYTICS_TRACKER, useClass: FirebaseAnalyticsTracker },
       { provide: AuthRepository, useClass: FirebaseAuthRepository },
       { provide: EjerciciosRepository, useClass: FirebaseEjerciciosRepository },
+      { provide: FavoritosRepository, useClass: FirebaseFavoritosRepository },
       { provide: PerfilRepository, useClass: FirebasePerfilRepository },
       { provide: RegistrosRepository, useClass: FirebaseRegistrosRepository },
     ]);
@@ -41,6 +45,7 @@ export function provideDataLayer(env: Environment): EnvironmentProviders {
     { provide: MOCK_LATENCY_MS, useValue: env.mockLatencyMs },
     { provide: AuthRepository, useClass: MockAuthRepository },
     { provide: EjerciciosRepository, useClass: MockEjerciciosRepository },
+    { provide: FavoritosRepository, useClass: MockFavoritosRepository },
     { provide: PerfilRepository, useClass: MockPerfilRepository },
     { provide: RegistrosRepository, useClass: MockRegistrosRepository },
   ]);

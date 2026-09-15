@@ -15,6 +15,7 @@ const PERFIL_DEMO: Perfil = {
   edad: 28,
   peso: 75,
   altura: 1.78,
+  foto: null,
   creadoEn: new Date('2025-05-01T10:00:00Z'),
 };
 
@@ -53,6 +54,13 @@ export class MockPerfilRepository extends PerfilRepository {
   async sincronizarEmail(uid: string, email: string): Promise<void> {
     await esperar(this.latencia);
     this.guardar({ ...this.existente(uid), email });
+  }
+
+  async borrar(uid: string): Promise<void> {
+    await esperar(this.latencia);
+    const siguiente = new Map(this.perfiles.value);
+    siguiente.delete(uid);
+    this.perfiles.next(siguiente);
   }
 
   private existente(uid: string): Perfil {

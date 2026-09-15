@@ -44,6 +44,7 @@ export class SesionService {
       edad: datos.edad,
       peso: datos.peso,
       altura: datos.altura,
+      foto: null,
       creadoEn: new Date(),
     });
     await this.router.navigateByUrl(destinoSeguro(undefined));
@@ -60,6 +61,7 @@ function perfilVacio(usuario: AuthUser): Perfil {
     edad: null,
     peso: null,
     altura: null,
+    foto: null,
     creadoEn: new Date(),
   };
 }

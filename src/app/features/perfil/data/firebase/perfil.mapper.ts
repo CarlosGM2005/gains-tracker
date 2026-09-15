@@ -1,6 +1,7 @@
 import { fecha, positivoONull, texto, textoONull } from '@core/firebase/conversiones';
 
 import { type CambiosPerfil, type Perfil } from '../../domain/perfil.model';
+import { esFotoValida } from '../../domain/perfil.rules';
 
 /** Documento `usuarios/{uid}` (mismos campos que la app antigua). */
 export interface PerfilDto {
@@ -11,6 +12,8 @@ export interface PerfilDto {
   edad?: unknown;
   peso?: unknown;
   altura?: unknown;
+  /** Data URL de la foto (fase 8). */
+  foto?: unknown;
   createdAt?: unknown;
 }
 
@@ -24,6 +27,7 @@ export function perfilDesdeFirestore(uid: string, dto: PerfilDto): Perfil {
     edad: positivoONull(dto.edad),
     peso: positivoONull(dto.peso),
     altura: positivoONull(dto.altura),
+    foto: esFotoValida(dto.foto) ? dto.foto : null,
     creadoEn: fecha(dto.createdAt) ?? new Date(0),
   };
 }
@@ -37,6 +41,7 @@ export function perfilAFirestore(perfil: Perfil): PerfilDto {
     edad: perfil.edad,
     peso: perfil.peso,
     altura: perfil.altura,
+    foto: perfil.foto,
     createdAt: perfil.creadoEn,
   };
 }

@@ -2,13 +2,15 @@
   <header class="dialog__head">
     <div>
       <p class="text-label dialog__overline">{{ ejercicio.nombre }}</p>
-      <h2 id="serie-titulo" class="dialog__title">Registrar serie</h2>
+      <h2 id="serie-titulo" class="dialog__title">{{ editando ? 'Editar serie' : 'Registrar serie' }}</h2>
     </div>
     <button type="button" class="dialog__close" aria-label="Cerrar" (click)="cerrar()">×</button>
   </header>
 
   @if (autenticado()) {
-    <p class="dialog__intro">Registra tu serie del ejercicio para tener un mejor seguimiento.</p>
+    <p class="dialog__text">
+      {{ editando ? 'Corrige los datos de la serie.' : 'Registra tu serie del ejercicio para tener un mejor seguimiento.' }}
+    </p>
 
     <form class="form" [formGroup]="form" (ngSubmit)="registrar()" novalidate>
       <div class="field">
@@ -50,7 +52,7 @@
       <div class="dialog__actions">
         <button type="button" class="btn btn--ghost" (click)="cerrar()">Cancelar</button>
         <button type="submit" class="btn btn--primary" [disabled]="enviando() || form.invalid">
-          {{ enviando() ? 'Guardando…' : 'Registrar' }}
+          {{ enviando() ? 'Guardando…' : editando ? 'Guardar' : 'Registrar' }}
         </button>
       </div>
     </form>

@@ -1,10 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-/** Avatar circular con la inicial del nombre, o "?" si no hay nombre. */
+/** Avatar circular con la foto de perfil o, si no hay, la inicial del nombre ("?" sin nombre). */
 @Component({
   selector: 'app-avatar-initial',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<span class="avatar" aria-hidden="true">{{ inicial() }}</span>`,
+  template: `
+    <span class="avatar" aria-hidden="true">
+      @if (foto(); as src) {
+        <img class="avatar__foto" [src]="src" alt="" />
+      } @else {
+        {{ inicial() }}
+      }
+    </span>
+  `,
   styles: `
     :host {
       display: block;
@@ -23,11 +31,20 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
       font-size: calc(var(--avatar-size, 5rem) * 0.45);
       font-weight: var(--font-weight-bold);
       color: var(--color-accent);
+      overflow: hidden;
+    }
+
+    .avatar__foto {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   `,
 })
 export class AvatarInitial {
   readonly nombre = input<string | null>();
+  /** Data URL o URL de la foto. */
+  readonly foto = input<string | null>();
 
   protected readonly inicial = computed(() => {
     const limpio = this.nombre()?.trim();

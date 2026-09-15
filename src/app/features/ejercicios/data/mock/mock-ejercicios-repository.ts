@@ -10,6 +10,10 @@ import { EJERCICIOS_MOCK } from './ejercicios.mock-data';
 export class MockEjerciciosRepository extends EjerciciosRepository {
   private readonly latencia = inject(MOCK_LATENCY_MS);
 
+  todos(): Promise<Ejercicio[]> {
+    return this.filtrar(() => true);
+  }
+
   porNivelYMusculo(nivel: Nivel, musculo: Musculo): Promise<Ejercicio[]> {
     return this.filtrar((e) => e.nivel === nivel && e.musculo === musculo);
   }

@@ -1,0 +1,35 @@
+# Exclusiones del indice de codigo (MCP codebase-memory).
+# Se aplica ANTES de indexar: lo que entra aqui no genera nodos en el grafo.
+
+# Dependencias
+node_modules/
+
+# Salida de build y caches de Angular/Firebase
+dist/
+out-tsc/
+.angular/
+.firebase/
+tmp/
+
+# Binarios y multimedia (src/assets: iconos, logos y fotos del carrusel)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.svg
+*.webp
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.pdf
+*.zip
+
+# Bloqueos de dependencias: enormes y sin valor semantico
+package-lock.json
+yarn.lock
+
+# Cobertura y logs
+coverage/
+*.log

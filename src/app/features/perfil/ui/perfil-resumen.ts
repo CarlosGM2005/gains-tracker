@@ -13,7 +13,7 @@ import { type Perfil } from '../domain/perfil.model';
   template: `
     <section class="resumen">
       <div class="resumen__glow" aria-hidden="true"></div>
-      <app-avatar-initial class="stagger" [nombre]="perfil()?.nombre" />
+      <app-avatar-initial class="stagger" [nombre]="perfil()?.nombre" [foto]="perfil()?.foto" />
       <div class="resumen__id stagger" style="--i: 1">
         <h1 class="resumen__nombre">{{ perfil()?.nombre || '-' }}</h1>
         <p class="resumen__email">{{ perfil()?.email || '-' }}</p>

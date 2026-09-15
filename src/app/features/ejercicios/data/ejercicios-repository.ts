@@ -5,6 +5,9 @@ import { type Ejercicio, type Musculo, type Nivel } from '../domain/ejercicio.mo
  * Implementaciones: `mock/` ahora; `firebase/` cuando el proyecto Firebase esté activo.
  */
 export abstract class EjerciciosRepository {
+  /** Catálogo completo (buscador y favoritos). */
+  abstract todos(): Promise<Ejercicio[]>;
+
   abstract porNivelYMusculo(nivel: Nivel, musculo: Musculo): Promise<Ejercicio[]>;
 
   abstract recomendados(): Promise<Ejercicio[]>;

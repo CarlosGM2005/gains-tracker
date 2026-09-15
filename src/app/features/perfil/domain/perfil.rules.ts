@@ -9,6 +9,22 @@ export const REGLAS_PERFIL = {
   telefono: /^\d{9}$/,
 } as const;
 
+/**
+ * Foto de perfil guardada dentro de `usuarios/{uid}` (fase 8): sin Firebase Storage. Un cuadrado de
+ * 256 px en WebP ocupa ~20–40 kB; el límite deja margen y está muy lejos de 1 MiB por documento.
+ * `firestore.rules` comprueba el mismo tamaño y el mismo prefijo.
+ */
+export const REGLAS_FOTO = {
+  lado: 256,
+  maxCaracteres: 150_000,
+  maxBytesArchivo: 15 * 1024 * 1024,
+  prefijo: /^data:image\/(webp|jpeg);base64,/,
+} as const;
+
+export function esFotoValida(valor: unknown): valor is string {
+  return typeof valor === 'string' && valor.length <= REGLAS_FOTO.maxCaracteres && REGLAS_FOTO.prefijo.test(valor);
+}
+
 /** Regla de contraseña (decisión P4): mínimo 8 caracteres de cualquier tipo. */
 export const REGLAS_PASSWORD = {
   minLength: 8,

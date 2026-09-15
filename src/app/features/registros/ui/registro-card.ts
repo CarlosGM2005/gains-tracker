@@ -1,9 +1,12 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
-import { type RegistroEjercicio } from '../domain/registro.model';
+import { type RegistroEjercicio, type Serie } from '../domain/registro.model';
 
-/** Tarjeta desplegable de un ejercicio registrado. El estado abierto lo controla la página. */
+/**
+ * Tarjeta desplegable de un ejercicio registrado. El estado abierto lo controla la página, igual
+ * que editar y borrar cada serie.
+ */
 @Component({
   selector: 'app-registro-card',
   imports: [DatePipe, DecimalPipe],
@@ -15,4 +18,6 @@ export class RegistroCard {
   readonly registro = input.required<RegistroEjercicio>();
   readonly abierto = input.required<boolean>();
   readonly alternar = output();
+  readonly editar = output<Serie>();
+  readonly borrar = output<Serie>();
 }

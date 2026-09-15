@@ -85,6 +85,23 @@
   }
 }
 
+// Enlace discreto: eliminar la cuenta no debe competir con el resto del menú.
+.eliminar-enlace {
+  justify-self: center;
+  min-height: var(--tap-target);
+  margin-top: var(--space-2);
+  padding: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-underline-offset: 3px;
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--color-danger);
+    }
+  }
+}
+
 // En escritorio la barra se oculta (nav mobile-only) y el perfil ocupa dos columnas.
 @include bp.up(lg) {
   .perfil {

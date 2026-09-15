@@ -16,6 +16,7 @@ export type AuthErrorCode =
   | 'popup-cerrado'
   | 'popup-bloqueado'
   | 'requiere-login-reciente'
+  | 'cuenta-distinta'
   | 'sin-sesion'
   | 'red'
   | 'desconocido';

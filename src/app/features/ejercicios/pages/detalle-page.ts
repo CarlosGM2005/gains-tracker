@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { FavoritoButton } from '@features/favoritos/public-api';
 import { RegistrarSerieService } from '@features/registros/public-api';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { PageHeader } from '@shared/ui/page-header/page-header';
@@ -11,7 +12,7 @@ import { CatalogoStore } from '../state/catalogo-store';
 
 @Component({
   selector: 'app-detalle-page',
-  imports: [RouterLink, PageHeader, EmptyState, Spinner],
+  imports: [RouterLink, PageHeader, EmptyState, Spinner, FavoritoButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './detalle-page.html',
   styleUrl: './detalle-page.scss',

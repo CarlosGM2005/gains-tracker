@@ -22,16 +22,27 @@
           <span class="opcion__texto">Mis registros</span>
           <span class="opcion__flecha" aria-hidden="true">→</span>
         </a>
-        <a class="opcion stagger" style="--i: 5" routerLink="/privacidad">
+        <a class="opcion stagger" style="--i: 5" routerLink="/estadisticas">
+          <span class="opcion__icono"><img src="icons/logoEstadisticas.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__texto">Estadísticas</span>
+          <span class="opcion__flecha" aria-hidden="true">→</span>
+        </a>
+        <a class="opcion stagger" style="--i: 6" routerLink="/favoritos">
+          <span class="opcion__icono"><img src="icons/logoFavoritos.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__texto">Favoritos</span>
+          <span class="opcion__flecha" aria-hidden="true">→</span>
+        </a>
+        <a class="opcion stagger" style="--i: 7" routerLink="/privacidad">
           <span class="opcion__icono"><img src="icons/logoPoliticaPrivacidad.png" alt="" width="22" height="22" /></span>
           <span class="opcion__texto">Política de privacidad</span>
           <span class="opcion__flecha" aria-hidden="true">→</span>
         </a>
-        <button type="button" class="opcion opcion--peligro stagger" style="--i: 6" [disabled]="cerrando()" (click)="cerrarSesion()">
+        <button type="button" class="opcion opcion--peligro stagger" style="--i: 8" [disabled]="cerrando()" (click)="cerrarSesion()">
           <span class="opcion__icono"><img src="icons/logoLogout.png" alt="" width="22" height="22" /></span>
           <span class="opcion__texto">{{ cerrando() ? 'Cerrando sesión…' : 'Cerrar sesión' }}</span>
           <span class="opcion__flecha" aria-hidden="true">→</span>
         </button>
+        <a class="eliminar-enlace stagger" style="--i: 9" routerLink="/perfil/eliminar">Eliminar cuenta</a>
       </nav>
     </div>
   }

@@ -7,6 +7,7 @@ const MENSAJES: Readonly<Record<AuthErrorCode, string>> = {
   'popup-cerrado': 'Has cerrado la ventana de Google antes de terminar.',
   'popup-bloqueado': 'El navegador ha bloqueado la ventana de Google. Permite las ventanas emergentes.',
   'requiere-login-reciente': 'Por seguridad, vuelve a introducir tu contraseña.',
+  'cuenta-distinta': 'Has elegido una cuenta distinta a la de tu sesión.',
   'sin-sesion': 'Debes iniciar sesión para continuar.',
   red: 'No hay conexión. Comprueba tu red e inténtalo de nuevo.',
   desconocido: 'Ha ocurrido un error inesperado. Inténtalo de nuevo.',

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, resource } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ChipGroup } from '@shared/ui/chip-group/chip-group';
 import { PageHeader } from '@shared/ui/page-header/page-header';
@@ -18,11 +18,15 @@ import { OPCIONES_MUSCULO } from '../ui/opciones-musculo';
 
 @Component({
   selector: 'app-catalogo-page',
-  imports: [PageHeader, ChipGroup, EjerciciosListado],
+  imports: [RouterLink, PageHeader, ChipGroup, EjerciciosListado],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="page">
-      <app-page-header titulo="Ejercicios" [antetitulo]="'Nivel ' + etiquetaNivel()" />
+      <app-page-header titulo="Ejercicios" [antetitulo]="'Nivel ' + etiquetaNivel()">
+        <a headerActions class="btn btn--ghost btn--icon" routerLink="/buscar" aria-label="Buscar ejercicios">
+          <img src="icons/logoBuscar.png" alt="" width="22" height="22" />
+        </a>
+      </app-page-header>
 
       <div class="catalogo">
         <app-chip-group

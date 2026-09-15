@@ -44,6 +44,17 @@ describe('CatalogoStore', () => {
     expect(espia).not.toHaveBeenCalled();
   });
 
+  it('carga el catálogo completo una vez y lo usa para buscar por id', async () => {
+    const todos = vi.spyOn(repo, 'todos');
+    const porId = vi.spyOn(repo, 'porId');
+
+    const [primera, segunda] = await Promise.all([store.todos(), store.todos()]);
+    expect(todos).toHaveBeenCalledTimes(1);
+    expect(primera?.length).toBe(segunda?.length);
+    expect(await store.porId('ej-press-de-banca')).not.toBeNull();
+    expect(porId).not.toHaveBeenCalled();
+  });
+
   it('olvida una consulta fallida para poder reintentar', async () => {
     const espia = vi.spyOn(repo, 'recomendados').mockRejectedValueOnce(new Error('sin red'));
 

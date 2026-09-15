@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 
-import { type EjercicioRegistrable, type NuevaSerie } from '../../domain/registro.model';
+import { type EjercicioRegistrable, type NuevaSerie, SerieNoEncontradaError } from '../../domain/registro.model';
 import { RegistrosRepository } from '../registros-repository';
 import { MockRegistrosRepository } from './mock-registros-repository';
 
@@ -46,5 +46,40 @@ describe('MockRegistrosRepository', () => {
     await repo.agregarSerie(UID, EJERCICIO, SERIE);
 
     expect(await firstValueFrom(repo.observar('otro-usuario'))).toEqual([]);
+  });
+
+  it('edita una serie conservando su id y su fecha de creación', async () => {
+    await repo.agregarSerie(UID, EJERCICIO, SERIE);
+    const [antes] = await firstValueFrom(repo.observar(UID));
+    const serie = antes!.series[0]!;
+
+    await repo.actualizarSerie(UID, 'ej-1', serie.id, { ...SERIE, peso: 55 });
+    const [despues] = await firstValueFrom(repo.observar(UID));
+
+    expect(despues?.series[0]).toMatchObject({ id: serie.id, peso: 55, creadaEn: serie.creadaEn });
+  });
+
+  it('al borrar la última serie desaparece el registro', async () => {
+    await repo.agregarSerie(UID, EJERCICIO, SERIE);
+    await repo.agregarSerie(UID, EJERCICIO, SERIE);
+    const [registro] = await firstValueFrom(repo.observar(UID));
+    const [primera, segunda] = registro!.series;
+
+    await repo.borrarSerie(UID, 'ej-1', primera!.id);
+    expect((await firstValueFrom(repo.observar(UID)))[0]?.series.map((s) => s.id)).toEqual([segunda!.id]);
+
+    await repo.borrarSerie(UID, 'ej-1', segunda!.id);
+    expect(await firstValueFrom(repo.observar(UID))).toEqual([]);
+  });
+
+  it('avisa si la serie ya no existe', async () => {
+    await expect(repo.borrarSerie(UID, 'ej-1', 'no-existe')).rejects.toBeInstanceOf(SerieNoEncontradaError);
+  });
+
+  it('borra todos los registros de un usuario', async () => {
+    await repo.agregarSerie(UID, EJERCICIO, SERIE);
+    await repo.borrarTodos(UID);
+
+    expect(await firstValueFrom(repo.observar(UID))).toEqual([]);
   });
 });

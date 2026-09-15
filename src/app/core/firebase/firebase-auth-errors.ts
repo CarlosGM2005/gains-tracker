@@ -12,6 +12,7 @@ const CODIGOS: Readonly<Record<string, AuthErrorCode>> = {
   'auth/cancelled-popup-request': 'popup-cerrado',
   'auth/popup-blocked': 'popup-bloqueado',
   'auth/requires-recent-login': 'requiere-login-reciente',
+  'auth/user-mismatch': 'cuenta-distinta',
   'auth/network-request-failed': 'red',
 };
 

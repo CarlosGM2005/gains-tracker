@@ -1,0 +1,104 @@
+<div class="page">
+  <app-page-header titulo="Estadísticas" antetitulo="Tu progreso" />
+
+  @if (store.error()) {
+    <app-empty-state tipo="error" titulo="No se pudieron cargar tus registros" detalle="Inténtalo más tarde." />
+  } @else if (store.cargando()) {
+    <app-spinner etiqueta="Cargando estadísticas" />
+  } @else if (store.registros().length === 0) {
+    <app-empty-state titulo="Aún no hay datos" detalle="Registra tu primera serie y aquí verás tu evolución.">
+      <a class="btn btn--primary" routerLink="/ejercicios">Explorar ejercicios</a>
+    </app-empty-state>
+  } @else {
+    @let r = resumen();
+    <div class="stats">
+      <section class="resumen" aria-label="Resumen">
+        <div class="kpi stagger" style="--i: 0">
+          <p class="kpi__valor">{{ r.diasEntrenados }}</p>
+          <p class="text-label">Días entrenados</p>
+        </div>
+        <div class="kpi stagger" style="--i: 1">
+          <p class="kpi__valor">{{ r.seriesTotales }}</p>
+          <p class="text-label">Series</p>
+        </div>
+        <div class="kpi stagger" style="--i: 2">
+          <p class="kpi__valor">{{ r.volumenTotal | number: '1.0-0' }} <small>kg</small></p>
+          <p class="text-label">Volumen total</p>
+        </div>
+        <div class="kpi stagger" style="--i: 3">
+          <p class="kpi__valor">{{ r.ejercicios }}</p>
+          <p class="text-label">Ejercicios</p>
+        </div>
+        @if (r.favorito; as favorito) {
+          <p class="resumen__favorito stagger" style="--i: 4">
+            Tu ejercicio más trabajado es <strong>{{ favorito.nombre }}</strong> con {{ favorito.series }} series.
+          </p>
+        }
+      </section>
+
+      <section class="bloque stagger" style="--i: 5" aria-labelledby="progreso-titulo">
+        <div class="bloque__head">
+          <h2 id="progreso-titulo" class="bloque__titulo">Progreso por ejercicio</h2>
+          <div class="field bloque__selector">
+            <label class="visually-hidden" for="progreso-ejercicio">Ejercicio</label>
+            <select #selector id="progreso-ejercicio" class="input" (change)="ejercicioId.set(selector.value)">
+              @for (registro of store.registros(); track registro.ejercicioId) {
+                <option [value]="registro.ejercicioId" [selected]="registro.ejercicioId === ejercicioId()">
+                  {{ registro.nombre }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (progreso(); as p) {
+          <dl class="mini">
+            <div>
+              <dt>Récord</dt>
+              <dd>{{ p.mejorPeso | number: '1.0-2' }} <small>kg</small></dd>
+            </div>
+            <div>
+              <dt>Desde el primer día</dt>
+              <dd [class.mini--sube]="p.variacionPeso > 0" [class.mini--baja]="p.variacionPeso < 0">
+                {{ p.variacionPeso > 0 ? '+' : '' }}{{ p.variacionPeso | number: '1.0-2' }} <small>kg</small>
+              </dd>
+            </div>
+            <div>
+              <dt>Días</dt>
+              <dd>{{ p.puntos.length }}</dd>
+            </div>
+          </dl>
+
+          @if (p.puntos.length > 1) {
+            <app-grafica-progreso [puntos]="p.puntos" [titulo]="'Peso máximo por día en ' + registroElegido()?.nombre" />
+            <p class="bloque__nota">Peso máximo de cada día. Los puntos rellenos marcan tu récord.</p>
+          } @else {
+            <p class="bloque__nota">
+              Solo hay un día registrado ({{ p.puntos[0]?.dia | date: 'd MMM y' }}). Registra más para ver la gráfica.
+            </p>
+          }
+        }
+      </section>
+
+      <section class="bloque stagger" style="--i: 6" aria-labelledby="actividad-titulo">
+        <div class="bloque__head">
+          <h2 id="actividad-titulo" class="bloque__titulo">Últimas {{ semanas().length }} semanas</h2>
+          <p class="text-label">{{ diasSemanas() }} días</p>
+        </div>
+
+        <ol class="barras">
+          @for (semana of semanas(); track semana.inicio; let ultima = $last) {
+            <li class="barra">
+              <span class="visually-hidden">Semana del {{ semana.inicio | date: 'd MMM' }}: {{ semana.dias }} días</span>
+              <span class="barra__valor" aria-hidden="true">{{ semana.dias || '' }}</span>
+              <span class="barra__pista" aria-hidden="true">
+                <span class="barra__relleno" [class.barra__relleno--actual]="ultima" [style.height.%]="(semana.dias / 7) * 100"></span>
+              </span>
+              <span class="barra__etiqueta" aria-hidden="true">{{ semana.inicio | date: 'd/M' }}</span>
+            </li>
+          }
+        </ol>
+      </section>
+    </div>
+  }
+</div>

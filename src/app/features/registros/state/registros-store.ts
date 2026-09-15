@@ -48,18 +48,30 @@ export class RegistrosStore {
   readonly cargando = computed(() => this.estado().tipo === 'cargando');
   readonly error = computed(() => this.estado().tipo === 'error');
 
-  /** Ordenados por el día más reciente registrado; dentro de cada uno, series de más nueva a más antigua. */
+  /**
+   * Ordenados por el día más reciente registrado; dentro de cada uno, series de más nueva a más antigua.
+   * Un registro sin series (documento vaciado a mano) no se muestra.
+   */
   readonly registros = computed<RegistroEjercicio[]>(() => {
     const estado = this.estado();
     if (estado.tipo !== 'listo') {
       return [];
     }
-    return [...estado.registros]
+    return estado.registros
+      .filter((r) => r.series.length > 0)
       .map((r) => ({ ...r, series: [...r.series].sort((a, b) => b.dia.localeCompare(a.dia)) }))
       .sort((a, b) => (ultimoDia(b) ?? '').localeCompare(ultimoDia(a) ?? ''));
   });
 
   agregarSerie(ejercicio: EjercicioRegistrable, serie: NuevaSerie): Promise<void> {
     return this.repo.agregarSerie(this.auth.uidActual(), ejercicio, serie);
+  }
+
+  actualizarSerie(ejercicioId: string, serieId: string, cambios: NuevaSerie): Promise<void> {
+    return this.repo.actualizarSerie(this.auth.uidActual(), ejercicioId, serieId, cambios);
+  }
+
+  borrarSerie(ejercicioId: string, serieId: string): Promise<void> {
+    return this.repo.borrarSerie(this.auth.uidActual(), ejercicioId, serieId);
   }
 }

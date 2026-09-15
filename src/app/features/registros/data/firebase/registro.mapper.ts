@@ -1,6 +1,6 @@
 import { fecha, numero, texto } from '@core/firebase/conversiones';
 
-import { type RegistroEjercicio, type Serie } from '../../domain/registro.model';
+import { type NuevaSerie, type RegistroEjercicio, type Serie, SerieNoEncontradaError } from '../../domain/registro.model';
 
 /** Serie tal como se guarda en `usuarios/{uid}/registros/{idEjercicio}.series[]`. */
 export interface SerieDto {
@@ -60,4 +60,34 @@ export function serieAFirestore(serie: Serie): SerieDto {
     descanso: serie.descansoMin,
     creadaEn: serie.creadaEn ?? new Date(),
   };
+}
+
+/**
+ * Edita (`cambios`) o borra (`null`) una serie del array `series` tal como está en Firestore.
+ * Fija el id de las series antiguas (`legacy-N`, el mismo que genera la lectura): así borrar una no
+ * cambia el id de las siguientes. El resto de campos de cada serie se conserva tal cual.
+ */
+export function modificarSeries(series: unknown, serieId: string, cambios: NuevaSerie | null): SerieDto[] {
+  const actuales = (Array.isArray(series) ? (series as SerieDto[]) : []).map(
+    (dto, i): SerieDto => ({ ...dto, id: texto(dto.id) || `legacy-${i}` }),
+  );
+  const indice = actuales.findIndex((dto) => dto.id === serieId);
+  if (indice === -1) {
+    throw new SerieNoEncontradaError(serieId);
+  }
+  if (cambios === null) {
+    return actuales.filter((_, i) => i !== indice);
+  }
+  return actuales.map((dto, i) =>
+    i === indice
+      ? {
+          ...dto,
+          dia: cambios.dia,
+          numero: cambios.series,
+          repeticiones: cambios.repeticiones,
+          peso: cambios.peso,
+          descanso: cambios.descansoMin,
+        }
+      : dto,
+  );
 }

@@ -72,6 +72,18 @@
   }
 }
 
+// Acciones destructivas (borrar serie, eliminar cuenta).
+.btn--danger {
+  background: var(--color-danger);
+  color: var(--color-on-accent);
+
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      background: rgb(from var(--color-danger) r g b / 85%);
+    }
+  }
+}
+
 .btn--lg {
   min-height: 56px;
   padding-inline: var(--space-10);

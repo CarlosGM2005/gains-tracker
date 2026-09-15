@@ -56,4 +56,12 @@ export class AuthStore {
   reautenticar(password: string): Promise<void> {
     return this.repo.reautenticar(password);
   }
+
+  reautenticarConGoogle(): Promise<void> {
+    return this.repo.reautenticarConGoogle();
+  }
+
+  eliminarCuenta(): Promise<void> {
+    return this.repo.eliminarCuenta();
+  }
 }

@@ -12,6 +12,11 @@ export class CatalogoStore {
   private readonly repo = inject(EjerciciosRepository);
   private readonly cache = new Map<string, Promise<unknown>>();
 
+  /** Una sola lectura de la colección por sesión; también sirve para resolver ids sin consultas. */
+  todos(): Promise<Ejercicio[]> {
+    return this.cachear('todos', () => this.repo.todos());
+  }
+
   porNivelYMusculo(nivel: Nivel, musculo: Musculo): Promise<Ejercicio[]> {
     return this.cachear(`nivel:${nivel}|${musculo}`, () => this.repo.porNivelYMusculo(nivel, musculo));
   }

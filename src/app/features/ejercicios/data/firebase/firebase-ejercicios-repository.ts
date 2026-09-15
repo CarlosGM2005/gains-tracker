@@ -14,6 +14,10 @@ const COLECCION = 'ejercicios';
 export class FirebaseEjerciciosRepository extends EjerciciosRepository {
   private readonly db = inject(FIRESTORE);
 
+  todos(): Promise<Ejercicio[]> {
+    return this.consultar(query(this.coleccion()));
+  }
+
   porNivelYMusculo(nivel: Nivel, musculo: Musculo): Promise<Ejercicio[]> {
     return this.consultar(query(this.coleccion(), where('musculo', '==', musculo), where('nivel', '==', nivel)));
   }

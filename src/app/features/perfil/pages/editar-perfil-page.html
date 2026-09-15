@@ -12,7 +12,37 @@
       <app-perfil-resumen [perfil]="store.perfil()" />
 
       <div class="editar__forms">
-        <section class="bloque stagger" style="--i: 3" aria-labelledby="datos-titulo">
+        <section class="bloque stagger" style="--i: 3" aria-labelledby="foto-titulo">
+          <h2 id="foto-titulo" class="bloque__titulo">Foto de perfil</h2>
+
+          <div class="foto">
+            <app-avatar-initial class="foto__avatar" [nombre]="store.perfil()?.nombre" [foto]="store.perfil()?.foto" />
+            <div class="foto__acciones">
+              <p class="bloque__texto">Se recorta en cuadrado y se reduce antes de guardarse.</p>
+              <div class="foto__botones">
+                <input
+                  #archivo
+                  id="ed-foto"
+                  class="visually-hidden"
+                  type="file"
+                  accept="image/*"
+                  [disabled]="guardandoFoto()"
+                  (change)="elegirFoto(archivo)"
+                />
+                <label class="btn btn--primary" for="ed-foto" [attr.aria-disabled]="guardandoFoto()">
+                  {{ guardandoFoto() ? 'Guardando…' : store.perfil()?.foto ? 'Cambiar foto' : 'Subir foto' }}
+                </label>
+                @if (store.perfil()?.foto) {
+                  <button type="button" class="btn btn--ghost" [disabled]="guardandoFoto()" (click)="quitarFoto()">
+                    Quitar
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloque stagger" style="--i: 4" aria-labelledby="datos-titulo">
           <h2 id="datos-titulo" class="bloque__titulo">Datos del perfil</h2>
 
           <form class="form" [formGroup]="datos" (ngSubmit)="guardar()" novalidate>
@@ -57,7 +87,7 @@
           </form>
         </section>
 
-        <section class="bloque stagger" style="--i: 4" aria-labelledby="email-titulo">
+        <section class="bloque stagger" style="--i: 5" aria-labelledby="email-titulo">
           <h2 id="email-titulo" class="bloque__titulo">Correo electrónico</h2>
 
           @if (store.puedeCambiarEmail()) {

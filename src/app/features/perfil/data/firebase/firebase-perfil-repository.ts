@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, onSnapshot, runTransaction, setDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, onSnapshot, runTransaction, setDoc, updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 import { FIRESTORE } from '@core/firebase/firebase.providers';
@@ -43,6 +43,10 @@ export class FirebasePerfilRepository extends PerfilRepository {
 
   async sincronizarEmail(uid: string, email: string): Promise<void> {
     await updateDoc(this.ref(uid), { email });
+  }
+
+  async borrar(uid: string): Promise<void> {
+    await deleteDoc(this.ref(uid));
   }
 
   private ref(uid: string) {

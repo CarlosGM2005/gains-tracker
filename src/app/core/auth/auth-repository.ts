@@ -23,4 +23,10 @@ export abstract class AuthRepository {
 
   /** Necesario antes de operaciones sensibles si la sesión es antigua (`requiere-login-reciente`). */
   abstract reautenticar(password: string): Promise<void>;
+
+  /** Igual que `reautenticar`, para usuarios de Google (vuelve a pedir la cuenta en una ventana). */
+  abstract reautenticarConGoogle(): Promise<void>;
+
+  /** Borra el usuario de Auth y cierra la sesión. Exige una autenticación reciente. */
+  abstract eliminarCuenta(): Promise<void>;
 }

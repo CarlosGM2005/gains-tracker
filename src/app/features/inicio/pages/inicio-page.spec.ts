@@ -58,6 +58,12 @@ describe('InicioPage', () => {
     expect(botones).toContain('Reintentar');
   });
 
+  it('cada recomendado enlaza a su detalle', async () => {
+    const html = await renderizar(async () => [ejercicio(1), ejercicio(2)]);
+
+    expect(html.querySelector('app-recomendado-tile a[href="/ejercicios/detalle/ej-1"]')).not.toBeNull();
+  });
+
   it('enlaza a todos los recomendados', async () => {
     const html = await renderizar(async () => []);
 

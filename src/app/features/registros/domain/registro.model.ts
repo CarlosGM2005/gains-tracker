@@ -35,6 +35,14 @@ export const LIMITES_SERIE = {
   descansoMin: { min: 0 },
 } as const;
 
+/** La serie o el registro ya no existe (p. ej. se borró desde otro dispositivo). */
+export class SerieNoEncontradaError extends Error {
+  constructor(serieId: string) {
+    super(`No existe la serie ${serieId}`);
+    this.name = 'SerieNoEncontradaError';
+  }
+}
+
 /** Día más reciente registrado, para ordenar la lista de registros. */
 export function ultimoDia(registro: RegistroEjercicio): string | null {
   return registro.series.reduce<string | null>((max, s) => (max === null || s.dia > max ? s.dia : max), null);

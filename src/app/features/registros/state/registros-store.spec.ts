@@ -67,4 +67,19 @@ describe('RegistrosStore', () => {
 
     expect(store.registros()).toEqual([]);
   });
+
+  it('edita y borra series del usuario actual', async () => {
+    usuario$.next(DEMO_USER);
+    TestBed.tick();
+    const sentadilla = store.registros().find((r) => r.nombre === 'Sentadilla')!;
+    const serie = sentadilla.series[0]!;
+
+    await store.actualizarSerie(sentadilla.ejercicioId, serie.id, { ...serie, repeticiones: 3 });
+    TestBed.tick();
+    expect(store.registros().find((r) => r.nombre === 'Sentadilla')?.series[0]?.repeticiones).toBe(3);
+
+    await store.borrarSerie(sentadilla.ejercicioId, serie.id);
+    TestBed.tick();
+    expect(store.registros().map((r) => r.nombre)).toEqual(['Press de banca']);
+  });
 });

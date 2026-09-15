@@ -1,32 +1,40 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { type Ejercicio } from '@features/ejercicios/public-api';
 
 /**
- * Tarjeta de un recomendado en el inicio: imagen de inicio, número de orden y nombre.
- * Igual que en la app actual, no es un enlace (ver wiki: funcionalidad implícita 8).
+ * Tarjeta de un recomendado en el inicio: imagen de inicio, número de orden y nombre. Enlaza al
+ * detalle (fase 8; en la app antigua no era un enlace).
  */
 @Component({
   selector: 'app-recomendado-tile',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <figure class="tile">
-      <div class="tile__media">
+    <a class="tile" [routerLink]="['/ejercicios/detalle', ejercicio().id]">
+      <span class="tile__media">
         <img [src]="ejercicio().imagenInicio" alt="" width="400" height="300" loading="lazy" />
         <span class="tile__index" aria-hidden="true">{{ numero() }}</span>
-      </div>
-      <figcaption class="tile__name">{{ ejercicio().nombre }}</figcaption>
-    </figure>
+      </span>
+      <span class="tile__name">{{ ejercicio().nombre }}</span>
+    </a>
   `,
   styles: `
     .tile {
       display: grid;
       gap: var(--space-3);
-      margin: 0;
+      text-decoration: none;
+      transition: transform var(--duration-fast) var(--easing-standard);
+    }
+
+    .tile:active {
+      transform: scale(0.97);
     }
 
     .tile__media {
       position: relative;
+      display: block;
       overflow: hidden;
       border-radius: var(--radius-md);
       background: var(--color-surface);
@@ -37,6 +45,7 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform var(--duration-slow) var(--easing-out);
     }
 
     .tile__media::after {
@@ -64,6 +73,17 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-display);
       text-transform: uppercase;
+      transition: color var(--duration-base) var(--easing-standard);
+    }
+
+    @media (hover: hover) {
+      .tile:hover .tile__media img {
+        transform: scale(1.06);
+      }
+
+      .tile:hover .tile__name {
+        color: var(--color-accent);
+      }
     }
   `,
 })

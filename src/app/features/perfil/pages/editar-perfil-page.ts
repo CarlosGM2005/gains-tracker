@@ -6,20 +6,29 @@ import { esErrorAuth, mensajeDeErrorAuth } from '@core/auth/auth-errors';
 import { ToastService } from '@core/notifications/toast.service';
 import { FieldError } from '@shared/forms/field-error';
 import { refrescarConFormulario } from '@shared/forms/refrescar-con-formulario';
+import { AvatarInitial } from '@shared/ui/avatar-initial/avatar-initial';
 import { BackButton } from '@shared/ui/back-button/back-button';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { Spinner } from '@shared/ui/spinner/spinner';
+import { comprimirFoto, ImagenNoValidaError, type MotivoImagenNoValida } from '@shared/utils/imagen';
 
-import { type CambiosPerfil, type Perfil } from '../domain/perfil.model';
-import { MENSAJES_PERFIL, VALIDADORES_EMAIL, validadoresPerfil } from '../domain/perfil.rules';
+import { type CambiosPerfil, type DatosPerfilEditables, type Perfil } from '../domain/perfil.model';
+import { MENSAJES_PERFIL, REGLAS_FOTO, VALIDADORES_EMAIL, validadoresPerfil } from '../domain/perfil.rules';
 import { PerfilStore } from '../state/perfil-store';
 import { PerfilResumen } from '../ui/perfil-resumen';
 
-type CampoEditable = keyof CambiosPerfil;
+type CampoEditable = keyof DatosPerfilEditables;
+
+const MENSAJES_FOTO: Readonly<Record<MotivoImagenNoValida, string>> = {
+  tipo: 'El archivo no es una imagen.',
+  'archivo-grande': 'La imagen pesa demasiado (máximo 15 MB).',
+  lectura: 'No se pudo leer la imagen. Prueba con otra en JPG, PNG o WebP.',
+  'resultado-grande': 'No se pudo reducir la imagen lo suficiente. Prueba con otra.',
+};
 
 @Component({
   selector: 'app-editar-perfil-page',
-  imports: [ReactiveFormsModule, BackButton, EmptyState, Spinner, FieldError, PerfilResumen],
+  imports: [ReactiveFormsModule, AvatarInitial, BackButton, EmptyState, Spinner, FieldError, PerfilResumen],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './editar-perfil-page.html',
   styleUrl: './editar-perfil-page.scss',
@@ -49,6 +58,8 @@ export class EditarPerfilPage {
   protected readonly pideReautenticar = signal(false);
   protected readonly enviandoEmail = signal(false);
   protected readonly errorEmail = signal<string | null>(null);
+
+  protected readonly guardandoFoto = signal(false);
 
   constructor() {
     refrescarConFormulario(this.datos);
@@ -112,6 +123,37 @@ export class EditarPerfilPage {
       this.errorEmail.set(mensajeDeErrorAuth(e));
     } finally {
       this.enviandoEmail.set(false);
+    }
+  }
+
+  /** Comprime la imagen en el navegador y la guarda al momento (no depende del botón Guardar). */
+  protected async elegirFoto(input: HTMLInputElement): Promise<void> {
+    const archivo = input.files?.[0];
+    input.value = ''; // permite volver a elegir el mismo archivo
+    if (!archivo) {
+      return;
+    }
+    this.guardandoFoto.set(true);
+    try {
+      const foto = await comprimirFoto(archivo, REGLAS_FOTO);
+      await this.store.cambiarFoto(foto);
+      this.toasts.exito('Foto de perfil actualizada.');
+    } catch (e) {
+      this.toasts.error(e instanceof ImagenNoValidaError ? MENSAJES_FOTO[e.motivo] : 'No se pudo guardar la foto. Inténtalo de nuevo.');
+    } finally {
+      this.guardandoFoto.set(false);
+    }
+  }
+
+  protected async quitarFoto(): Promise<void> {
+    this.guardandoFoto.set(true);
+    try {
+      await this.store.cambiarFoto(null);
+      this.toasts.exito('Foto de perfil eliminada.');
+    } catch {
+      this.toasts.error('No se pudo quitar la foto. Inténtalo de nuevo.');
+    } finally {
+      this.guardandoFoto.set(false);
     }
   }
 

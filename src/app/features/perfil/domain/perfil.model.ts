@@ -9,13 +9,16 @@ export interface Perfil {
   peso: number | null;
   /** Metros. */
   altura: number | null;
+  /** Foto recortada y comprimida como data URL (WebP o JPEG). `null` si no hay foto. */
+  foto: string | null;
   creadoEn: Date;
 }
 
 /** El email no está aquí: se cambia en Auth con verificación y después se sincroniza. */
 export type DatosPerfilEditables = Pick<Perfil, 'nombre' | 'telefono' | 'edad' | 'peso' | 'altura'>;
 
-export type CambiosPerfil = Partial<DatosPerfilEditables>;
+/** La foto se guarda aparte del formulario, en cuanto se elige. */
+export type CambiosPerfil = Partial<DatosPerfilEditables & Pick<Perfil, 'foto'>>;
 
 export function inicialDelNombre(nombre: string | null | undefined): string {
   const limpio = nombre?.trim();

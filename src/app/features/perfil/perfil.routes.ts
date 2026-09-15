@@ -11,6 +11,12 @@ export const PERFIL_ROUTES: Routes = [
     loadComponent: () => import('./pages/perfil-page').then((m) => m.PerfilPage),
   },
   {
+    path: 'eliminar',
+    title: 'Eliminar cuenta',
+    data: navData('mobile-only'),
+    loadComponent: () => import('./pages/eliminar-cuenta-page').then((m) => m.EliminarCuentaPage),
+  },
+  {
     path: 'editar',
     title: 'Editar datos',
     data: navData('mobile-only'),

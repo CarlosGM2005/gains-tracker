@@ -16,4 +16,7 @@ export abstract class PerfilRepository {
 
   /** Sincroniza el email tras confirmar el cambio en Auth. */
   abstract sincronizarEmail(uid: string, email: string): Promise<void>;
+
+  /** Borra el documento del perfil (incluye foto y favoritos). */
+  abstract borrar(uid: string): Promise<void>;
 }

@@ -28,6 +28,12 @@ export const routes: Routes = [
         loadChildren: () => import('@features/ejercicios/ejercicios.routes').then((m) => m.EJERCICIOS_ROUTES),
       },
       {
+        // Fuera de /ejercicios: así la entrada "Ejercicios" de la barra no se marca a la vez que "Buscar".
+        path: 'buscar',
+        title: 'Buscar ejercicios',
+        loadComponent: () => import('@features/ejercicios/pages/buscar-page').then((m) => m.BuscarPage),
+      },
+      {
         path: 'recomendados',
         title: 'Recomendados',
         loadComponent: () =>
@@ -38,6 +44,19 @@ export const routes: Routes = [
         title: 'Mis registros',
         canActivate: [authGuard],
         loadComponent: () => import('@features/registros/pages/registros-page').then((m) => m.RegistrosPage),
+      },
+      {
+        path: 'estadisticas',
+        title: 'Estadísticas',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('@features/registros/pages/estadisticas-page').then((m) => m.EstadisticasPage),
+      },
+      {
+        path: 'favoritos',
+        title: 'Favoritos',
+        canActivate: [authGuard],
+        loadComponent: () => import('@features/favoritos/pages/favoritos-page').then((m) => m.FavoritosPage),
       },
       {
         path: 'perfil',
