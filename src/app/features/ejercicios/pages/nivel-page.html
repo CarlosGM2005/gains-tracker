@@ -14,6 +14,7 @@
       <button
         type="button"
         class="nivel stagger"
+        appRipple
         [style.--i]="i + 1"
         [class.nivel--activo]="seleccionado() === nivel"
         [attr.aria-pressed]="seleccionado() === nivel"
@@ -21,7 +22,7 @@
       >
         <span class="nivel__barras" aria-hidden="true">
           @for (barra of niveles; track barra; let b = $index) {
-            <span class="nivel__barra" [class.nivel__barra--llena]="b <= i"></span>
+            <span class="nivel__barra" [class.nivel__barra--llena]="b <= i" [style.--b]="b"></span>
           }
         </span>
         <span class="nivel__nombre">{{ etiquetas[nivel] }}</span>

@@ -1,5 +1,3 @@
-@use 'breakpoints' as bp;
-
 .carousel {
   display: grid;
   gap: var(--space-4);
@@ -9,22 +7,50 @@
   display: flex;
   overflow-x: auto;
   border-radius: var(--radius-lg);
-  background: var(--color-surface-2);
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
 
 .carousel__slide {
+  display: grid;
   flex: 0 0 100%;
   scroll-snap-align: start;
-  aspect-ratio: 568 / 307;
 }
 
-.carousel__img {
-  width: 100%;
+// Todas las diapositivas miden lo que la más alta: el contenido ocupa toda la altura.
+.carousel__contenido {
   height: 100%;
-  object-fit: contain;
+}
+
+// Profundidad al deslizar: la diapositiva centrada se ve completa y las vecinas se encogen y se
+// apagan según su posición en el carril. Va ligado al scroll horizontal (dedo, flechas o
+// autoplay), sin JS. Sin soporte de scroll-driven animations se ve como antes.
+@keyframes slide-depth {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .carousel__contenido {
+    animation: slide-depth linear both;
+    animation-timeline: view(inline);
+  }
+}
+
+// El reset global acorta la duración, pero una animación ligada al scroll no depende de ella.
+@media (prefers-reduced-motion: reduce) {
+  .carousel__contenido {
+    animation: none;
+  }
 }
 
 .carousel__controls {
@@ -65,10 +91,4 @@
 .carousel__dot--activo::before {
   background: var(--color-accent);
   transform: none;
-}
-
-@include bp.up(md) {
-  .carousel__slide {
-    aspect-ratio: 1174 / 315;
-  }
 }

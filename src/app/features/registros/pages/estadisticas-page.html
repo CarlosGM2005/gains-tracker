@@ -14,19 +14,19 @@
     <div class="stats">
       <section class="resumen" aria-label="Resumen">
         <div class="kpi stagger" style="--i: 0">
-          <p class="kpi__valor">{{ r.diasEntrenados }}</p>
+          <p class="kpi__valor"><app-contador [valor]="r.diasEntrenados" /></p>
           <p class="text-label">Días entrenados</p>
         </div>
         <div class="kpi stagger" style="--i: 1">
-          <p class="kpi__valor">{{ r.seriesTotales }}</p>
+          <p class="kpi__valor"><app-contador [valor]="r.seriesTotales" /></p>
           <p class="text-label">Series</p>
         </div>
         <div class="kpi stagger" style="--i: 2">
-          <p class="kpi__valor">{{ r.volumenTotal | number: '1.0-0' }} <small>kg</small></p>
+          <p class="kpi__valor"><app-contador [valor]="r.volumenTotal" /> <small>kg</small></p>
           <p class="text-label">Volumen total</p>
         </div>
         <div class="kpi stagger" style="--i: 3">
-          <p class="kpi__valor">{{ r.ejercicios }}</p>
+          <p class="kpi__valor"><app-contador [valor]="r.ejercicios" /></p>
           <p class="text-label">Ejercicios</p>
         </div>
         @if (r.favorito; as favorito) {
@@ -36,7 +36,7 @@
         }
       </section>
 
-      <section class="bloque stagger" style="--i: 5" aria-labelledby="progreso-titulo">
+      <section class="bloque stagger" style="--i: 5" aria-labelledby="progreso-titulo" appReveal>
         <div class="bloque__head">
           <h2 id="progreso-titulo" class="bloque__titulo">Progreso por ejercicio</h2>
           <div class="field bloque__selector">
@@ -80,15 +80,15 @@
         }
       </section>
 
-      <section class="bloque stagger" style="--i: 6" aria-labelledby="actividad-titulo">
+      <section class="bloque stagger" style="--i: 6" aria-labelledby="actividad-titulo" appReveal>
         <div class="bloque__head">
           <h2 id="actividad-titulo" class="bloque__titulo">Últimas {{ semanas().length }} semanas</h2>
           <p class="text-label">{{ diasSemanas() }} días</p>
         </div>
 
         <ol class="barras">
-          @for (semana of semanas(); track semana.inicio; let ultima = $last) {
-            <li class="barra">
+          @for (semana of semanas(); track semana.inicio; let ultima = $last; let i = $index) {
+            <li class="barra" [style.--i]="i">
               <span class="visually-hidden">Semana del {{ semana.inicio | date: 'd MMM' }}: {{ semana.dias }} días</span>
               <span class="barra__valor" aria-hidden="true">{{ semana.dias || '' }}</span>
               <span class="barra__pista" aria-hidden="true">

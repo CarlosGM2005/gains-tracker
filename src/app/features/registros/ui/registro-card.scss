@@ -16,7 +16,9 @@
   text-transform: none;
 }
 
+// Con appRipple: el recorte lo pone .card (overflow: hidden).
 .card__header {
+  position: relative;
   display: grid;
   grid-template-columns: 64px 1fr auto;
   align-items: center;
@@ -76,8 +78,31 @@
   transform: rotate(90deg);
 }
 
-.card__panel:not([hidden]) {
-  animation: rise-in var(--duration-base) var(--easing-out) both;
+// Acordeón que se despliega de verdad: la fila pasa de 0fr a 1fr y el contenido crece desde la
+// cabecera. Cerrado queda con visibility: hidden (fuera del foco y de los lectores de pantalla),
+// que se aplica al terminar de plegarse. Es una animación de layout puntual, no en bucle.
+.card__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--duration-base) var(--easing-out),
+    visibility 0s linear var(--duration-base);
+}
+
+.card--abierta .card__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.card__recorte {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.card--abierta .series {
+  animation: rise-in var(--duration-slow) var(--easing-out) both;
 }
 
 .series {

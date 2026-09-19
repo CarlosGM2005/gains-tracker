@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { RouterLink } from '@angular/router';
 
 import { type Ejercicio } from '@features/ejercicios/public-api';
+import { Ripple } from '@shared/ui/ripple/ripple';
 
 /**
  * Tarjeta de un recomendado en el inicio: imagen de inicio, número de orden y nombre. Enlaza al
@@ -9,13 +10,15 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
  */
 @Component({
   selector: 'app-recomendado-tile',
-  imports: [RouterLink],
+  imports: [RouterLink, Ripple],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="tile" [routerLink]="['/ejercicios/detalle', ejercicio().id]">
-      <span class="tile__media">
+      <span class="tile__media" appRipple>
         <img [src]="ejercicio().imagenInicio" alt="" width="400" height="300" loading="lazy" />
-        <span class="tile__index" aria-hidden="true">{{ numero() }}</span>
+        <span class="tile__index" aria-hidden="true">
+          <span class="tile__digits">{{ numero() }}</span>
+        </span>
       </span>
       <span class="tile__name">{{ ejercicio().nombre }}</span>
     </a>
@@ -25,11 +28,17 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
       display: grid;
       gap: var(--space-3);
       text-decoration: none;
-      transition: transform var(--duration-fast) var(--easing-standard);
+      transition: transform var(--duration-base) var(--easing-out);
     }
 
     .tile:active {
       transform: scale(0.97);
+      transition-duration: var(--duration-fast);
+    }
+
+    /* Tarjeta que despega: sube y se enmarca en naranja con puntero o teclado. */
+    .tile:focus-visible {
+      transform: translateY(-4px);
     }
 
     .tile__media {
@@ -55,6 +64,28 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
       content: '';
     }
 
+    /* Marco naranja: aparece con hover o foco y parpadea al pulsar en táctil. */
+    .tile__media::before {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border: 2px solid var(--color-accent);
+      border-radius: inherit;
+      content: '';
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--duration-base) var(--easing-standard);
+    }
+
+    .tile:focus-visible .tile__media::before {
+      opacity: 1;
+    }
+
+    .tile:active .tile__media::before {
+      opacity: 1;
+      transition-duration: var(--duration-fast);
+    }
+
     .tile__index {
       position: absolute;
       bottom: var(--space-2);
@@ -65,6 +96,17 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
       font-weight: var(--font-weight-bold);
       line-height: 1;
       color: var(--color-accent);
+      overflow: hidden;
+      transition: transform var(--duration-base) var(--easing-out);
+    }
+
+    /* Dorsal que sube: el número sale de detrás de una máscara justo después de la tarjeta. El
+       retardo usa el --i del <li> y espera al revelado de la sección (--entrada). */
+    .tile__digits {
+      display: block;
+      animation: line-up var(--duration-slow) var(--easing-out) both;
+      animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+      animation-play-state: var(--entrada, running);
     }
 
     .tile__name {
@@ -77,12 +119,40 @@ import { type Ejercicio } from '@features/ejercicios/public-api';
     }
 
     @media (hover: hover) {
+      .tile:hover {
+        transform: translateY(-4px);
+      }
+
+      .tile:hover:active {
+        transform: translateY(-2px) scale(0.98);
+      }
+
+      .tile:hover .tile__media::before {
+        opacity: 1;
+      }
+
       .tile:hover .tile__media img {
         transform: scale(1.06);
       }
 
+      .tile:hover .tile__index {
+        transform: translateX(4px);
+      }
+
       .tile:hover .tile__name {
         color: var(--color-accent);
+      }
+    }
+
+    /* Sin desplazamientos: quedan el marco y el color. */
+    @media (prefers-reduced-motion: reduce) {
+      .tile:hover,
+      .tile:hover:active,
+      .tile:focus-visible,
+      .tile:active,
+      .tile:hover .tile__media img,
+      .tile:hover .tile__index {
+        transform: none;
       }
     }
   `,

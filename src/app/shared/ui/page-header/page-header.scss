@@ -37,6 +37,31 @@
   animation-delay: 80ms;
 }
 
+// Cabecera que se retira: en los primeros 200 px de scroll el título se apaga y sube un poco, y el
+// contenido toma el protagonismo. Ligado al scroll de la página, sin JS; sin soporte no cambia nada.
+// Si la página no tiene scroll, la línea de tiempo está inactiva y el título se ve normal.
+@keyframes header-retira {
+  to {
+    opacity: 0.3;
+    transform: translateY(-12px);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .header__titles {
+    animation: header-retira linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 200px;
+  }
+}
+
+// El reset global acorta la duración, pero una animación ligada al scroll no depende de ella.
+@media (prefers-reduced-motion: reduce) {
+  .header__titles {
+    animation: none;
+  }
+}
+
 @include bp.up(lg) {
   .header {
     margin-bottom: var(--space-12);

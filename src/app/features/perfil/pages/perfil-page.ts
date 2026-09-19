@@ -5,6 +5,7 @@ import { AuthStore } from '@core/auth/auth-store';
 import { ToastService } from '@core/notifications/toast.service';
 import { BackButton } from '@shared/ui/back-button/back-button';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
+import { Ripple } from '@shared/ui/ripple/ripple';
 import { Spinner } from '@shared/ui/spinner/spinner';
 
 import { PerfilStore } from '../state/perfil-store';
@@ -12,7 +13,7 @@ import { PerfilResumen } from '../ui/perfil-resumen';
 
 @Component({
   selector: 'app-perfil-page',
-  imports: [RouterLink, BackButton, EmptyState, Spinner, PerfilResumen],
+  imports: [RouterLink, BackButton, EmptyState, Ripple, Spinner, PerfilResumen],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './perfil-page.html',
   styleUrl: './perfil-page.scss',

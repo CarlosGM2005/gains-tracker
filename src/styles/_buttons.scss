@@ -1,5 +1,6 @@
 // Botones globales: funcionan igual en <button> y en <a>.
-// Microinteracción: glow naranja en hover (solo con puntero) y compresión al pulsar (también táctil).
+// Microinteracción del principal: se eleva, proyecta una sombra naranja con su misma forma y se
+// llena desde abajo con una ola más oscura (con puntero); al pulsar se comprime y se llena (táctil).
 
 .btn {
   position: relative;
@@ -23,17 +24,6 @@
     background-color var(--duration-base) var(--easing-standard),
     border-color var(--duration-base) var(--easing-standard);
 
-  &::after {
-    position: absolute;
-    inset: -6px;
-    z-index: -1;
-    border-radius: inherit;
-    background: radial-gradient(closest-side, var(--color-accent-glow), transparent);
-    content: '';
-    opacity: 0;
-    transition: opacity var(--duration-base) var(--easing-standard);
-  }
-
   &:active {
     transform: scale(0.97);
   }
@@ -46,16 +36,46 @@
 }
 
 .btn--primary {
-  background: var(--color-accent);
+  // La ola es un fondo del propio botón (no un ::after absoluto): así no depende de `position` ni de
+  // `overflow`, que las páginas pueden cambiar, y el borde redondeado la recorta siempre.
+  background-color: var(--color-accent);
+  background-image: radial-gradient(130% 100% at 50% 100%, var(--color-accent-strong) 99%, transparent 100%);
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 0%;
   color: var(--color-on-accent);
+  transition:
+    transform var(--duration-base) var(--easing-out),
+    box-shadow var(--duration-base) var(--easing-standard),
+    background-size 320ms var(--easing-standard);
+
+  // Ola de relleno: una elipse más oscura crece desde el borde inferior y su borde curvo cruza el
+  // botón como un líquido.
+  &:active {
+    background-size: 100% 200%;
+    transition-duration: var(--duration-fast);
+  }
 
   @media (hover: hover) {
-    &:hover:not(:disabled) {
-      background: var(--color-accent-strong);
+    &:hover:not(:disabled, [aria-disabled='true']) {
+      background-size: 100% 200%;
+      box-shadow: 0 14px 30px -12px var(--color-accent-glow);
+      transform: translateY(-2px);
+      transition:
+        transform var(--duration-base) var(--easing-out),
+        box-shadow var(--duration-base) var(--easing-standard),
+        background-size 480ms var(--easing-out);
+    }
 
-      &::after {
-        opacity: 1;
-      }
+    &:hover:active:not(:disabled, [aria-disabled='true']) {
+      transform: translateY(0) scale(0.97);
+    }
+  }
+
+  // Sin elevación; la ola y la sombra aparecen sin recorrido (el reset acorta las transiciones).
+  @media (prefers-reduced-motion: reduce) {
+    &:hover:not(:disabled, [aria-disabled='true']) {
+      transform: none;
     }
   }
 }

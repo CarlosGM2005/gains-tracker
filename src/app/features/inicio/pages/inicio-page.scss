@@ -10,16 +10,44 @@
 }
 
 .section__head {
+  position: relative;
   display: flex;
-  align-items: baseline;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border);
+
+  // Línea de salida: se traza de izquierda a derecha al aparecer la sección (espera a appReveal).
+  &::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: var(--color-border);
+    content: '';
+    transform-origin: left;
+    animation: draw-x var(--duration-slow) var(--easing-out) 150ms both;
+    animation-play-state: var(--entrada, running);
+  }
 }
 
 .section__title {
   font-size: var(--font-size-xl);
+}
+
+.plan__estado {
+  color: var(--color-text-muted);
+
+  strong {
+    color: var(--color-accent);
+  }
+}
+
+// Al cambiar de plan, el carrusel nuevo entra subiendo.
+.plan__carrusel {
+  animation: rise-in var(--duration-slow) var(--easing-out) backwards;
 }
 
 .section__more {

@@ -9,6 +9,7 @@ import { refrescarConFormulario } from '@shared/forms/refrescar-con-formulario';
 import { AvatarInitial } from '@shared/ui/avatar-initial/avatar-initial';
 import { BackButton } from '@shared/ui/back-button/back-button';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
+import { Reveal } from '@shared/ui/reveal/reveal';
 import { Spinner } from '@shared/ui/spinner/spinner';
 import { comprimirFoto, ImagenNoValidaError, type MotivoImagenNoValida } from '@shared/utils/imagen';
 
@@ -28,7 +29,7 @@ const MENSAJES_FOTO: Readonly<Record<MotivoImagenNoValida, string>> = {
 
 @Component({
   selector: 'app-editar-perfil-page',
-  imports: [ReactiveFormsModule, AvatarInitial, BackButton, EmptyState, Spinner, FieldError, PerfilResumen],
+  imports: [ReactiveFormsModule, AvatarInitial, BackButton, EmptyState, Reveal, Spinner, FieldError, PerfilResumen],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './editar-perfil-page.html',
   styleUrl: './editar-perfil-page.scss',

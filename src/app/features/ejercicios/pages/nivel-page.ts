@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { Router, RouterLink } from '@angular/router';
 
 import { PageHeader } from '@shared/ui/page-header/page-header';
+import { Ripple } from '@shared/ui/ripple/ripple';
 
 import { ETIQUETA_NIVEL, type Nivel, NIVEL_POR_DEFECTO, NIVELES } from '../domain/ejercicio.model';
 
@@ -13,7 +14,7 @@ const DESCRIPCION_NIVEL: Readonly<Record<Nivel, string>> = {
 
 @Component({
   selector: 'app-nivel-page',
-  imports: [RouterLink, PageHeader],
+  imports: [RouterLink, PageHeader, Ripple],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nivel-page.html',
   styleUrl: './nivel-page.scss',

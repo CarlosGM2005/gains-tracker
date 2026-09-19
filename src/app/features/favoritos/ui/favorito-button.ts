@@ -6,7 +6,13 @@ import { ToastService } from '@core/notifications/toast.service';
 
 import { FavoritosStore } from '../state/favoritos-store';
 
-/** Estrella para marcar un ejercicio como favorito. Sin sesión lleva al login y vuelve aquí. */
+/** Ángulos de las chispas que salen al marcar favorito (una cada 60°). */
+const CHISPAS = [0, 60, 120, 180, 240, 300];
+
+/**
+ * Estrella para marcar un ejercicio como favorito. Sin sesión lleva al login y vuelve aquí.
+ * Al marcarla (no al cargar una ya marcada) late y suelta seis chispas del acento.
+ */
 @Component({
   selector: 'app-favorito-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,6 +21,7 @@ import { FavoritosStore } from '../state/favoritos-store';
       type="button"
       class="btn btn--ghost btn--icon estrella"
       [class.estrella--activa]="activo()"
+      [class.estrella--estalla]="estalla() && activo()"
       [attr.aria-pressed]="activo()"
       [attr.aria-label]="activo() ? 'Quitar ' + nombre() + ' de favoritos' : 'Añadir ' + nombre() + ' a favoritos'"
       [disabled]="guardando()"
@@ -23,6 +30,9 @@ import { FavoritosStore } from '../state/favoritos-store';
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
         <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
       </svg>
+      @for (angulo of chispas; track angulo) {
+        <span class="chispa" aria-hidden="true" [style.--angulo]="angulo + 'deg'"></span>
+      }
     </button>
   `,
   styles: `
@@ -51,6 +61,43 @@ import { FavoritosStore } from '../state/favoritos-store';
         transform: scale(1.3);
       }
     }
+
+    /* Estrella que estalla: 6 puntos del acento salen en círculo 22 px y se apagan (600 ms). */
+    .chispa {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      margin: -2.5px 0 0 -2.5px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .estrella--estalla .chispa {
+      animation: chispa 600ms var(--easing-out) both;
+      animation-delay: 80ms;
+    }
+
+    @keyframes chispa {
+      from {
+        opacity: 1;
+        transform: rotate(var(--angulo)) translateY(-8px) scale(1);
+      }
+
+      to {
+        opacity: 0;
+        transform: rotate(var(--angulo)) translateY(-26px) scale(0.2);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chispa {
+        display: none;
+      }
+    }
   `,
 })
 export class FavoritoButton {
@@ -65,6 +112,9 @@ export class FavoritoButton {
 
   protected readonly activo = computed(() => this.store.ids().includes(this.ejercicioId()));
   protected readonly guardando = signal(false);
+  protected readonly chispas = CHISPAS;
+  /** Solo tras marcarla el usuario: una estrella que ya venía marcada no estalla al cargar. */
+  protected readonly estalla = signal(false);
 
   protected async alternar(): Promise<void> {
     if (!this.auth.autenticado()) {
@@ -75,8 +125,12 @@ export class FavoritoButton {
     this.guardando.set(true);
     try {
       const favorito = await this.store.alternar(this.ejercicioId());
+      this.estalla.set(favorito);
       this.toasts.exito(favorito ? 'Añadido a favoritos.' : 'Quitado de favoritos.', 2500);
-    } catch {
+    } catch (error) {
+      // En consola queda el motivo real (p. ej. "permission-denied" si las reglas de Firestore
+      // publicadas no permiten el campo `favoritos`).
+      console.error('No se pudo guardar el favorito', error);
       this.toasts.error('No se pudo actualizar tus favoritos. Inténtalo de nuevo.');
     } finally {
       this.guardando.set(false);

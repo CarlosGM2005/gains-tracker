@@ -4,6 +4,7 @@
     <button
       type="button"
       class="card__header"
+      appRipple
       [attr.aria-expanded]="abierto()"
       [attr.aria-controls]="'series-' + r.ejercicioId"
       (click)="alternar.emit()"
@@ -19,55 +20,57 @@
     </button>
   </h2>
 
-  <div class="card__panel" [id]="'series-' + r.ejercicioId" [hidden]="!abierto()">
-    <ol class="series">
-      @for (serie of r.series; track serie.id) {
-        <li class="serie">
-          <div class="serie__top">
-            <p class="serie__dia">{{ serie.dia | date: 'EEE d MMM y' }}</p>
-            <div class="serie__acciones">
-              <button
-                type="button"
-                class="serie__accion"
-                [attr.aria-label]="'Editar serie del ' + (serie.dia | date: 'd MMM y')"
-                (click)="editar.emit(serie)"
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path d="M4 20h4L19 9l-4-4L4 16v4Z M13.5 6.5l4 4" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                class="serie__accion serie__accion--borrar"
-                [attr.aria-label]="'Borrar serie del ' + (serie.dia | date: 'd MMM y')"
-                (click)="borrar.emit(serie)"
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path d="M4 7h16 M9 7V4h6v3 M6 7l1 13h10l1-13 M10 11v6 M14 11v6" />
-                </svg>
-              </button>
+  <div class="card__panel" [id]="'series-' + r.ejercicioId">
+    <div class="card__recorte">
+      <ol class="series">
+        @for (serie of r.series; track serie.id) {
+          <li class="serie">
+            <div class="serie__top">
+              <p class="serie__dia">{{ serie.dia | date: 'EEE d MMM y' }}</p>
+              <div class="serie__acciones">
+                <button
+                  type="button"
+                  class="serie__accion"
+                  [attr.aria-label]="'Editar serie del ' + (serie.dia | date: 'd MMM y')"
+                  (click)="editar.emit(serie)"
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path d="M4 20h4L19 9l-4-4L4 16v4Z M13.5 6.5l4 4" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="serie__accion serie__accion--borrar"
+                  [attr.aria-label]="'Borrar serie del ' + (serie.dia | date: 'd MMM y')"
+                  (click)="borrar.emit(serie)"
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path d="M4 7h16 M9 7V4h6v3 M6 7l1 13h10l1-13 M10 11v6 M14 11v6" />
+                  </svg>
+                </button>
+              </div>
             </div>
-          </div>
-          <dl class="serie__datos">
-            <div>
-              <dt>Series</dt>
-              <dd>{{ serie.series }}</dd>
-            </div>
-            <div>
-              <dt>Reps</dt>
-              <dd>{{ serie.repeticiones }}</dd>
-            </div>
-            <div>
-              <dt>Peso</dt>
-              <dd>{{ serie.peso | number: '1.0-2' }} <small>kg</small></dd>
-            </div>
-            <div>
-              <dt>Descanso</dt>
-              <dd>{{ serie.descansoMin }} <small>min</small></dd>
-            </div>
-          </dl>
-        </li>
-      }
-    </ol>
+            <dl class="serie__datos">
+              <div>
+                <dt>Series</dt>
+                <dd>{{ serie.series }}</dd>
+              </div>
+              <div>
+                <dt>Reps</dt>
+                <dd>{{ serie.repeticiones }}</dd>
+              </div>
+              <div>
+                <dt>Peso</dt>
+                <dd>{{ serie.peso | number: '1.0-2' }} <small>kg</small></dd>
+              </div>
+              <div>
+                <dt>Descanso</dt>
+                <dd>{{ serie.descansoMin }} <small>min</small></dd>
+              </div>
+            </dl>
+          </li>
+        }
+      </ol>
+    </div>
   </div>
 </article>

@@ -3,7 +3,7 @@
 
   <div class="welcome__content">
     <div class="welcome__badge stagger" style="--i: 0">
-      <img src="logo.png" alt="Logotipo de GainsTracker" width="500" height="499" />
+      <img src="logo.svg" alt="Logotipo de GainsTracker" width="150" height="150" />
     </div>
 
     <p class="text-label welcome__overline stagger" style="--i: 1">Bienvenidos a</p>
@@ -20,5 +20,8 @@
     </a>
   </div>
 
-  <app-marquee class="welcome__marquee" [items]="lema" />
+  <div class="welcome__cintas">
+    <app-marquee class="welcome__marquee" [items]="lema" />
+    <app-marquee class="welcome__marquee welcome__marquee--sec" [items]="funciones" [invertir]="true" />
+  </div>
 </section>

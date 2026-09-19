@@ -1,6 +1,8 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
+import { Ripple } from '@shared/ui/ripple/ripple';
+
 import { type RegistroEjercicio, type Serie } from '../domain/registro.model';
 
 /**
@@ -9,7 +11,7 @@ import { type RegistroEjercicio, type Serie } from '../domain/registro.model';
  */
 @Component({
   selector: 'app-registro-card',
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, Ripple],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './registro-card.html',
   styleUrl: './registro-card.scss',

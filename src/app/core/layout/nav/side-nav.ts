@@ -14,7 +14,7 @@ import { NAV_ITEMS } from './nav-items';
   template: `
     <nav class="side" aria-label="Navegación principal">
       <a class="side__brand" routerLink="/inicio">
-        <span class="side__logo"><img src="logo.png" alt="" width="40" height="40" /></span>
+        <img class="side__logo" src="logo.svg" alt="" width="44" height="44" />
         <span class="side__name">Gains<span class="text-accent">Tracker</span></span>
       </a>
 
@@ -54,14 +54,17 @@ import { NAV_ITEMS } from './nav-items';
       text-decoration: none;
     }
 
+    /* La insignia ya trae su fondo naranja: solo un halo suave del acento. */
     .side__logo {
-      display: grid;
-      place-items: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--color-text);
-      box-shadow: 0 0 24px var(--color-accent-soft);
+      border-radius: 11px;
+      box-shadow: 0 6px 24px var(--color-accent-soft);
+      transition: transform var(--duration-base) var(--easing-spring);
+    }
+
+    @media (hover: hover) {
+      .side__brand:hover .side__logo {
+        transform: rotate(-6deg) scale(1.05);
+      }
     }
 
     .side__name {

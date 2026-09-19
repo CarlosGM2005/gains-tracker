@@ -6,7 +6,7 @@ import { ToastService } from '@core/notifications/toast.service';
 import { ConfirmService } from '@shared/ui/confirm-dialog/confirm-dialog';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { PageHeader } from '@shared/ui/page-header/page-header';
-import { Spinner } from '@shared/ui/spinner/spinner';
+import { Skeleton } from '@shared/ui/skeleton/skeleton';
 
 import { type RegistroEjercicio, type Serie } from '../domain/registro.model';
 import { RegistrosStore } from '../state/registros-store';
@@ -15,7 +15,7 @@ import { RegistroCard } from '../ui/registro-card';
 
 @Component({
   selector: 'app-registros-page',
-  imports: [RouterLink, PageHeader, EmptyState, Spinner, RegistroCard],
+  imports: [RouterLink, PageHeader, EmptyState, Skeleton, RegistroCard],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="page">
@@ -29,7 +29,14 @@ import { RegistroCard } from '../ui/registro-card';
       @if (store.error()) {
         <app-empty-state tipo="error" titulo="No se pudieron cargar tus registros" detalle="Inténtalo más tarde." />
       } @else if (store.cargando()) {
-        <app-spinner etiqueta="Cargando registros" />
+        <div role="status">
+          <span class="visually-hidden">Cargando registros</span>
+          <ul class="lista" aria-hidden="true">
+            @for (hueco of huecos; track $index; let i = $index) {
+              <li [style.--i]="i"><app-skeleton forma="fila" /></li>
+            }
+          </ul>
+        </div>
       } @else if (store.registros().length === 0) {
         <app-empty-state titulo="No tienes registros guardados" detalle="Abre un ejercicio y registra tu primera serie.">
           <a class="btn btn--primary" routerLink="/ejercicios">Explorar ejercicios</a>
@@ -79,6 +86,8 @@ export class RegistrosPage {
 
   /** Acordeón: solo una tarjeta abierta. Estado visual local (ya no se guarda en Firestore). */
   protected readonly abiertoId = signal<string | null>(null);
+  /** Huecos del esqueleto mientras cargan los registros. */
+  protected readonly huecos = Array.from({ length: 4 });
 
   protected alternar(ejercicioId: string): void {
     this.abiertoId.update((actual) => (actual === ejercicioId ? null : ejercicioId));

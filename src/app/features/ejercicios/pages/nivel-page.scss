@@ -12,8 +12,10 @@
   gap: var(--space-3);
 }
 
+// Con appRipple: la onda necesita position y overflow: hidden.
 .nivel {
   position: relative;
+  overflow: hidden;
   display: grid;
   gap: var(--space-2);
   padding: var(--space-5);
@@ -59,6 +61,13 @@
   background: var(--color-accent);
 }
 
+// Al elegir un nivel, sus barras se rellenan de izquierda a derecha, escalonadas 60 ms (--b).
+.nivel--activo .nivel__barra--llena {
+  transform-origin: left;
+  animation: draw-x 360ms var(--easing-out) both;
+  animation-delay: calc(var(--b, 0) * 60ms);
+}
+
 .nivel__nombre {
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
@@ -90,9 +99,11 @@
     transform var(--duration-base) var(--easing-out);
 }
 
+// El check aparece con un pequeño salto (curva con rebote).
 .nivel--activo .nivel__check {
   opacity: 1;
   transform: none;
+  transition-timing-function: var(--easing-spring);
 }
 
 .acciones {

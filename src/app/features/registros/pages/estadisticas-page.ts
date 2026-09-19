@@ -2,8 +2,10 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { Contador } from '@shared/ui/contador/contador';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { PageHeader } from '@shared/ui/page-header/page-header';
+import { Reveal } from '@shared/ui/reveal/reveal';
 import { Spinner } from '@shared/ui/spinner/spinner';
 
 import { actividadSemanal, progresoEjercicio, resumenGlobal } from '../domain/estadisticas';
@@ -16,7 +18,7 @@ const SEMANAS = 8;
 /** Resumen de todos los registros, progreso por ejercicio y actividad de las últimas semanas. */
 @Component({
   selector: 'app-estadisticas-page',
-  imports: [RouterLink, DatePipe, DecimalPipe, PageHeader, EmptyState, Spinner, GraficaProgreso],
+  imports: [RouterLink, DatePipe, DecimalPipe, PageHeader, EmptyState, Spinner, Reveal, Contador, GraficaProgreso],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './estadisticas-page.html',
   styleUrl: './estadisticas-page.scss',

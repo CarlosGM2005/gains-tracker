@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="gt-logo-title">
+  <title id="gt-logo-title">GainsTracker</title>
+  <defs>
+    <linearGradient id="gt-logo-fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9d4d" />
+      <stop offset="1" stop-color="#e8620a" />
+    </linearGradient>
+  </defs>
+  <!-- Insignia: cuadrado redondeado con el naranja de la marca. -->
+  <rect width="64" height="64" rx="16" fill="url(#gt-logo-fondo)" />
+  <!-- Mancuerna inclinada hacia arriba cuyo extremo derecho es una flecha: entrenar y progresar. -->
+  <g fill="#0e0e10" transform="translate(1 0) rotate(-35 32 32)">
+    <rect x="8" y="24" width="5" height="16" rx="2" />
+    <rect x="14" y="19" width="6" height="26" rx="2.5" />
+    <rect x="16" y="29.5" width="31" height="5" rx="2.5" />
+    <rect x="33" y="19" width="6" height="26" rx="2.5" />
+    <path d="M46 25 L56 32 L46 39 Z" stroke="#0e0e10" stroke-width="2.5" stroke-linejoin="round" />
+  </g>
+</svg>

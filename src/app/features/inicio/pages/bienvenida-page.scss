@@ -40,21 +40,18 @@
   text-align: center;
 }
 
-// El logo tiene partes negras: va sobre un disco claro para que se lea en el tema oscuro.
+// Insignia del logo: trae su propio fondo naranja; aquí solo el anillo y el halo del acento.
 .welcome__badge {
-  display: grid;
-  place-items: center;
   width: clamp(96px, 22vw, 150px);
   aspect-ratio: 1;
   margin-bottom: var(--space-2);
-  border-radius: 50%;
-  background: var(--color-text);
+  border-radius: 25%;
   box-shadow:
     0 0 0 8px var(--color-accent-soft),
-    0 20px 60px var(--color-accent-soft);
+    0 20px 60px var(--color-accent-glow);
 
   img {
-    width: 82%;
+    width: 100%;
     height: auto;
   }
 }
@@ -104,9 +101,22 @@
   }
 }
 
-.welcome__marquee {
-  padding-block: var(--space-5);
+// Dos cintas: el lema en grande y, debajo y en sentido contrario, qué hace la app.
+.welcome__cintas {
   border-top: 1px solid var(--color-border);
+}
+
+.welcome__marquee {
+  padding-block: var(--space-4);
+}
+
+.welcome__marquee--sec {
+  --marquee-size: var(--font-size-sm);
+  --marquee-color: var(--color-text-muted);
+  --marquee-duracion: 30s;
+
+  padding-top: 0;
+  padding-bottom: var(--space-5);
 }
 
 @include bp.up(lg) {
@@ -115,6 +125,11 @@
   }
 
   .welcome__marquee {
-    padding-block: var(--space-6);
+    padding-block: var(--space-5);
+  }
+
+  .welcome__marquee--sec {
+    padding-top: 0;
+    padding-bottom: var(--space-6);
   }
 }

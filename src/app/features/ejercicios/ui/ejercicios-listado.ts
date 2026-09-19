@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output, type Resource } from '@angular/core';
 
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
-import { Spinner } from '@shared/ui/spinner/spinner';
+import { Skeleton } from '@shared/ui/skeleton/skeleton';
 
 import { type Ejercicio } from '../domain/ejercicio.model';
 import { EjercicioCard } from './ejercicio-card';
@@ -19,7 +19,7 @@ export function estadoListado(recurso: Resource<unknown>): EstadoListado {
 /** Resumen con contador + lista de tarjetas + estados de carga, vacío y error. */
 @Component({
   selector: 'app-ejercicios-listado',
-  imports: [EjercicioCard, EmptyState, Spinner],
+  imports: [EjercicioCard, EmptyState, Skeleton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="resumen" aria-live="polite">
@@ -33,7 +33,14 @@ export function estadoListado(recurso: Resource<unknown>): EstadoListado {
 
     @switch (estado()) {
       @case ('cargando') {
-        <app-spinner etiqueta="Cargando ejercicios" />
+        <div role="status">
+          <span class="visually-hidden">Cargando ejercicios</span>
+          <ul class="lista" aria-hidden="true">
+            @for (hueco of huecos; track $index; let i = $index) {
+              <li [style.--i]="i"><app-skeleton forma="fila" /></li>
+            }
+          </ul>
+        </div>
       }
       @case ('error') {
         <app-empty-state tipo="error" titulo="No se pudieron cargar los ejercicios" detalle="Inténtalo de nuevo.">
@@ -105,4 +112,7 @@ export class EjerciciosListado {
   readonly resumen = input.required<string>();
   readonly textoVacio = input.required<string>();
   readonly reintentar = output();
+
+  /** Huecos del esqueleto mientras cargan los ejercicios. */
+  protected readonly huecos = Array.from({ length: 6 });
 }

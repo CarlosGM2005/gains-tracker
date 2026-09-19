@@ -9,32 +9,42 @@ const MARGEN = { arriba: 16, derecha: 16, abajo: 28, izquierda: 44 };
 
 /**
  * Línea del peso máximo por día, en SVG y sin librerías. Para lectores de pantalla, la misma
- * información va en una tabla oculta.
+ * información va en una tabla oculta. Al aparecer (y al cambiar de ejercicio) la línea se dibuja,
+ * el área se funde y los puntos saltan al final.
  */
 @Component({
   selector: 'app-grafica-progreso',
   imports: [DatePipe, DecimalPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @let g = geometria();
-    <svg class="grafica" [attr.viewBox]="'0 0 ' + ancho + ' ' + alto" aria-hidden="true" focusable="false">
-      @for (linea of g.guias; track linea.y) {
-        <line class="grafica__guia" [attr.x1]="margen.izquierda" [attr.x2]="ancho - margen.derecha" [attr.y1]="linea.y" [attr.y2]="linea.y" />
-        <text class="grafica__eje" [attr.x]="margen.izquierda - 8" [attr.y]="linea.y + 4" text-anchor="end">{{ linea.valor | number: '1.0-1' }}</text>
-      }
-      <path class="grafica__area" [attr.d]="g.area" />
-      <polyline class="grafica__linea" [attr.points]="g.linea" />
-      @for (p of g.puntos; track p.dia) {
-        <circle class="grafica__punto" [class.grafica__punto--record]="p.record" [attr.cx]="p.x" [attr.cy]="p.y" r="5" />
-      }
-      @if (g.puntos[0]; as primero) {
-        <text class="grafica__eje" [attr.x]="primero.x" [attr.y]="alto - 6" text-anchor="start">{{ primero.dia | date: 'd MMM' }}</text>
-      }
-      @if (g.puntos.length > 1) {
-        @let ultimo = g.puntos[g.puntos.length - 1];
-        <text class="grafica__eje" [attr.x]="ultimo?.x" [attr.y]="alto - 6" text-anchor="end">{{ ultimo?.dia | date: 'd MMM' }}</text>
-      }
-    </svg>
+    <!-- El @for de un solo elemento recrea el SVG cuando cambian los datos: así la entrada se repite. -->
+    @for (g of [geometria()]; track g) {
+      <svg class="grafica" [attr.viewBox]="'0 0 ' + ancho + ' ' + alto" aria-hidden="true" focusable="false">
+        @for (linea of g.guias; track linea.y) {
+          <line class="grafica__guia" [attr.x1]="margen.izquierda" [attr.x2]="ancho - margen.derecha" [attr.y1]="linea.y" [attr.y2]="linea.y" />
+          <text class="grafica__eje" [attr.x]="margen.izquierda - 8" [attr.y]="linea.y + 4" text-anchor="end">{{ linea.valor | number: '1.0-1' }}</text>
+        }
+        <path class="grafica__area" [attr.d]="g.area" />
+        <polyline class="grafica__linea" [attr.points]="g.linea" pathLength="1" />
+        @for (p of g.puntos; track p.dia; let i = $index) {
+          <circle
+            class="grafica__punto"
+            [class.grafica__punto--record]="p.record"
+            [attr.cx]="p.x"
+            [attr.cy]="p.y"
+            r="5"
+            [style.--i]="i / g.puntos.length"
+          />
+        }
+        @if (g.puntos[0]; as primero) {
+          <text class="grafica__eje" [attr.x]="primero.x" [attr.y]="alto - 6" text-anchor="start">{{ primero.dia | date: 'd MMM' }}</text>
+        }
+        @if (g.puntos.length > 1) {
+          @let ultimo = g.puntos[g.puntos.length - 1];
+          <text class="grafica__eje" [attr.x]="ultimo?.x" [attr.y]="alto - 6" text-anchor="end">{{ ultimo?.dia | date: 'd MMM' }}</text>
+        }
+      </svg>
+    }
 
     <table class="visually-hidden">
       <caption>{{ titulo() }}</caption>
@@ -70,22 +80,51 @@ const MARGEN = { arriba: 16, derecha: 16, abajo: 28, izquierda: 44 };
       fill: var(--color-text-muted);
     }
 
+    /* Entrada inspirada en las gráficas de Bklit UI. Todo espera al revelado del bloque (--entrada). */
     .grafica__area {
       fill: var(--color-accent-soft);
+      animation: rise-in 600ms var(--easing-out) 300ms both;
+      animation-play-state: var(--entrada, running);
     }
 
+    /* pathLength="1": el trazo mide 1 y se dibuja llevando el desplazamiento de 1 a 0. */
     .grafica__linea {
       fill: none;
       stroke: var(--color-accent);
+      stroke-dasharray: 1;
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-width: 3;
+      animation: trazar 900ms var(--easing-out) both;
+      animation-play-state: var(--entrada, running);
     }
 
+    /* Cada punto salta cuando la línea llega a él (--i = posición de 0 a 1). */
     .grafica__punto {
       fill: var(--color-bg);
       stroke: var(--color-accent);
       stroke-width: 3;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: saltar 360ms var(--easing-spring) both;
+      animation-delay: calc(150ms + var(--i, 0) * 700ms);
+      animation-play-state: var(--entrada, running);
+    }
+
+    @keyframes trazar {
+      from {
+        stroke-dashoffset: 1;
+      }
+
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes saltar {
+      from {
+        transform: scale(0);
+      }
     }
 
     .grafica__punto--record {

@@ -5,6 +5,7 @@ import { FavoritoButton } from '@features/favoritos/public-api';
 import { RegistrarSerieService } from '@features/registros/public-api';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { PageHeader } from '@shared/ui/page-header/page-header';
+import { Reveal } from '@shared/ui/reveal/reveal';
 import { Spinner } from '@shared/ui/spinner/spinner';
 
 import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejercicio.model';
@@ -12,7 +13,7 @@ import { CatalogoStore } from '../state/catalogo-store';
 
 @Component({
   selector: 'app-detalle-page',
-  imports: [RouterLink, PageHeader, EmptyState, Spinner, FavoritoButton],
+  imports: [RouterLink, PageHeader, EmptyState, Spinner, Reveal, FavoritoButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './detalle-page.html',
   styleUrl: './detalle-page.scss',

@@ -42,7 +42,7 @@
           </div>
         </section>
 
-        <section class="bloque stagger" style="--i: 4" aria-labelledby="datos-titulo">
+        <section class="bloque stagger" style="--i: 4" aria-labelledby="datos-titulo" appReveal>
           <h2 id="datos-titulo" class="bloque__titulo">Datos del perfil</h2>
 
           <form class="form" [formGroup]="datos" (ngSubmit)="guardar()" novalidate>
@@ -87,7 +87,7 @@
           </form>
         </section>
 
-        <section class="bloque stagger" style="--i: 5" aria-labelledby="email-titulo">
+        <section class="bloque stagger" style="--i: 5" aria-labelledby="email-titulo" appReveal>
           <h2 id="email-titulo" class="bloque__titulo">Correo electrónico</h2>
 
           @if (store.puedeCambiarEmail()) {

@@ -1,4 +1,4 @@
-import { ErrorHandler, inject, Injectable } from '@angular/core';
+import { type ErrorHandler, inject, Injectable } from '@angular/core';
 
 import { ToastService } from '../notifications/toast.service';
 

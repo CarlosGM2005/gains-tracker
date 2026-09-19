@@ -11,9 +11,27 @@
   <section class="section" aria-labelledby="rutinas-titulo">
     <div class="section__head">
       <h2 id="rutinas-titulo" class="section__title">Rutinas</h2>
-      <p class="text-label">Semana tipo · 6 días</p>
+      <app-plan-dias [valor]="dias()" (valorChange)="cambiarDias($event)" />
     </div>
-    <app-carousel [slides]="rutinas" etiqueta="Rutinas de la semana" />
+
+    <p class="plan__estado" aria-live="polite">
+      @if (hoy() === -1) {
+        Hoy es día de <strong>descanso</strong> en tu plan de {{ dias() }} días.
+      } @else {
+        Hoy toca el <strong>día {{ hoy() + 1 }}</strong> de tu plan de {{ dias() }} días.
+      }
+    </p>
+
+    <!-- Un carrusel por plan: al cambiar los días se crea de nuevo y empieza en el día de hoy. -->
+    @for (plan of [rutina()]; track plan) {
+      <div class="plan__carrusel">
+        <app-carousel [items]="plan" [etiqueta]="'Rutina de ' + dias() + ' días'" [inicial]="hoy()">
+          <ng-template let-dia let-i="index">
+            <app-rutina-dia [dia]="dia" [hoy]="i === hoy()" />
+          </ng-template>
+        </app-carousel>
+      </div>
+    }
   </section>
 
   <section class="section" aria-labelledby="recomendados-titulo" appReveal>
@@ -45,7 +63,14 @@
         <button type="button" class="btn btn--ghost" (click)="recomendados.reload()">Reintentar</button>
       </app-empty-state>
     } @else {
-      <app-spinner etiqueta="Cargando recomendados" />
+      <div role="status">
+        <span class="visually-hidden">Cargando recomendados</span>
+        <ul class="grid" aria-hidden="true">
+          @for (hueco of huecos; track $index; let i = $index) {
+            <li [style.--i]="i"><app-skeleton /></li>
+          }
+        </ul>
+      </div>
     }
   </section>
 </div>

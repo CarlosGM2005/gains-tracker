@@ -1,0 +1,342 @@
+@use 'breakpoints' as bp;
+
+// Fondo ambiental de toda la app. Capa fija bajo el contenido, sin eventos de ratón.
+// Todo el movimiento es transform y opacity; nada de width, height, top ni left.
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+
+  // `layout paint`, no `strict`: la contención de tamaño hacía que los hijos en porcentaje (el SVG
+  // de las ondas) se midieran mal.
+  contain: layout paint;
+  pointer-events: none;
+}
+
+// --- Brasas: la luz de fondo ------------------------------------------------
+// Cada sección las coloca en otro sitio: al cambiar de ruta la luz se desplaza (orientación).
+.fondo__brasas {
+  position: absolute;
+  inset: 0;
+  transform: translate(var(--fondo-x, 0), var(--fondo-y, 0));
+  transition:
+    transform calc(var(--duration-slow) * 2.5) var(--easing-out),
+    opacity var(--duration-slow) var(--easing-standard);
+}
+
+.fondo__brasa {
+  position: absolute;
+  width: min(110vmax, 1000px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color-accent-glow), transparent);
+  opacity: 0.3;
+  animation: brasa-deriva 26s ease-in-out infinite alternate;
+
+  // `translate` centra la brasa en su esquina; la deriva usa `transform`, así no se pisan.
+  &--a {
+    top: 0;
+    right: 0;
+    translate: 50% -50%;
+  }
+
+  &--b {
+    bottom: 0;
+    left: 0;
+    translate: -50% 50%;
+    background: radial-gradient(closest-side, rgb(from var(--color-accent-strong) r g b / 45%), transparent);
+    opacity: 0.22;
+    animation-duration: 32s;
+    animation-delay: -11s;
+    animation-direction: alternate-reverse;
+  }
+
+  // Brasa central pequeña: solo respira, no deriva.
+  &--c {
+    top: 45%;
+    left: 55%;
+    width: min(70vmax, 640px);
+    translate: -50% -50%;
+    background: radial-gradient(closest-side, rgb(from var(--color-focus) r g b / 30%), transparent);
+    opacity: 0.12;
+    animation: brasa-respira 9s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes brasa-deriva {
+  50% {
+    transform: translate(-8vw, 6vh) scale(1.12);
+  }
+
+  100% {
+    transform: translate(4vw, 12vh) scale(0.94);
+  }
+}
+
+@keyframes brasa-respira {
+  to {
+    opacity: 0.26;
+    transform: scale(1.12);
+  }
+}
+
+// --- Rejilla de puntos con paralaje ----------------------------------------
+.fondo__rejilla {
+  --paralaje: -48px;
+
+  position: absolute;
+  inset: 0 0 -96px;
+  background-image: radial-gradient(rgb(from var(--color-text) r g b / 9%) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 20%, transparent 80%);
+}
+
+@supports (animation-timeline: scroll()) {
+  .fondo__rejilla {
+    animation: rejilla-paralaje linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes rejilla-paralaje {
+  to {
+    transform: translateY(var(--paralaje));
+  }
+}
+
+// --- Barrido: una banda de luz cruza la pantalla de arriba abajo -------------
+.fondo__barrido {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 35vh;
+  background: linear-gradient(transparent, var(--color-accent-soft), transparent);
+  opacity: 0;
+  animation: barrido 12s var(--easing-standard) 3s infinite;
+}
+
+@keyframes barrido {
+  0% {
+    opacity: 0;
+    transform: translateY(-40vh);
+  }
+
+  12% {
+    opacity: 0.6;
+  }
+
+  45% {
+    opacity: 0.6;
+  }
+
+  55%,
+  100% {
+    opacity: 0;
+    transform: translateY(110vh);
+  }
+}
+
+// --- Ondas: se dibujan al cargar y luego flotan -----------------------------
+// Ocupan la pantalla entera (el viewBox se estira), no solo el pie. Cada onda va en su propia capa
+// HTML: el vaivén se anima en el `span`, no dentro del SVG. Un `transform` sobre elementos SVG hace
+// que Chrome rasterice el dibujo a su tamaño natural (1440 × 800) y la onda deja de llegar al borde
+// derecho pasados unos segundos.
+.fondo__ondas {
+  position: absolute;
+  inset: 0;
+}
+
+.fondo__onda-capa {
+  position: absolute;
+  inset: 0;
+  animation: onda-flota calc(6s + var(--i, 0) * 2s) ease-in-out calc(var(--i, 0) * -1.5s) infinite alternate;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.fondo__onda {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0.13;
+  vector-effect: non-scaling-stroke;
+  animation: onda-traza 1800ms var(--easing-out) calc(var(--i, 0) * 220ms + 200ms) backwards;
+
+  // Destello que recorre una onda, como un pulso de energía. Hay dos, a distinta altura y ritmo.
+  &--pulso {
+    stroke-width: 3;
+    stroke-dasharray: 0.06 1.94;
+    stroke-dashoffset: 0.06;
+    opacity: 0.7;
+    animation: onda-pulso 7s linear 2s infinite;
+  }
+
+  &--pulso-b {
+    opacity: 0.5;
+    animation-duration: 11s;
+    animation-delay: 5.5s;
+    animation-direction: reverse;
+  }
+}
+
+@keyframes onda-traza {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes onda-flota {
+  to {
+    transform: translateY(-18px);
+  }
+}
+
+@keyframes onda-pulso {
+  from {
+    stroke-dashoffset: 0.06;
+  }
+
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+// --- Chispas que suben ------------------------------------------------------
+.fondo__chispas {
+  position: absolute;
+  inset: 0;
+}
+
+.fondo__chispa {
+  position: absolute;
+  bottom: -8px;
+  left: var(--x);
+  width: var(--t);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 6px 1px var(--color-accent-glow);
+  opacity: 0;
+  animation: chispa-sube var(--d) linear var(--r) infinite;
+
+  // En móvil vuela la mitad: menos capas y menos batería.
+  &:nth-child(n + 9) {
+    display: none;
+  }
+}
+
+@keyframes chispa-sube {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(1);
+  }
+
+  12% {
+    opacity: 0.8;
+  }
+
+  60% {
+    opacity: 0.45;
+    transform: translate(var(--deriva), -60vh) scale(0.8);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--deriva) * -0.5), -105vh) scale(0.4);
+  }
+}
+
+// --- Foco: sigue al ratón con retardo; en táctil destella donde se toca ------
+.fondo__foco {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(60vmax, 560px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color-accent-glow), transparent);
+  opacity: 0;
+  translate: -50% -50%;
+  transform: translate(var(--px, 50vw), var(--py, 30vh));
+  transition:
+    transform 900ms var(--easing-out),
+    opacity var(--duration-slow) var(--easing-standard);
+}
+
+:host([data-puntero='activo']) .fondo__foco {
+  opacity: 0.35;
+}
+
+// --- Grano: textura fija que quita las bandas de los degradados -------------
+.fondo__grano {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+// --- Dónde está la luz en cada sección --------------------------------------
+:host([data-seccion='ejercicios']),
+:host([data-seccion='buscar']),
+:host([data-seccion='recomendados']),
+:host([data-seccion='favoritos']) {
+  --fondo-x: -14vw;
+  --fondo-y: 10vh;
+}
+
+:host([data-seccion='registros']),
+:host([data-seccion='estadisticas']) {
+  --fondo-x: -4vw;
+  --fondo-y: 26vh;
+}
+
+:host([data-seccion='perfil']) {
+  --fondo-x: -22vw;
+  --fondo-y: -6vh;
+}
+
+:host([data-seccion='login']),
+:host([data-seccion='registro']) {
+  --fondo-x: -30vw;
+  --fondo-y: 18vh;
+}
+
+// La portada ya tiene su propio resplandor: las brasas se atenúan para no competir.
+:host([data-seccion='portada']) .fondo__brasas {
+  opacity: 0.5;
+}
+
+@include bp.up(md) {
+  .fondo__rejilla {
+    --paralaje: -96px;
+  }
+
+  .fondo__chispa:nth-child(n + 9) {
+    display: block;
+  }
+}
+
+// El reset global acorta duraciones, pero no para una animación ligada al scroll ni para el
+// movimiento que aquí sobra del todo.
+@media (prefers-reduced-motion: reduce) {
+  .fondo__brasa,
+  .fondo__rejilla,
+  .fondo__onda,
+  .fondo__onda-capa {
+    animation: none;
+  }
+
+  .fondo__barrido,
+  .fondo__chispas,
+  .fondo__foco,
+  .fondo__onda--pulso {
+    display: none;
+  }
+}

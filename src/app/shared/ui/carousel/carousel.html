@@ -9,24 +9,16 @@
   (touchstart)="pausar(true)"
 >
   <div #track class="carousel__track" (scroll)="alHacerScroll()">
-    @for (slide of slides(); track $index; let i = $index) {
+    @for (item of items(); track $index; let i = $index) {
       <div
         class="carousel__slide"
         role="group"
         aria-roledescription="diapositiva"
-        [attr.aria-label]="i + 1 + ' de ' + slides().length"
+        [attr.aria-label]="i + 1 + ' de ' + items().length"
       >
-        <picture>
-          <source media="(width >= 768px)" [attr.srcset]="slide.srcEscritorio" />
-          <img
-            class="carousel__img"
-            [src]="slide.srcMovil"
-            [alt]="slide.alt"
-            width="568"
-            height="307"
-            [attr.loading]="i === 0 ? 'eager' : 'lazy'"
-          />
-        </picture>
+        <div class="carousel__contenido">
+          <ng-container [ngTemplateOutlet]="plantilla()" [ngTemplateOutletContext]="{ $implicit: item, index: i }" />
+        </div>
       </div>
     }
   </div>
@@ -36,7 +28,7 @@
       ←
     </button>
     <div class="carousel__dots">
-      @for (slide of slides(); track $index; let i = $index) {
+      @for (item of items(); track $index; let i = $index) {
         <button
           type="button"
           class="carousel__dot"

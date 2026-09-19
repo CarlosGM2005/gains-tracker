@@ -14,7 +14,10 @@
   gap: var(--space-2);
 }
 
+// Con appRipple: la onda necesita position y overflow: hidden.
 .opcion {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;

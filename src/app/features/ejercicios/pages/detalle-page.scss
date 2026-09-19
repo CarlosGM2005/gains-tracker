@@ -87,6 +87,35 @@
   box-shadow: var(--shadow-card);
 }
 
+// El "+" va en un disco y gira un cuarto de vuelta con rebote al pasar el puntero o al pulsar.
+.registrar__icono {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: rgb(from var(--color-on-accent) r g b / 14%);
+  line-height: 1;
+  transition: transform 420ms var(--easing-spring);
+}
+
+.registrar:active .registrar__icono {
+  transform: rotate(90deg) scale(0.9);
+}
+
+@media (hover: hover) {
+  .registrar:hover .registrar__icono {
+    transform: rotate(90deg) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .registrar:hover .registrar__icono,
+  .registrar:active .registrar__icono {
+    transform: none;
+  }
+}
+
 @include bp.up(lg) {
   .detalle {
     grid-template-columns: 1.2fr 1fr;

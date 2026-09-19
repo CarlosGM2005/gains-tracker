@@ -35,16 +35,55 @@
   }
 }
 
+// Línea que se traza de izquierda a derecha (usar con transform-origin: left).
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+// Destello que cruza un esqueleto de carga.
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
 // Entrada escalonada: el retardo sale de --i (0, 1, 2...) puesto en el elemento.
+// Dentro de un bloque con appReveal espera a que aparezca en pantalla (--entrada: paused).
+// Relleno "backwards": al terminar suelta transform y opacity, así :hover y :active del propio
+// elemento (tarjetas, opciones, niveles) pueden volver a moverlo.
 .stagger {
-  animation: rise-in var(--duration-slow) var(--easing-out) both;
+  animation: rise-in var(--duration-slow) var(--easing-out) backwards;
   animation-delay: calc(var(--i, 0) * 70ms);
+  animation-play-state: var(--entrada, running);
 }
 
 // Revelado al entrar en pantalla (directiva appReveal). Sin JS el contenido se ve igual.
+// --entrada se hereda: las animaciones de entrada de dentro (también en componentes hijos)
+// quedan en pausa hasta que el bloque es visible, en vez de consumirse fuera de pantalla.
 [data-reveal='pending'] {
+  --entrada: paused;
+
   opacity: 0;
   transform: translateY(24px);
+}
+
+// Onda de pulsación (directiva appRipple). El anfitrión necesita position y overflow: hidden.
+.ripple {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  background: var(--color-accent);
+  pointer-events: none;
 }
 
 [data-reveal='visible'] {

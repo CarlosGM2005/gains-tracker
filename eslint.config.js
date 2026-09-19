@@ -8,8 +8,10 @@ const angular = require('angular-eslint');
  * En flat config una regla repetida sustituye a la anterior, así que cada bloque
  * declara la lista completa de patrones que aplica a su carpeta.
  */
+// Con `group` (sintaxis de .gitignore) 'firebase' coincide con cualquier segmento de la ruta y
+// bloqueaba también '@core/firebase/...'. La expresión regular solo toca los paquetes del SDK.
 const FIREBASE = {
-  group: ['firebase', 'firebase/*', '@angular/fire', '@angular/fire/*'],
+  regex: '^(firebase|@angular/fire)(/.*)?$',
   message: 'Firebase solo se importa en core/firebase y en features/*/data/firebase.',
 };
 const OTRA_FEATURE = {

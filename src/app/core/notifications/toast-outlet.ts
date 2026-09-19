@@ -47,7 +47,20 @@ import { ToastService } from './toast.service';
       background: var(--color-surface);
       box-shadow: var(--shadow-card);
       pointer-events: auto;
-      animation: rise-in var(--duration-base) var(--easing-out) both;
+      animation: toast-in 420ms var(--easing-spring) both;
+    }
+
+    /* Entrada con muelle: sube, crece y se pasa un poco antes de asentarse. */
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     .toast__bar {

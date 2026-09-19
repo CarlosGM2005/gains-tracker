@@ -152,7 +152,11 @@
   background: var(--color-accent-soft);
   box-shadow: inset 0 2px 0 var(--color-accent);
   transform-origin: bottom;
+  // Barras que crecen: escalonadas 60 ms tras la entrada del bloque y en pausa hasta que el bloque
+  // aparece en pantalla (--entrada de appReveal).
   animation: crecer var(--duration-slow) var(--easing-out) both;
+  animation-delay: calc(300ms + var(--i, 0) * 60ms);
+  animation-play-state: var(--entrada, running);
 }
 
 .barra__relleno--actual {

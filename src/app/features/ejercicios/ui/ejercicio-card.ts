@@ -1,18 +1,20 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { Ripple } from '@shared/ui/ripple/ripple';
+
 import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejercicio.model';
 
 /**
  * Tarjeta de ejercicio del catálogo: enlace al detalle. Con puntero, se eleva y la flecha avanza;
- * en táctil, se comprime al pulsar.
+ * en táctil, se comprime al pulsar y suelta una onda desde el dedo (appRipple).
  */
 @Component({
   selector: 'app-ejercicio-card',
-  imports: [RouterLink],
+  imports: [RouterLink, Ripple],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <a class="card" [routerLink]="['/ejercicios/detalle', ejercicio().id]">
+    <a class="card" appRipple [routerLink]="['/ejercicios/detalle', ejercicio().id]">
       <span class="card__media">
         <img [src]="ejercicio().imagenInicio" alt="" width="400" height="300" loading="lazy" />
       </span>
@@ -27,6 +29,8 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
   `,
   styles: `
     .card {
+      position: relative;
+      overflow: hidden;
       display: grid;
       grid-template-columns: 88px 1fr auto;
       align-items: center;
@@ -43,6 +47,12 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
 
     .card:active {
       transform: scale(0.98);
+    }
+
+    /* Con teclado, el mismo realce que con puntero. */
+    .card:focus-visible {
+      border-color: var(--color-accent);
+      transform: translateY(-3px);
     }
 
     .card__media {
@@ -105,6 +115,16 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
         background: var(--color-accent);
         color: var(--color-on-accent);
         transform: translateX(3px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card:hover,
+      .card:focus-visible,
+      .card:active,
+      .card:hover .card__media img,
+      .card:hover .card__arrow {
+        transform: none;
       }
     }
   `,

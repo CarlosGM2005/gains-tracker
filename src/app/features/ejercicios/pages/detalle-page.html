@@ -29,7 +29,7 @@
           </figure>
         </div>
 
-        <div class="info stagger" style="--i: 2">
+        <div class="info stagger" style="--i: 2" appReveal>
           <div class="badges">
             <span class="badge">{{ etiquetaMusculo[detalle.musculo] }}</span>
             <span class="badge badge--nivel">{{ etiquetaNivel[detalle.nivel] }}</span>
@@ -46,7 +46,7 @@
           </div>
 
           <button type="button" class="btn btn--primary btn--lg registrar" (click)="abrirRegistro(detalle)">
-            <span aria-hidden="true">+</span> Registrar serie
+            <span class="registrar__icono" aria-hidden="true">+</span> Registrar serie
           </button>
         </div>
       </div>

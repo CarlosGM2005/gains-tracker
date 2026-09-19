@@ -1,0 +1,40 @@
+<div class="fondo__brasas">
+  <span class="fondo__brasa fondo__brasa--a"></span>
+  <span class="fondo__brasa fondo__brasa--b"></span>
+  <span class="fondo__brasa fondo__brasa--c"></span>
+</div>
+
+<span class="fondo__rejilla"></span>
+<span class="fondo__barrido"></span>
+
+<div class="fondo__ondas">
+  @for (onda of ondas; track $index) {
+    <span class="fondo__onda-capa" [style.--i]="$index">
+      <svg viewBox="0 0 1440 800" preserveAspectRatio="none" width="100%" height="100%" focusable="false">
+        <path class="fondo__onda" [attr.d]="onda" pathLength="1" />
+        @if ($index === 1) {
+          <path class="fondo__onda fondo__onda--pulso" [attr.d]="onda" pathLength="1" />
+        }
+        @if ($index === 3) {
+          <path class="fondo__onda fondo__onda--pulso fondo__onda--pulso-b" [attr.d]="onda" pathLength="1" />
+        }
+      </svg>
+    </span>
+  }
+</div>
+
+<div class="fondo__chispas">
+  @for (chispa of chispas; track $index) {
+    <span
+      class="fondo__chispa"
+      [style.--x]="chispa.x"
+      [style.--t]="chispa.tamano"
+      [style.--d]="chispa.duracion"
+      [style.--r]="chispa.retardo"
+      [style.--deriva]="chispa.deriva"
+    ></span>
+  }
+</div>
+
+<span class="fondo__foco"></span>
+<span class="fondo__grano"></span>
