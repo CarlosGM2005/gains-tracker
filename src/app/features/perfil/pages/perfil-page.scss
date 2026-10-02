@@ -59,6 +59,17 @@
   background: var(--color-accent-soft);
 }
 
+// El icono de la app ya lleva su propio fondo naranja: se enseña entero, sin el círculo detrás.
+.opcion__icono--instalar {
+  background: none;
+
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+}
+
 .opcion__texto {
   font-family: var(--font-display);
   font-size: var(--font-size-md);

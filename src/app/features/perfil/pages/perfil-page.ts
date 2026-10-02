@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AuthStore } from '@core/auth/auth-store';
 import { ToastService } from '@core/notifications/toast.service';
+import { InstalacionService } from '@core/pwa/instalacion.service';
 import { BackButton } from '@shared/ui/back-button/back-button';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { Ripple } from '@shared/ui/ripple/ripple';
@@ -24,6 +25,7 @@ export class PerfilPage {
   private readonly toasts = inject(ToastService);
 
   protected readonly store = inject(PerfilStore);
+  protected readonly instalacion = inject(InstalacionService);
   protected readonly cerrando = signal(false);
 
   protected async cerrarSesion(): Promise<void> {

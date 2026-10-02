@@ -19,6 +19,15 @@ export interface Environment {
   firebase: FirebaseWebConfig | null;
   /** Con `dataSource: 'firebase'`, conecta a los emuladores locales en lugar de producción. */
   useEmulators: boolean;
+  /**
+   * Sirve los ayudantes de login de Firebase desde nuestro propio dominio, a través del proxy
+   * `/__/auth/*` de Netlify (ver `netlify.toml` y `public/_redirects`).
+   *
+   * Hace falta porque Safari bloquea el almacenamiento de terceros: sin esto
+   * `signInWithRedirect` no termina nunca, y la redirección es el único flujo que funciona
+   * con la app instalada en iOS. Solo se activa donde exista el proxy, nunca en local.
+   */
+  usarProxyAuth: boolean;
   /** Retardo artificial de los repositorios mock, para ver estados de carga. */
   mockLatencyMs: number;
 }

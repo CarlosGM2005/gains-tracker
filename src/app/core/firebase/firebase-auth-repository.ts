@@ -20,6 +20,7 @@ import { BehaviorSubject, type Observable } from 'rxjs';
 
 import { AuthRepository } from '../auth/auth-repository';
 import { AuthError, type AuthUser } from '../auth/auth.model';
+import { enModoApp } from '../pwa/plataforma';
 import { aAuthError } from './firebase-auth-errors';
 import { FIREBASE_AUTH } from './firebase.providers';
 
@@ -59,6 +60,16 @@ export class FirebaseAuthRepository extends AuthRepository {
 
   async loginConGoogle(): Promise<AuthUser> {
     const proveedor = new GoogleAuthProvider();
+
+    // Con la app instalada (sobre todo en iOS) la ventana emergente se abre en el navegador de
+    // fuera y su resultado nunca vuelve a la app: el único flujo que funciona es la redirección.
+    if (enModoApp()) {
+      await signInWithRedirect(this.auth, proveedor);
+      // La página ya está navegando a Google. La promesa se queda pendiente a propósito: así el
+      // botón sigue en "cargando" hasta que la página se va. Al volver llega por onAuthStateChanged.
+      return new Promise<AuthUser>(() => undefined);
+    }
+
     try {
       return aAuthUser((await signInWithPopup(this.auth, proveedor)).user);
     } catch (e) {

@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 
 import { ToastOutlet } from '../../notifications/toast-outlet';
+import { InstallPrompt } from '../../pwa/install-prompt';
 import { FondoAmbiental } from '../fondo/fondo-ambiental';
 import { BottomNav } from '../nav/bottom-nav';
 import { SideNav } from '../nav/side-nav';
@@ -15,7 +16,7 @@ import { type NavMode, navModeDe } from '../route-data';
  */
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, SideNav, BottomNav, ToastOutlet, FondoAmbiental],
+  imports: [RouterOutlet, SideNav, BottomNav, ToastOutlet, FondoAmbiental, InstallPrompt],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './shell.html',
   styleUrl: './shell.scss',

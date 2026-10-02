@@ -1,1 +1,7 @@
-/*  /index.html 200
+# Ayudantes de inicio de sesión de Firebase servidos desde nuestro propio dominio.
+# Safari bloquea el almacenamiento de terceros y sin este proxy `signInWithRedirect` no termina,
+# que es justo el flujo que usa la app instalada en iOS. Debe ir ANTES del comodín de la SPA.
+/__/auth/*  https://gainstracker-21592.firebaseapp.com/__/auth/:splat  200
+
+# SPA: cualquier otra ruta la resuelve el router de Angular.
+/*  /index.html  200

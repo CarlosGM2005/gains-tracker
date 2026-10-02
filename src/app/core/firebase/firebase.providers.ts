@@ -18,10 +18,16 @@ export const EMULADORES = {
 /**
  * Inicializa Firebase de forma perezosa (solo cuando algo inyecta los tokens).
  * Con `useEmulators` se conecta a los emuladores locales y nunca a producción.
+ * Con `usarProxyAuth` el login pasa por nuestro dominio en lugar de `*.firebaseapp.com`.
  */
-export function provideFirebase(config: FirebaseWebConfig, useEmulators: boolean): EnvironmentProviders {
+export function provideFirebase(
+  config: FirebaseWebConfig,
+  useEmulators: boolean,
+  usarProxyAuth = false,
+): EnvironmentProviders {
+  const configuracion = conAuthDomainPropio(config, usarProxyAuth);
   return makeEnvironmentProviders([
-    { provide: FIREBASE_APP, useFactory: () => initializeApp(config) },
+    { provide: FIREBASE_APP, useFactory: () => initializeApp(configuracion) },
     {
       provide: FIREBASE_AUTH,
       useFactory: () => {
@@ -44,4 +50,16 @@ export function provideFirebase(config: FirebaseWebConfig, useEmulators: boolean
       },
     },
   ]);
+}
+
+/**
+ * Apunta `authDomain` al dominio que sirve la app. Netlify reenvía `/__/auth/*` al proyecto de
+ * Firebase (ver `netlify.toml`), así que el iframe de inicio de sesión deja de ser de terceros
+ * y Safari ya no bloquea su almacenamiento. Sin eso, `signInWithRedirect` nunca termina.
+ *
+ * Sirve para cualquier dominio de Netlify, incluidas las previsualizaciones de rama.
+ */
+function conAuthDomainPropio(config: FirebaseWebConfig, usarProxyAuth: boolean): FirebaseWebConfig {
+  if (!usarProxyAuth || typeof location === 'undefined') return config;
+  return { ...config, authDomain: location.hostname };
 }

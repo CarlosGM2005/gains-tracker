@@ -1,0 +1,36 @@
+# Despliegue de la v2 (rama `rebuild`). Este fichero manda sobre la configuración del panel de
+# Netlify, así que los ajustes de build viven aquí y no en la interfaz.
+#
+# Las redirecciones están en `public/_redirects` (proxy de login de Firebase + comodín de la SPA).
+
+[build]
+  command = "npm run build"
+  publish = "dist/gains-tracker/browser"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# El service worker y su manifiesto no se cachean nunca. Si el navegador sirve una copia vieja de
+# `ngsw.json`, el usuario se queda clavado en una versión antigua de la app y no recibe arreglos.
+# El resto de ficheros llevan hash en el nombre y los cachea el propio service worker, así que se
+# dejan con el comportamiento por defecto de Netlify (revalidar), que nunca sirve nada obsoleto.
+[[headers]]
+  for = "/ngsw-worker.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/ngsw.json"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "no-cache"

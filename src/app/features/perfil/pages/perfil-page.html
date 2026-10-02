@@ -32,17 +32,32 @@
           <span class="opcion__texto">Favoritos</span>
           <span class="opcion__flecha" aria-hidden="true">→</span>
         </a>
-        <a class="opcion stagger" appRipple style="--i: 7" routerLink="/privacidad">
+        @if (instalacion.disponible()) {
+          <button
+            type="button"
+            class="opcion stagger"
+            appRipple
+            style="--i: 7"
+            (click)="instalacion.pedirInstalacion()"
+          >
+            <span class="opcion__icono opcion__icono--instalar" aria-hidden="true">
+              <img src="icons/app/icon-192.png" alt="" width="22" height="22" />
+            </span>
+            <span class="opcion__texto">Instalar la app</span>
+            <span class="opcion__flecha" aria-hidden="true">→</span>
+          </button>
+        }
+        <a class="opcion stagger" appRipple style="--i: 8" routerLink="/privacidad">
           <span class="opcion__icono"><img src="icons/logoPoliticaPrivacidad.png" alt="" width="22" height="22" /></span>
           <span class="opcion__texto">Política de privacidad</span>
           <span class="opcion__flecha" aria-hidden="true">→</span>
         </a>
-        <button type="button" class="opcion opcion--peligro stagger" appRipple style="--i: 8" [disabled]="cerrando()" (click)="cerrarSesion()">
+        <button type="button" class="opcion opcion--peligro stagger" appRipple style="--i: 9" [disabled]="cerrando()" (click)="cerrarSesion()">
           <span class="opcion__icono"><img src="icons/logoLogout.png" alt="" width="22" height="22" /></span>
           <span class="opcion__texto">{{ cerrando() ? 'Cerrando sesión…' : 'Cerrar sesión' }}</span>
           <span class="opcion__flecha" aria-hidden="true">→</span>
         </button>
-        <a class="eliminar-enlace stagger" style="--i: 9" routerLink="/perfil/eliminar">Eliminar cuenta</a>
+        <a class="eliminar-enlace stagger" style="--i: 10" routerLink="/perfil/eliminar">Eliminar cuenta</a>
       </nav>
     </div>
   }

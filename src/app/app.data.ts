@@ -31,7 +31,7 @@ export function provideDataLayer(env: Environment): EnvironmentProviders {
       throw new Error('dataSource es "firebase" pero environment.firebase está vacío. Pega la config web del proyecto.');
     }
     return makeEnvironmentProviders([
-      provideFirebase(env.firebase, env.useEmulators),
+      provideFirebase(env.firebase, env.useEmulators, env.usarProxyAuth),
       { provide: ANALYTICS_TRACKER, useClass: FirebaseAnalyticsTracker },
       { provide: AuthRepository, useClass: FirebaseAuthRepository },
       { provide: EjerciciosRepository, useClass: FirebaseEjerciciosRepository },

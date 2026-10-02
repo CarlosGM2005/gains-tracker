@@ -21,5 +21,6 @@ export const environment: Environment = {
     measurementId: 'G-JZX067XBJC',
   },
   useEmulators: false,
+  usarProxyAuth: true,
   mockLatencyMs: 0,
 };

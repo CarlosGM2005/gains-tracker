@@ -6,5 +6,6 @@ export const TEST_ENVIRONMENT: Environment = {
   dataSource: 'mock',
   firebase: null,
   useEmulators: false,
+  usarProxyAuth: false,
   mockLatencyMs: 0,
 };

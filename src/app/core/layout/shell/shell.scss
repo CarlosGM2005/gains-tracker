@@ -10,6 +10,10 @@
 .shell__main {
   min-width: 0;
 
+  // Instalada en iOS la barra de estado es translúcida y la app pinta debajo.
+  // Fuera del modo app el valor es 0, así que no cambia nada en el navegador.
+  padding-top: env(safe-area-inset-top);
+
   &:focus {
     outline: none;
   }
@@ -36,6 +40,7 @@
     position: sticky;
     top: 0;
     height: 100dvh;
+    padding-top: env(safe-area-inset-top);
     overflow-y: auto;
     background: var(--color-bg);
   }
