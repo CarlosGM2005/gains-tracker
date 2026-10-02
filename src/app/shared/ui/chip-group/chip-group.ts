@@ -42,6 +42,11 @@ export interface ChipOption<T extends string = string> {
     </div>
   `,
   styles: `
+    :host {
+      display: block;
+      min-width: 0;
+    }
+
     .chips {
       position: relative;
       display: flex;

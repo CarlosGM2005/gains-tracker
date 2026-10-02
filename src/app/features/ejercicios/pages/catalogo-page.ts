@@ -50,6 +50,7 @@ import { OPCIONES_MUSCULO } from '../ui/opciones-musculo';
   styles: `
     .catalogo {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--space-6);
     }
   `,

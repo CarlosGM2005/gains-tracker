@@ -2,6 +2,7 @@
 
 .stats {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
 }
 
@@ -45,6 +46,7 @@
 
 .bloque {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-5);
   padding: var(--space-5);
   border: 1px solid var(--color-border);
@@ -191,7 +193,7 @@
 
 @include bp.up(lg) {
   .stats {
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     align-items: start;
   }
 
