@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { Icon } from '@shared/ui/icon/icon';
 import { Ripple } from '@shared/ui/ripple/ripple';
 
 import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejercicio.model';
@@ -11,7 +12,7 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
  */
 @Component({
   selector: 'app-ejercicio-card',
-  imports: [RouterLink, Ripple],
+  imports: [RouterLink, Icon, Ripple],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="card" appRipple [routerLink]="['/ejercicios/detalle', ejercicio().id]">
@@ -24,7 +25,7 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
           {{ etiquetaMusculo[ejercicio().musculo] }} · {{ etiquetaNivel[ejercicio().nivel] }}
         </span>
       </span>
-      <span class="card__arrow" aria-hidden="true">→</span>
+      <span class="card__arrow"><app-icon name="flecha-derecha" [size]="18" /></span>
     </a>
   `,
   styles: `
@@ -80,6 +81,7 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
       font-weight: var(--font-weight-bold);
       line-height: 1.1;
       text-transform: uppercase;
+      overflow-wrap: anywhere;
     }
 
     .card__meta {

@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { CatalogoStore, RECOMENDADOS_EN_INICIO } from '@features/ejercicios/public-api';
 import { Carousel } from '@shared/ui/carousel/carousel';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
+import { Icon } from '@shared/ui/icon/icon';
 import { PageHeader } from '@shared/ui/page-header/page-header';
 import { Reveal } from '@shared/ui/reveal/reveal';
 import { Skeleton } from '@shared/ui/skeleton/skeleton';
@@ -26,7 +27,18 @@ const CLAVE_DIAS = 'gt.rutina.dias';
 
 @Component({
   selector: 'app-inicio-page',
-  imports: [RouterLink, PageHeader, Carousel, EmptyState, Skeleton, Reveal, RecomendadoTile, RutinaDia, PlanDias],
+  imports: [
+    RouterLink,
+    PageHeader,
+    Carousel,
+    EmptyState,
+    Icon,
+    Skeleton,
+    Reveal,
+    RecomendadoTile,
+    RutinaDia,
+    PlanDias,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './inicio-page.html',
   styleUrl: './inicio-page.scss',

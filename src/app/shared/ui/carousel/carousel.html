@@ -25,7 +25,7 @@
 
   <div class="carousel__controls">
     <button type="button" class="btn btn--ghost btn--icon" aria-label="Anterior" (click)="ir(activo() - 1)">
-      ←
+      <app-icon name="flecha-izquierda" [size]="20" />
     </button>
     <div class="carousel__dots">
       @for (item of items(); track $index; let i = $index) {
@@ -40,7 +40,7 @@
       }
     </div>
     <button type="button" class="btn btn--ghost btn--icon" aria-label="Siguiente" (click)="ir(activo() + 1)">
-      →
+      <app-icon name="flecha-derecha" [size]="20" />
     </button>
   </div>
 </section>

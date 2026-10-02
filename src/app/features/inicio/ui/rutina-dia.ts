@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { Icon } from '@shared/ui/icon/icon';
+
 import { ETIQUETA_MUSCULO, type Musculo, MUSCULOS_FILTRO } from '@features/ejercicios/public-api';
 
 import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
@@ -11,7 +13,7 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
  */
 @Component({
   selector: 'app-rutina-dia',
-  imports: [RouterLink],
+  imports: [RouterLink, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let d = dia();
@@ -39,7 +41,7 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
                 @if (m.opcional) {
                   <span class="musculo__opcional">Opcional</span>
                 }
-                <span class="musculo__flecha" aria-hidden="true">→</span>
+                <span class="musculo__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
               </a>
             } @else {
               <span class="musculo musculo--sin-enlace">

@@ -2,7 +2,11 @@
 
 // Fondo ambiental de toda la app. Capa fija bajo el contenido, sin eventos de ratón.
 // Todo el movimiento es transform y opacity; nada de width, height, top ni left.
+// Un solo mando para todo el naranja del fondo. Bájalo para apagarlo más, súbelo para que pese
+// más; cada capa mantiene su proporción respecto a las demás.
 :host {
+  --fondo-intensidad: 0.4;
+
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -31,7 +35,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--color-accent-glow), transparent);
-  opacity: 0.3;
+  opacity: calc(0.3 * var(--fondo-intensidad));
   animation: brasa-deriva 26s ease-in-out infinite alternate;
 
   // `translate` centra la brasa en su esquina; la deriva usa `transform`, así no se pisan.
@@ -46,7 +50,7 @@
     left: 0;
     translate: -50% 50%;
     background: radial-gradient(closest-side, rgb(from var(--color-accent-strong) r g b / 45%), transparent);
-    opacity: 0.22;
+    opacity: calc(0.22 * var(--fondo-intensidad));
     animation-duration: 32s;
     animation-delay: -11s;
     animation-direction: alternate-reverse;
@@ -59,7 +63,7 @@
     width: min(70vmax, 640px);
     translate: -50% -50%;
     background: radial-gradient(closest-side, rgb(from var(--color-focus) r g b / 30%), transparent);
-    opacity: 0.12;
+    opacity: calc(0.12 * var(--fondo-intensidad));
     animation: brasa-respira 9s ease-in-out infinite alternate;
   }
 }
@@ -76,7 +80,7 @@
 
 @keyframes brasa-respira {
   to {
-    opacity: 0.26;
+    opacity: calc(0.26 * var(--fondo-intensidad));
     transform: scale(1.12);
   }
 }
@@ -122,11 +126,11 @@
   }
 
   12% {
-    opacity: 0.6;
+    opacity: calc(0.6 * var(--fondo-intensidad));
   }
 
   45% {
-    opacity: 0.6;
+    opacity: calc(0.6 * var(--fondo-intensidad));
   }
 
   55%,
@@ -165,7 +169,7 @@
   stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
-  opacity: 0.13;
+  opacity: calc(0.13 * var(--fondo-intensidad));
   vector-effect: non-scaling-stroke;
   animation: onda-traza 1800ms var(--easing-out) calc(var(--i, 0) * 220ms + 200ms) backwards;
 
@@ -174,12 +178,12 @@
     stroke-width: 3;
     stroke-dasharray: 0.06 1.94;
     stroke-dashoffset: 0.06;
-    opacity: 0.7;
+    opacity: calc(0.7 * var(--fondo-intensidad));
     animation: onda-pulso 7s linear 2s infinite;
   }
 
   &--pulso-b {
-    opacity: 0.5;
+    opacity: calc(0.5 * var(--fondo-intensidad));
     animation-duration: 11s;
     animation-delay: 5.5s;
     animation-direction: reverse;
@@ -226,7 +230,8 @@
   opacity: 0;
   animation: chispa-sube var(--d) linear var(--r) infinite;
 
-  // En móvil vuela la mitad: menos capas y menos batería.
+  // Solo vuelan 8 de las 16, en móvil y en escritorio: el mismo movimiento en los dos sitios y
+  // la mitad de capas que componer en cada fotograma.
   &:nth-child(n + 9) {
     display: none;
   }
@@ -239,11 +244,11 @@
   }
 
   12% {
-    opacity: 0.8;
+    opacity: calc(0.8 * var(--fondo-intensidad));
   }
 
   60% {
-    opacity: 0.45;
+    opacity: calc(0.45 * var(--fondo-intensidad));
     transform: translate(var(--deriva), -60vh) scale(0.8);
   }
 
@@ -271,7 +276,7 @@
 }
 
 :host([data-puntero='activo']) .fondo__foco {
-  opacity: 0.35;
+  opacity: calc(0.35 * var(--fondo-intensidad));
 }
 
 // --- Grano: textura fija que quita las bandas de los degradados -------------
@@ -316,10 +321,6 @@
 @include bp.up(md) {
   .fondo__rejilla {
     --paralaje: -96px;
-  }
-
-  .fondo__chispa:nth-child(n + 9) {
-    display: block;
   }
 }
 

@@ -13,6 +13,8 @@ import {
   viewChild,
 } from '@angular/core';
 
+import { Icon } from '../icon/icon';
+
 /** Contexto de la plantilla de cada diapositiva: `let-item` y `let-i="index"`. */
 export interface CarouselContexto<T> {
   $implicit: T;
@@ -32,7 +34,7 @@ export interface CarouselContexto<T> {
  */
 @Component({
   selector: 'app-carousel',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './carousel.html',
   styleUrl: './carousel.scss',

@@ -49,7 +49,7 @@ import { type Perfil } from '../domain/perfil.model';
       top: -60%;
       left: 50%;
       z-index: -1;
-      width: 520px;
+      width: min(520px, 150%);
       aspect-ratio: 1;
       border-radius: 50%;
       background: radial-gradient(closest-side, var(--color-accent-glow), transparent 70%);

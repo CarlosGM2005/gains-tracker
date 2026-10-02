@@ -12,6 +12,8 @@ import {
   viewChild,
 } from '@angular/core';
 
+import { Icon } from '@shared/ui/icon/icon';
+
 import { type DiasPorSemana, OPCIONES_DIAS, RUTINAS } from '../domain/rutina';
 
 const LETRAS_SEMANA = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -27,6 +29,7 @@ const LETRAS_SEMANA = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
  */
 @Component({
   selector: 'app-plan-dias',
+  imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'plan',
@@ -90,7 +93,7 @@ const LETRAS_SEMANA = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
               }
             </span>
           </span>
-          <span class="opcion__check" aria-hidden="true">✓</span>
+          <span class="opcion__check"><app-icon name="check" [size]="16" /></span>
         </li>
       }
     </ul>

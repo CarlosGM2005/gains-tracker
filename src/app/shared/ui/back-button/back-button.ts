@@ -2,16 +2,19 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Icon } from '../icon/icon';
+
 /**
  * Vuelve a la página anterior del historial. Si se indica `fallback` (p. ej. en el login), navega
  * siempre a esa ruta: así no se vuelve a una página privada ni se sale de la app.
  */
 @Component({
   selector: 'app-back-button',
+  imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button type="button" class="back" (click)="volver()">
-      <span class="back__arrow" aria-hidden="true">←</span>
+      <span class="back__arrow"><app-icon name="flecha-izquierda" [size]="18" /></span>
       <span class="back__text">{{ etiqueta() }}</span>
     </button>
   `,
@@ -41,6 +44,11 @@ import { Router } from '@angular/router';
       border: 1px solid var(--color-border);
       border-radius: var(--radius-pill);
       transition: transform var(--duration-base) var(--easing-out), border-color var(--duration-base);
+    }
+
+    .back:active .back__arrow {
+      border-color: var(--color-accent);
+      transform: scale(0.92);
     }
 
     @media (hover: hover) {

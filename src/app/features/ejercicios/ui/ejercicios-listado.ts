@@ -87,6 +87,7 @@ export function estadoListado(recurso: Resource<unknown>): EstadoListado {
       font-family: var(--font-display);
       font-size: var(--font-size-lg);
       font-weight: var(--font-weight-bold);
+      font-variant-numeric: tabular-nums;
       color: var(--color-on-accent);
     }
 

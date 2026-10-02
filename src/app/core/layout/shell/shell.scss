@@ -2,7 +2,7 @@
 
 :host {
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: 1fr;
   grid-template-columns: minmax(0, 1fr);
   min-height: 100dvh;
 }
@@ -14,6 +14,11 @@
   // Fuera del modo app el valor es 0, así que no cambia nada en el navegador.
   padding-top: env(safe-area-inset-top);
 
+  // Red de seguridad: si una pieza se pasa de ancho, se recorta en lugar de hacer que toda la
+  // página se desplace a los lados. `clip` y no `hidden`: `hidden` crearía un contenedor de
+  // scroll y rompería el `position: sticky` de dentro.
+  overflow-x: clip;
+
   &:focus {
     outline: none;
   }
@@ -23,11 +28,18 @@
   display: none;
 }
 
+// La barra inferior va fija al borde de la pantalla, no al final del documento: así no se mueve
+// cuando el dedo arrastra más allá del final de la página.
 .shell__bottom {
-  position: sticky;
+  position: fixed;
+  inset-inline: 0;
   bottom: 0;
   z-index: 10;
-  align-self: end;
+}
+
+// Hueco bajo el contenido para que la barra fija no tape lo último de la página.
+:host(:not([data-nav='none'])) .shell__main {
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
 }
 
 @include bp.up(lg) {
@@ -47,5 +59,10 @@
 
   .shell__bottom {
     display: none;
+  }
+
+  // Sin barra inferior no hace falta el hueco.
+  :host(:not([data-nav='none'])) .shell__main {
+    padding-bottom: 0;
   }
 }

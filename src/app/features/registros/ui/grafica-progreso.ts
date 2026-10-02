@@ -75,8 +75,11 @@ const MARGEN = { arriba: 16, derecha: 16, abajo: 28, izquierda: 44 };
       stroke-dasharray: 4 6;
     }
 
+    /* El tamaño está en unidades del viewBox, no en píxeles de pantalla: el SVG se escala al
+       ancho disponible, así que 18 aquí se leen como ~10 px en un móvil de 375. */
     .grafica__eje {
-      font-size: 12px;
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
       fill: var(--color-text-muted);
     }
 

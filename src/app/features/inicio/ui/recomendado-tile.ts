@@ -115,6 +115,7 @@ import { Ripple } from '@shared/ui/ripple/ripple';
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-display);
       text-transform: uppercase;
+      overflow-wrap: anywhere;
       transition: color var(--duration-base) var(--easing-standard);
     }
 

@@ -1,10 +1,10 @@
 <div class="page">
   <app-page-header titulo="GainsTracker" antetitulo="Tu entrenamiento">
     <a headerActions class="btn btn--ghost btn--icon" routerLink="/buscar" aria-label="Buscar ejercicios">
-      <img src="icons/logoBuscar.png" alt="" width="22" height="22" />
+      <app-icon name="buscar" [size]="22" />
     </a>
     <a headerActions class="btn btn--ghost btn--icon" routerLink="/perfil" aria-label="Ir al perfil">
-      <img src="icons/logoPerfil.png" alt="" width="22" height="22" />
+      <app-icon name="perfil" [size]="22" />
     </a>
   </app-page-header>
 
@@ -38,7 +38,7 @@
     <div class="section__head">
       <h2 id="recomendados-titulo" class="section__title">Recomendados</h2>
       <a class="section__more" routerLink="/recomendados">
-        Ver todos <span aria-hidden="true">→</span>
+        Ver todos <app-icon name="flecha-derecha" [size]="18" />
       </a>
     </div>
 

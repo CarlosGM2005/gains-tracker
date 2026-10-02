@@ -24,6 +24,7 @@
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
   line-height: 1;
   overflow-wrap: anywhere;
 
@@ -97,6 +98,7 @@
     font-family: var(--font-display);
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
+    font-variant-numeric: tabular-nums;
   }
 
   small {
@@ -116,10 +118,16 @@
 .barras {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+
+  // Cada barra tiene un ancho mínimo para que su fecha quepa. Si las ocho no entran, la fila se
+  // desplaza sola en lugar de ensanchar la página; el rebote no se contagia al documento.
+  grid-auto-columns: minmax(2.75rem, 1fr);
   gap: var(--space-2);
   margin: 0;
   padding: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
   list-style: none;
 }
 
@@ -134,6 +142,7 @@
   font-family: var(--font-display);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
 }
 
 .barra__pista {

@@ -1,7 +1,7 @@
 <div class="page">
   <app-page-header titulo="Nivel actividad física" antetitulo="Paso 1 · Elige tu nivel">
     <a headerActions class="btn btn--ghost btn--icon" routerLink="/buscar" aria-label="Buscar ejercicios">
-      <img src="icons/logoBuscar.png" alt="" width="22" height="22" />
+      <app-icon name="buscar" [size]="22" />
     </a>
   </app-page-header>
 
@@ -27,14 +27,14 @@
         </span>
         <span class="nivel__nombre">{{ etiquetas[nivel] }}</span>
         <span class="nivel__texto">{{ descripciones[nivel] }}</span>
-        <span class="nivel__check" aria-hidden="true">✓</span>
+        <span class="nivel__check"><app-icon name="check" [size]="16" /></span>
       </button>
     }
   </div>
 
   <div class="acciones">
     <button type="button" class="btn btn--primary btn--lg" (click)="continuar()">
-      Continuar <span aria-hidden="true">→</span>
+      Continuar <app-icon name="flecha-derecha" [size]="18" />
     </button>
   </div>
 </div>

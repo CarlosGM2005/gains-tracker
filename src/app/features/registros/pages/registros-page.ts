@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ToastService } from '@core/notifications/toast.service';
 import { ConfirmService } from '@shared/ui/confirm-dialog/confirm-dialog';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
+import { Icon } from '@shared/ui/icon/icon';
 import { PageHeader } from '@shared/ui/page-header/page-header';
 import { Skeleton } from '@shared/ui/skeleton/skeleton';
 
@@ -15,13 +16,13 @@ import { RegistroCard } from '../ui/registro-card';
 
 @Component({
   selector: 'app-registros-page',
-  imports: [RouterLink, PageHeader, EmptyState, Skeleton, RegistroCard],
+  imports: [RouterLink, PageHeader, EmptyState, Icon, Skeleton, RegistroCard],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="page">
       <app-page-header titulo="Mis ejercicios" antetitulo="Tu progreso">
         <a headerActions class="btn btn--ghost" routerLink="/estadisticas">
-          <img src="icons/logoEstadisticas.png" alt="" width="20" height="20" />
+          <app-icon name="estadisticas" [size]="20" />
           Estadísticas
         </a>
       </app-page-header>

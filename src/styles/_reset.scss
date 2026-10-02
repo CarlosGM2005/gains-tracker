@@ -8,6 +8,22 @@ html,
 body {
   height: 100%;
   margin: 0;
+
+  // Instalada en el móvil, arrastrar más allá del final despegaba la página y la barra inferior
+  // subía con ella. Sin rebote, el final de la lista es el final.
+  overscroll-behavior: none;
+}
+
+html {
+  /* iOS y Android pintan un destello gris sobre lo que se toca. Es la señal más clara de "esto es
+     una web"; aquí estorba además a la onda de appRipple, que ya da la respuesta al pulsar. */
+  -webkit-tap-highlight-color: transparent;
+
+  /* En horizontal, Safari agranda el texto por su cuenta. Solo existe con prefijo en iOS. */
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-size-adjust: 100%;
+  caret-color: var(--color-accent);
+  scrollbar-color: var(--color-border) transparent;
 }
 
 body {
@@ -42,6 +58,20 @@ select {
 
 button {
   cursor: pointer;
+}
+
+// Controles: responden al instante al tocarlos y no se seleccionan al dejar el dedo encima.
+// Solo controles: el texto de las páginas se sigue pudiendo seleccionar y copiar.
+button,
+a,
+[role='button'] {
+  touch-action: manipulation;
+  user-select: none;
+
+  /* Safari no entiende `user-select` sin prefijo hasta la 17. */
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 a {

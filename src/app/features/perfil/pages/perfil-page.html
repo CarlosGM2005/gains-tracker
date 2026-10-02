@@ -13,24 +13,24 @@
 
       <nav class="menu" aria-label="Opciones del perfil">
         <a class="opcion stagger" appRipple style="--i: 3" routerLink="/perfil/editar">
-          <span class="opcion__icono"><img src="icons/logoPerfil.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__icono"><app-icon name="perfil" [size]="22" /></span>
           <span class="opcion__texto">Datos perfil</span>
-          <span class="opcion__flecha" aria-hidden="true">→</span>
+          <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
         </a>
         <a class="opcion stagger" appRipple style="--i: 4" routerLink="/registros">
-          <span class="opcion__icono"><img src="icons/logoRegistros.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__icono"><app-icon name="registros" [size]="22" /></span>
           <span class="opcion__texto">Mis registros</span>
-          <span class="opcion__flecha" aria-hidden="true">→</span>
+          <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
         </a>
         <a class="opcion stagger" appRipple style="--i: 5" routerLink="/estadisticas">
-          <span class="opcion__icono"><img src="icons/logoEstadisticas.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__icono"><app-icon name="estadisticas" [size]="22" /></span>
           <span class="opcion__texto">Estadísticas</span>
-          <span class="opcion__flecha" aria-hidden="true">→</span>
+          <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
         </a>
         <a class="opcion stagger" appRipple style="--i: 6" routerLink="/favoritos">
-          <span class="opcion__icono"><img src="icons/logoFavoritos.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__icono"><app-icon name="favoritos" [size]="22" /></span>
           <span class="opcion__texto">Favoritos</span>
-          <span class="opcion__flecha" aria-hidden="true">→</span>
+          <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
         </a>
         @if (instalacion.disponible()) {
           <button
@@ -41,21 +41,21 @@
             (click)="instalacion.pedirInstalacion()"
           >
             <span class="opcion__icono opcion__icono--instalar" aria-hidden="true">
-              <img src="icons/app/icon-192.png" alt="" width="22" height="22" />
+              <app-icon name="instalar" [size]="22" />
             </span>
             <span class="opcion__texto">Instalar la app</span>
-            <span class="opcion__flecha" aria-hidden="true">→</span>
+            <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
           </button>
         }
         <a class="opcion stagger" appRipple style="--i: 8" routerLink="/privacidad">
-          <span class="opcion__icono"><img src="icons/logoPoliticaPrivacidad.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__icono"><app-icon name="privacidad" [size]="22" /></span>
           <span class="opcion__texto">Política de privacidad</span>
-          <span class="opcion__flecha" aria-hidden="true">→</span>
+          <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
         </a>
         <button type="button" class="opcion opcion--peligro stagger" appRipple style="--i: 9" [disabled]="cerrando()" (click)="cerrarSesion()">
-          <span class="opcion__icono"><img src="icons/logoLogout.png" alt="" width="22" height="22" /></span>
+          <span class="opcion__icono"><app-icon name="logout" [size]="22" /></span>
           <span class="opcion__texto">{{ cerrando() ? 'Cerrando sesión…' : 'Cerrar sesión' }}</span>
-          <span class="opcion__flecha" aria-hidden="true">→</span>
+          <span class="opcion__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
         </button>
         <a class="eliminar-enlace stagger" style="--i: 10" routerLink="/perfil/eliminar">Eliminar cuenta</a>
       </nav>

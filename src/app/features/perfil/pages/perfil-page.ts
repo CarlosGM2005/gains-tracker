@@ -6,6 +6,7 @@ import { ToastService } from '@core/notifications/toast.service';
 import { InstalacionService } from '@core/pwa/instalacion.service';
 import { BackButton } from '@shared/ui/back-button/back-button';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
+import { Icon } from '@shared/ui/icon/icon';
 import { Ripple } from '@shared/ui/ripple/ripple';
 import { Spinner } from '@shared/ui/spinner/spinner';
 
@@ -14,7 +15,7 @@ import { PerfilResumen } from '../ui/perfil-resumen';
 
 @Component({
   selector: 'app-perfil-page',
-  imports: [RouterLink, BackButton, EmptyState, Ripple, Spinner, PerfilResumen],
+  imports: [RouterLink, BackButton, EmptyState, Icon, Ripple, Spinner, PerfilResumen],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './perfil-page.html',
   styleUrl: './perfil-page.scss',

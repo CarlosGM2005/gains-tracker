@@ -1,7 +1,9 @@
+import { type IconName } from '@shared/ui/icon/icon';
+
 export interface NavItem {
   etiqueta: string;
   ruta: string;
-  icono: string;
+  icono: IconName;
   enEscritorio: boolean;
   enMovil: boolean;
 }
@@ -11,13 +13,25 @@ export interface NavItem {
  * solo están en la barra lateral; en móvil se llega desde el inicio, el perfil y Mis registros.
  */
 export const NAV_ITEMS: readonly NavItem[] = [
-  { etiqueta: 'Inicio', ruta: '/inicio', icono: 'icons/logoHome.png', enEscritorio: true, enMovil: true },
-  { etiqueta: 'Ejercicios', ruta: '/ejercicios', icono: 'icons/logoEntrenamientos.png', enEscritorio: true, enMovil: true },
-  { etiqueta: 'Buscar', ruta: '/buscar', icono: 'icons/logoBuscar.png', enEscritorio: true, enMovil: false },
-  { etiqueta: 'Recomendaciones', ruta: '/recomendados', icono: 'icons/logoRecomendados.png', enEscritorio: true, enMovil: false },
-  { etiqueta: 'Favoritos', ruta: '/favoritos', icono: 'icons/logoFavoritos.png', enEscritorio: true, enMovil: false },
-  { etiqueta: 'Datos Perfil', ruta: '/perfil', icono: 'icons/logoPerfil.png', enEscritorio: true, enMovil: false },
-  { etiqueta: 'Registros', ruta: '/registros', icono: 'icons/logoRegistros.png', enEscritorio: true, enMovil: true },
-  { etiqueta: 'Estadísticas', ruta: '/estadisticas', icono: 'icons/logoEstadisticas.png', enEscritorio: true, enMovil: false },
-  { etiqueta: 'Perfil', ruta: '/perfil', icono: 'icons/logoPerfil.png', enEscritorio: false, enMovil: true },
+  { etiqueta: 'Inicio', ruta: '/inicio', icono: 'home', enEscritorio: true, enMovil: true },
+  { etiqueta: 'Ejercicios', ruta: '/ejercicios', icono: 'ejercicios', enEscritorio: true, enMovil: true },
+  { etiqueta: 'Buscar', ruta: '/buscar', icono: 'buscar', enEscritorio: true, enMovil: false },
+  {
+    etiqueta: 'Recomendaciones',
+    ruta: '/recomendados',
+    icono: 'recomendados',
+    enEscritorio: true,
+    enMovil: false,
+  },
+  { etiqueta: 'Favoritos', ruta: '/favoritos', icono: 'favoritos', enEscritorio: true, enMovil: false },
+  { etiqueta: 'Datos Perfil', ruta: '/perfil', icono: 'perfil', enEscritorio: true, enMovil: false },
+  { etiqueta: 'Registros', ruta: '/registros', icono: 'registros', enEscritorio: true, enMovil: true },
+  {
+    etiqueta: 'Estadísticas',
+    ruta: '/estadisticas',
+    icono: 'estadisticas',
+    enEscritorio: true,
+    enMovil: false,
+  },
+  { etiqueta: 'Perfil', ruta: '/perfil', icono: 'perfil', enEscritorio: false, enMovil: true },
 ];

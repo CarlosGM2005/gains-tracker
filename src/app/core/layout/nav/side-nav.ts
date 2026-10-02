@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { Icon } from '@shared/ui/icon/icon';
+
 import { NAV_ITEMS } from './nav-items';
 
 /**
@@ -9,7 +11,7 @@ import { NAV_ITEMS } from './nav-items';
  */
 @Component({
   selector: 'app-side-nav',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="side" aria-label="Navegación principal">
@@ -27,7 +29,7 @@ import { NAV_ITEMS } from './nav-items';
               routerLinkActive="side__link--activo"
               ariaCurrentWhenActive="page"
             >
-              <img class="side__icon" [src]="item.icono" alt="" width="22" height="22" />
+              <app-icon class="side__icon" [name]="item.icono" [size]="22" />
               <span>{{ item.etiqueta }}</span>
             </a>
           </li>
@@ -115,7 +117,7 @@ import { NAV_ITEMS } from './nav-items';
     }
 
     .side__icon {
-      opacity: 0.7;
+      color: inherit;
       transition: transform var(--duration-base) var(--easing-out);
     }
 
@@ -129,7 +131,7 @@ import { NAV_ITEMS } from './nav-items';
     }
 
     .side__link--activo .side__icon {
-      opacity: 1;
+      color: var(--color-accent);
     }
 
     @media (hover: hover) {

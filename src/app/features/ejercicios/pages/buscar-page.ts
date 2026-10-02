@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, linkedSign
 import { Router } from '@angular/router';
 
 import { type ChipOption, ChipGroup } from '@shared/ui/chip-group/chip-group';
+import { Icon } from '@shared/ui/icon/icon';
 import { PageHeader } from '@shared/ui/page-header/page-header';
 
 import { buscarEjercicios, type FiltroMusculo } from '../domain/busqueda';
@@ -18,7 +19,7 @@ const OPCIONES: readonly ChipOption<FiltroMusculo>[] = [{ valor: 'todos', etique
  */
 @Component({
   selector: 'app-buscar-page',
-  imports: [PageHeader, ChipGroup, EjerciciosListado],
+  imports: [PageHeader, ChipGroup, Icon, EjerciciosListado],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="page">
@@ -28,7 +29,7 @@ const OPCIONES: readonly ChipOption<FiltroMusculo>[] = [{ valor: 'todos', etique
         <form class="buscar__form" role="search" (submit)="$event.preventDefault()">
           <label class="visually-hidden" for="buscar-termino">Buscar ejercicios</label>
           <span class="buscar__icono" aria-hidden="true">
-            <img src="icons/logoBuscar.png" alt="" width="20" height="20" />
+            <app-icon name="buscar" [size]="20" />
           </span>
           <input
             #campo

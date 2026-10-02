@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { Icon } from '@shared/ui/icon/icon';
 import { Marquee } from '@shared/ui/marquee/marquee';
 
 @Component({
   selector: 'app-bienvenida-page',
-  imports: [RouterLink, Marquee],
+  imports: [RouterLink, Icon, Marquee],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './bienvenida-page.html',
   styleUrl: './bienvenida-page.scss',

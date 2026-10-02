@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { Icon } from '@shared/ui/icon/icon';
+
 import { NAV_ITEMS } from './nav-items';
 
 /**
@@ -9,7 +11,7 @@ import { NAV_ITEMS } from './nav-items';
  */
 @Component({
   selector: 'app-bottom-nav',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="bottom" aria-label="Navegación principal">
@@ -21,7 +23,7 @@ import { NAV_ITEMS } from './nav-items';
           ariaCurrentWhenActive="page"
         >
           <span class="bottom__pill">
-            <img [src]="item.icono" alt="" width="24" height="24" />
+            <app-icon [name]="item.icono" [size]="24" />
           </span>
           <span class="bottom__label">{{ item.etiqueta }}</span>
         </a>
@@ -35,9 +37,9 @@ import { NAV_ITEMS } from './nav-items';
       min-height: var(--bottom-nav-height);
       padding-bottom: env(safe-area-inset-bottom);
       border-top: 1px solid var(--color-border);
+      /* Opaca a propósito: al ir fija sobre el contenido, un backdrop-filter se recalcula en cada
+         fotograma del scroll, y a 88 % de opacidad el desenfoque no se apreciaba. */
       background: var(--color-bg);
-      background: rgb(from var(--color-bg) r g b / 88%);
-      backdrop-filter: blur(12px);
     }
 
     .bottom__link {
@@ -66,8 +68,9 @@ import { NAV_ITEMS } from './nav-items';
         transform var(--duration-fast) var(--easing-standard);
     }
 
-    .bottom__pill img {
-      opacity: 0.7;
+    .bottom__pill app-icon {
+      color: var(--color-text-muted);
+      transition: color var(--duration-base) var(--easing-standard);
     }
 
     .bottom__label {
@@ -86,8 +89,8 @@ import { NAV_ITEMS } from './nav-items';
       box-shadow: inset 0 0 0 1px var(--color-accent);
     }
 
-    .bottom__link--activo .bottom__pill img {
-      opacity: 1;
+    .bottom__link--activo .bottom__pill app-icon {
+      color: var(--color-accent);
     }
   `,
 })
