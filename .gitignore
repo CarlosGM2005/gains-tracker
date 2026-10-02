@@ -45,3 +45,26 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# Reglas de seguridad y configuración del proyecto Firebase.
+# Se despliegan a mano con la CLI de Firebase, no por el repositorio.
+firebase.json
+.firebaserc
+firestore.rules
+firestore.indexes.json
+storage.rules
+
+# Credenciales y secretos. Nunca deben entrar en el repositorio.
+.env
+.env.*
+*.pem
+*.key
+*serviceAccount*.json
+*service-account*.json
+google-services.json
+GoogleService-Info.plist
+
+# Instrucciones para asistentes de IA: existen en todas las ramas, no se versionan.
+CLAUDE.md
+AGENTS.md
+.cbmignore
