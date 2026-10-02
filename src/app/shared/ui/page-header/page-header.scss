@@ -29,6 +29,9 @@
   overflow: hidden;
   font-size: var(--font-size-2xl);
   padding-bottom: 0.08em;
+
+  // Un nombre de ejercicio largo reparte sus líneas en vez de dejar una palabra suelta.
+  text-wrap: balance;
 }
 
 .header__line {

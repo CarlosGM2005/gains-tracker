@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, linkedSignal, resource } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  linkedSignal,
+  resource,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { type ChipOption, ChipGroup } from '@shared/ui/chip-group/chip-group';
@@ -11,7 +19,10 @@ import { CatalogoStore } from '../state/catalogo-store';
 import { EjerciciosListado, estadoListado } from '../ui/ejercicios-listado';
 import { OPCIONES_MUSCULO } from '../ui/opciones-musculo';
 
-const OPCIONES: readonly ChipOption<FiltroMusculo>[] = [{ valor: 'todos', etiqueta: 'Todos' }, ...OPCIONES_MUSCULO];
+const OPCIONES: readonly ChipOption<FiltroMusculo>[] = [
+  { valor: 'todos', etiqueta: 'Todos' },
+  ...OPCIONES_MUSCULO,
+];
 
 /**
  * Buscador del catálogo. Carga la colección una vez (caché del `CatalogoStore`) y filtra en memoria
@@ -55,7 +66,8 @@ const OPCIONES: readonly ChipOption<FiltroMusculo>[] = [{ valor: 'todos', etique
           [estado]="estado()"
           [ejercicios]="resultados()"
           [resumen]="resumen()"
-          [textoVacio]="'No hay ejercicios que coincidan con «' + termino().trim() + '»'"
+          [textoVacio]="textoVacio()"
+          [detalleVacio]="detalleVacio()"
           (reintentar)="catalogo.reload()"
         />
       </div>
@@ -112,12 +124,26 @@ export class BuscarPage {
   protected readonly catalogo = resource({ loader: () => this.store.todos() });
   protected readonly estado = computed(() => estadoListado(this.catalogo));
   protected readonly resultados = computed(() =>
-    this.catalogo.hasValue() ? buscarEjercicios(this.catalogo.value(), this.termino(), this.musculoActivo()) : [],
+    this.catalogo.hasValue()
+      ? buscarEjercicios(this.catalogo.value(), this.termino(), this.musculoActivo())
+      : [],
   );
   protected readonly resumen = computed(() => {
     const termino = this.termino().trim();
-    return termino ? `Resultados para «${termino}»` : 'Todos los ejercicios';
+    return termino ? `Resultados de «${termino}»` : 'Todo el catálogo';
   });
+
+  /** El vacío distingue una búsqueda sin resultados de un filtro de músculo sin resultados. */
+  protected readonly textoVacio = computed(() => {
+    const termino = this.termino().trim();
+    return termino ? `Sin resultados para «${termino}»` : 'Sin ejercicios de este músculo';
+  });
+
+  protected readonly detalleVacio = computed(() =>
+    this.termino().trim()
+      ? 'Prueba con menos letras, con el nombre del músculo, o quita el filtro de la tira de arriba.'
+      : 'Elige otro músculo en la tira de arriba.',
+  );
 
   protected escribir(valor: string): void {
     this.termino.set(valor);

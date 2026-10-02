@@ -40,8 +40,14 @@ import { OPCIONES_MUSCULO } from '../ui/opciones-musculo';
         <app-ejercicios-listado
           [estado]="estado()"
           [ejercicios]="ejercicios.hasValue() ? ejercicios.value() : []"
-          [resumen]="'Ejercicios de ' + etiquetaMusculo() + ' - nivel ' + nivel()"
-          [textoVacio]="'No hay ejercicios disponibles para ' + etiquetaMusculo() + ' en nivel ' + nivel()"
+          [resumen]="etiquetaMusculo() + ' · Nivel ' + etiquetaNivel().toLowerCase()"
+          [textoVacio]="
+            'Sin ejercicios de ' +
+            etiquetaMusculo().toLowerCase() +
+            ' para nivel ' +
+            etiquetaNivel().toLowerCase()
+          "
+          detalleVacio="Elige otro músculo en la tira de arriba, o vuelve atrás para cambiar de nivel."
           (reintentar)="ejercicios.reload()"
         />
       </div>
@@ -80,6 +86,10 @@ export class CatalogoPage {
 
   /** Cambia el músculo en la URL sin añadir historial: "Volver" regresa a la elección de nivel. */
   protected cambiarMusculo(musculo: Musculo): void {
-    void this.router.navigate([], { queryParams: { musculo }, queryParamsHandling: 'merge', replaceUrl: true });
+    void this.router.navigate([], {
+      queryParams: { musculo },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 }

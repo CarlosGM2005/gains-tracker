@@ -52,21 +52,34 @@ export interface ChipOption<T extends string = string> {
       display: flex;
       gap: var(--space-2);
       margin-inline: calc(var(--page-gutter) * -1);
-      padding: var(--space-1) var(--page-gutter);
+      padding: var(--space-2) var(--page-gutter);
       overflow-x: auto;
       scroll-snap-type: x proximity;
+      /* Al saltar de un chip a otro queda a la altura del margen de la página, no pegado al borde. */
+      scroll-padding-inline: var(--page-gutter);
       scrollbar-width: none;
+      /* Los extremos se desvanecen: dice sin palabras que la tira sigue hacia los lados. El tramo
+         que se difumina es justo el margen de la página, así que un chip en reposo nunca se apaga. */
+      mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 var(--page-gutter),
+        #000 calc(100% - var(--page-gutter)),
+        transparent 100%
+      );
     }
 
     /* Pastilla que marca el chip activo. La posición y el ancho los pone el código tras medir. */
     .chips__indicador {
       position: absolute;
-      top: var(--space-1);
+      top: var(--space-2);
       left: 0;
       width: 0;
       height: var(--tap-target);
       border-radius: var(--radius-pill);
       background: var(--color-accent);
+      /* La pastilla se despega del fondo con su propia luz, como el botón principal. */
+      box-shadow: 0 8px 20px -8px var(--color-accent-glow);
       opacity: 0;
       pointer-events: none;
     }
@@ -85,7 +98,9 @@ export interface ChipOption<T extends string = string> {
       padding: 0 var(--space-5);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-pill);
-      background: transparent;
+      /* Con fondo propio se leen como controles y no como texto suelto sobre el fondo. */
+      background: var(--color-surface);
+      white-space: nowrap;
       font-family: var(--font-display);
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-semibold);
@@ -103,8 +118,11 @@ export interface ChipOption<T extends string = string> {
       transform: scale(0.95);
     }
 
+    /* El activo se queda sin fondo propio: el color lo pone la pastilla que va detrás. Con fondo
+       opaco la taparía y solo asomaría por el borde, con el texto negro sobre un fondo oscuro. */
     .chip--activo {
-      border-color: var(--color-accent);
+      border-color: transparent;
+      background: transparent;
       color: var(--color-on-accent);
     }
 
@@ -130,8 +148,11 @@ export class ChipGroup<T extends string = string> {
   /** Nombre accesible del grupo (p. ej. "Músculo"). */
   readonly etiqueta = input.required<string>();
 
+  private readonly movimientoReducido: boolean;
+
   constructor() {
     const ventana = inject(DOCUMENT).defaultView;
+    this.movimientoReducido = ventana?.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
     afterRenderEffect({
       earlyRead: () => {
@@ -140,7 +161,10 @@ export class ChipGroup<T extends string = string> {
         this.opciones();
         return this.medir();
       },
-      write: (medida) => this.colocar(medida()),
+      write: (medida) => {
+        this.colocar(medida());
+        this.asegurarVisible();
+      },
     });
 
     // Las medidas cambian al cargar la fuente o al girar el móvil: se recoloca sin animar.
@@ -149,6 +173,28 @@ export class ChipGroup<T extends string = string> {
       afterRenderEffect(() => observador.observe(this.grupo().nativeElement));
       inject(DestroyRef).onDestroy(() => observador.disconnect());
     }
+  }
+
+  /**
+   * Si el chip activo queda fuera de la parte visible de la tira, la desplaza lo justo para
+   * enseñarlo. Al entrar en una página con un músculo ya elegido, el chip podía estar escondido a
+   * la derecha. Se mueve el `scrollLeft` de la tira, no `scrollIntoView`, que además arrastraría
+   * la página en vertical.
+   */
+  private asegurarVisible(): void {
+    const tira = this.grupo().nativeElement;
+    const activo = tira.querySelector<HTMLElement>('.chip--activo');
+    if (!activo) return;
+
+    const margen = 16;
+    const inicio = activo.offsetLeft - margen;
+    const fin = activo.offsetLeft + activo.offsetWidth + margen;
+    if (inicio >= tira.scrollLeft && fin <= tira.scrollLeft + tira.clientWidth) {
+      return;
+    }
+
+    const destino = inicio < tira.scrollLeft ? inicio : fin - tira.clientWidth;
+    tira.scrollTo({ left: Math.max(0, destino), behavior: this.movimientoReducido ? 'auto' : 'smooth' });
   }
 
   private medir(): { x: number; ancho: number } | null {

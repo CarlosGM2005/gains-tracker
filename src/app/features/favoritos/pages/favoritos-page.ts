@@ -32,6 +32,7 @@ import { FavoritosStore } from '../state/favoritos-store';
           [ejercicios]="favoritos()"
           resumen="Ejercicios favoritos"
           textoVacio="Todavía no tienes favoritos"
+          detalleVacio="Pulsa la estrella en cualquier ejercicio para tenerlo siempre a mano."
           (reintentar)="catalogo.reload()"
         />
       }

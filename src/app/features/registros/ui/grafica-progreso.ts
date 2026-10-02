@@ -1,50 +1,110 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal } from '@angular/core';
 
 import { type PuntoProgreso } from '../domain/estadisticas';
 
 const ANCHO = 600;
 const ALTO = 220;
-const MARGEN = { arriba: 16, derecha: 16, abajo: 28, izquierda: 44 };
+const MARGEN = { arriba: 18, derecha: 18, abajo: 14, izquierda: 46 };
 
 /**
  * Línea del peso máximo por día, en SVG y sin librerías. Para lectores de pantalla, la misma
  * información va en una tabla oculta. Al aparecer (y al cambiar de ejercicio) la línea se dibuja,
  * el área se funde y los puntos saltan al final.
+ *
+ * Al pasar el puntero (o tocar) sobre un día se marca con una línea vertical y se lee su fecha y su
+ * peso sobre el dibujo. El SVG es `aria-hidden`, así que los puntos no son enfocables a propósito:
+ * con teclado y con lector de pantalla la información sale de la tabla, que la tiene entera.
  */
 @Component({
   selector: 'app-grafica-progreso',
   imports: [DatePipe, DecimalPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- El @for de un solo elemento recrea el SVG cuando cambian los datos: así la entrada se repite. -->
-    @for (g of [geometria()]; track g) {
-      <svg class="grafica" [attr.viewBox]="'0 0 ' + ancho + ' ' + alto" aria-hidden="true" focusable="false">
-        @for (linea of g.guias; track linea.y) {
-          <line class="grafica__guia" [attr.x1]="margen.izquierda" [attr.x2]="ancho - margen.derecha" [attr.y1]="linea.y" [attr.y2]="linea.y" />
-          <text class="grafica__eje" [attr.x]="margen.izquierda - 8" [attr.y]="linea.y + 4" text-anchor="end">{{ linea.valor | number: '1.0-1' }}</text>
-        }
-        <path class="grafica__area" [attr.d]="g.area" />
-        <polyline class="grafica__linea" [attr.points]="g.linea" pathLength="1" />
-        @for (p of g.puntos; track p.dia; let i = $index) {
-          <circle
-            class="grafica__punto"
-            [class.grafica__punto--record]="p.record"
-            [attr.cx]="p.x"
-            [attr.cy]="p.y"
-            r="5"
-            [style.--i]="i / g.puntos.length"
-          />
-        }
-        @if (g.puntos[0]; as primero) {
-          <text class="grafica__eje" [attr.x]="primero.x" [attr.y]="alto - 6" text-anchor="start">{{ primero.dia | date: 'd MMM' }}</text>
-        }
-        @if (g.puntos.length > 1) {
-          @let ultimo = g.puntos[g.puntos.length - 1];
-          <text class="grafica__eje" [attr.x]="ultimo?.x" [attr.y]="alto - 6" text-anchor="end">{{ ultimo?.dia | date: 'd MMM' }}</text>
-        }
-      </svg>
-    }
+    <div class="lienzo">
+      <!-- El @for de un solo elemento recrea el SVG cuando cambian los datos: así la entrada se repite. -->
+      @for (g of [geometria()]; track g) {
+        <svg
+          class="grafica"
+          [attr.viewBox]="'0 0 ' + ancho + ' ' + alto"
+          aria-hidden="true"
+          focusable="false"
+          (pointerleave)="salir($event)"
+        >
+          @for (linea of g.guias; track linea.y) {
+            <line
+              class="grafica__guia"
+              [attr.x1]="margen.izquierda"
+              [attr.x2]="ancho - margen.derecha"
+              [attr.y1]="linea.y"
+              [attr.y2]="linea.y"
+            />
+            <text
+              class="grafica__eje"
+              [attr.x]="margen.izquierda - 8"
+              [attr.y]="linea.y + 4"
+              text-anchor="end"
+            >
+              {{ linea.valor | number: '1.0-1' }}
+            </text>
+          }
+          <path class="grafica__area" [attr.d]="g.area" />
+          <polyline class="grafica__linea" [attr.points]="g.linea" pathLength="1" />
+          @for (p of g.puntos; track p.dia; let i = $index) {
+            <circle
+              class="grafica__punto"
+              [class.grafica__punto--record]="p.record"
+              [class.grafica__punto--extremo]="p.extremo"
+              [attr.cx]="p.x"
+              [attr.cy]="p.y"
+              [attr.r]="p.extremo ? 7.5 : 5"
+              [style.--i]="i / g.puntos.length"
+            />
+          }
+
+          @if (seleccion(); as sel) {
+            <line
+              class="grafica__marca"
+              [attr.x1]="sel.x"
+              [attr.x2]="sel.x"
+              [attr.y1]="margen.arriba"
+              [attr.y2]="alto - margen.abajo"
+            />
+            <circle class="grafica__destacado" [attr.cx]="sel.x" [attr.cy]="sel.y" r="9" />
+          }
+
+          <!-- Zonas sensibles, al final para quedar por encima del dibujo. Son más grandes que el
+             punto: con el dedo hay que poder acertar sin precisión. -->
+          @for (p of g.puntos; track p.dia; let i = $index) {
+            <circle
+              class="grafica__zona"
+              [attr.cx]="p.x"
+              [attr.cy]="p.y"
+              r="20"
+              (pointerenter)="activo.set(i)"
+              (pointerdown)="activo.set(i)"
+            />
+          }
+        </svg>
+      }
+
+      <!-- El bocadillo va en HTML, no dentro del SVG: así el texto se ve a tamaño real y no
+           encogido por la escala del dibujo, y la caja se ajusta sola a lo que mide el contenido.
+           Se coloca en porcentajes, que es lo que mantiene el SVG al escalarse. -->
+      @if (seleccion(); as sel) {
+        <div
+          class="bocadillo"
+          [class.bocadillo--inicio]="sel.lado === 'inicio'"
+          [class.bocadillo--fin]="sel.lado === 'fin'"
+          [class.bocadillo--debajo]="sel.debajo"
+          [style.left.%]="sel.porcentajeX"
+          [style.top.%]="sel.porcentajeY"
+        >
+          <span class="bocadillo__fecha">{{ sel.dia | date: 'd MMM y' }}</span>
+          <span class="bocadillo__peso">{{ sel.peso | number: '1.0-2' }} <small>kg</small></span>
+        </div>
+      }
+    </div>
 
     <table class="visually-hidden">
       <caption>{{ titulo() }}</caption>
@@ -63,11 +123,20 @@ const MARGEN = { arriba: 16, derecha: 16, abajo: 28, izquierda: 44 };
       display: block;
     }
 
+    .lienzo {
+      position: relative;
+    }
+
     .grafica {
       display: block;
       width: 100%;
       height: auto;
-      overflow: visible;
+      /* Nada debe pintarse fuera del dibujo: lo que se salga, se recorta, y así la gráfica no puede
+         empujar la página a lo ancho. */
+      overflow: hidden;
+      /* Sin esto, un doble toque en el móvil hace zoom sobre la gráfica y la página se queda
+         desplazada. El pellizco para ampliar sigue funcionando. */
+      touch-action: manipulation;
     }
 
     .grafica__guia {
@@ -133,6 +202,129 @@ const MARGEN = { arriba: 16, derecha: 16, abajo: 28, izquierda: 44 };
     .grafica__punto--record {
       fill: var(--color-accent);
     }
+
+    /* Primer y último día: anillo más grueso, para encontrarlos de un vistazo en la línea. */
+    .grafica__punto--extremo {
+      stroke-width: 3.5;
+    }
+
+    /* Día señalado: línea vertical, punto relleno y la lectura encima. */
+    .grafica__marca {
+      stroke: var(--color-accent);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 5;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .grafica__destacado {
+      fill: var(--color-accent);
+      stroke: var(--color-bg);
+      stroke-width: 3;
+      pointer-events: none;
+    }
+
+    /* Bocadillo del día señalado. Por defecto sale centrado encima del punto; cerca de un borde se
+       ancla por ese lado y, si el punto está muy arriba, se va debajo. Así nunca se sale. */
+    .bocadillo {
+      position: absolute;
+      z-index: 1;
+      display: grid;
+      gap: 2px;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface-2);
+      box-shadow: var(--shadow-card);
+      white-space: nowrap;
+      pointer-events: none;
+      transform: translate(-50%, calc(-100% - 14px));
+      animation: bocadillo-entra 160ms var(--easing-out);
+    }
+
+    @keyframes bocadillo-entra {
+      from {
+        opacity: 0;
+      }
+    }
+
+    .bocadillo--inicio {
+      transform: translate(-14px, calc(-100% - 14px));
+    }
+
+    .bocadillo--fin {
+      transform: translate(calc(-100% + 14px), calc(-100% - 14px));
+    }
+
+    .bocadillo--debajo {
+      transform: translate(-50%, 14px);
+    }
+
+    .bocadillo--debajo.bocadillo--inicio {
+      transform: translate(-14px, 14px);
+    }
+
+    .bocadillo--debajo.bocadillo--fin {
+      transform: translate(calc(-100% + 14px), 14px);
+    }
+
+    /* La punta es un cuadrado girado 45°, con solo dos lados de borde: encaja con la caja sin que
+       se vea la línea por dentro. */
+    .bocadillo::after {
+      position: absolute;
+      bottom: -5px;
+      left: calc(50% - 4.5px);
+      width: 9px;
+      height: 9px;
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      content: '';
+      transform: rotate(45deg);
+    }
+
+    .bocadillo--inicio::after {
+      left: 9.5px;
+    }
+
+    .bocadillo--fin::after {
+      left: auto;
+      right: 9.5px;
+    }
+
+    .bocadillo--debajo::after {
+      top: -5px;
+      bottom: auto;
+      border-right: 0;
+      border-bottom: 0;
+      border-top: 1px solid var(--color-border);
+      border-left: 1px solid var(--color-border);
+    }
+
+    .bocadillo__fecha {
+      font-size: var(--font-size-xs);
+      letter-spacing: var(--letter-spacing-label);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .bocadillo__peso {
+      font-family: var(--font-display);
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-bold);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+
+      small {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+      }
+    }
+
+    .grafica__zona {
+      fill: transparent;
+      cursor: pointer;
+    }
   `,
 })
 export class GraficaProgreso {
@@ -140,9 +332,48 @@ export class GraficaProgreso {
   /** Descripción de la tabla accesible (p. ej. "Progreso de Press de banca"). */
   readonly titulo = input.required<string>();
 
+  /** Día señalado con el puntero. Vuelve a `null` en cuanto cambian los datos del ejercicio. */
+  protected readonly activo = linkedSignal<readonly PuntoProgreso[], number | null>({
+    source: this.puntos,
+    computation: () => null,
+  });
+
+  /**
+   * Con ratón, la lectura se va al salir de la gráfica. Con el dedo no: soltar dispara
+   * `pointerleave` al instante y la lectura desaparecería antes de poder leerla, así que se queda
+   * hasta que se toque otro día o cambie el ejercicio.
+   */
+  protected salir(evento: PointerEvent): void {
+    if (evento.pointerType !== 'touch') {
+      this.activo.set(null);
+    }
+  }
+
   protected readonly ancho = ANCHO;
   protected readonly alto = ALTO;
   protected readonly margen = MARGEN;
+
+  /**
+   * Punto señalado, ya resuelto para pintarlo. La posición del bocadillo va en porcentajes porque
+   * es lo que se mantiene cuando el SVG se escala al ancho disponible. Cerca de un borde se ancla
+   * por ese lado, y si el punto está muy arriba el bocadillo se va debajo: así nunca se sale.
+   */
+  protected readonly seleccion = computed(() => {
+    const indice = this.activo();
+    if (indice === null) return null;
+    const punto = this.geometria().puntos[indice];
+    if (!punto) return null;
+
+    const porcentajeX = (punto.x / ANCHO) * 100;
+    const porcentajeY = (punto.y / ALTO) * 100;
+    return {
+      ...punto,
+      porcentajeX,
+      porcentajeY,
+      lado: porcentajeX < 22 ? 'inicio' : porcentajeX > 78 ? 'fin' : 'centro',
+      debajo: porcentajeY < 34,
+    };
+  });
 
   protected readonly geometria = computed(() => {
     const puntos = this.puntos();
@@ -163,7 +394,10 @@ export class GraficaProgreso {
       dia: p.dia,
       x: redondear(x(i)),
       y: redondear(y(p.pesoMax)),
+      peso: p.pesoMax,
       record: p.pesoMax === maximo,
+      // El primer y el último día llevan anillo: son los extremos que compara la tira de hitos.
+      extremo: i === 0 || i === puntos.length - 1,
     }));
     const linea = coordenadas.map((c) => `${c.x},${c.y}`).join(' ');
     const base = ALTO - MARGEN.abajo;

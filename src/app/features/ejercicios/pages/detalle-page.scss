@@ -71,18 +71,29 @@
 .bloque {
   display: grid;
   gap: var(--space-2);
+  color: var(--color-text);
+}
+
+// El rótulo es el dato menor: va pequeño y apagado, y el texto del ejercicio se queda con el peso.
+// Antes era al revés y la descripción, que es el contenido de la página, se leía en gris.
+.bloque__titulo {
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-label);
   color: var(--color-text-muted);
 }
 
-.bloque__titulo {
-  font-size: var(--font-size-md);
-  color: var(--color-text);
+// Prosa: medida de lectura cómoda y una pizca más de aire y de espaciado entre letras, porque el
+// texto claro sobre fondo oscuro se cierra más que al revés.
+.bloque p {
+  max-width: 68ch;
+  line-height: 1.65;
+  letter-spacing: 0.006em;
 }
 
 // En móvil el botón queda fijo sobre la barra inferior para tenerlo siempre a mano.
 .registrar {
   position: sticky;
-  bottom: calc(var(--bottom-nav-height) + var(--space-3));
+  bottom: calc(var(--bottom-nav-height) + var(--space-3) + env(safe-area-inset-bottom));
   width: 100%;
   box-shadow: var(--shadow-card);
 }

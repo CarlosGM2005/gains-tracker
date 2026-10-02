@@ -58,20 +58,51 @@
               <dd>{{ p.mejorPeso | number: '1.0-2' }} <small>kg</small></dd>
             </div>
             <div>
-              <dt>Desde el primer día</dt>
-              <dd [class.mini--sube]="p.variacionPeso > 0" [class.mini--baja]="p.variacionPeso < 0">
-                {{ p.variacionPeso > 0 ? '+' : '' }}{{ p.variacionPeso | number: '1.0-2' }} <small>kg</small>
-              </dd>
-            </div>
-            <div>
-              <dt>Días</dt>
+              <dt>Días registrados</dt>
               <dd>{{ p.puntos.length }}</dd>
             </div>
           </dl>
 
           @if (p.puntos.length > 1) {
             <app-grafica-progreso [puntos]="p.puntos" [titulo]="'Peso máximo por día en ' + registroElegido()?.nombre" />
-            <p class="bloque__nota">Peso máximo de cada día. Los puntos rellenos marcan tu récord.</p>
+
+            @if (extremos(); as ext) {
+              <div class="recorrido">
+                <dl class="recorrido__hitos">
+                  <div class="recorrido__hito">
+                    <dt>Primer registro</dt>
+                    <dd>
+                      <time [attr.datetime]="ext.primero.dia">{{ ext.primero.dia | date: 'd MMM y' }}</time>
+                      <span class="recorrido__peso">
+                        {{ ext.primero.pesoMax | number: '1.0-2' }} <small>kg</small>
+                      </span>
+                    </dd>
+                  </div>
+                  <div class="recorrido__hito recorrido__hito--fin">
+                    <dt>Último registro</dt>
+                    <dd>
+                      <time [attr.datetime]="ext.ultimo.dia">{{ ext.ultimo.dia | date: 'd MMM y' }}</time>
+                      <span class="recorrido__peso">
+                        {{ ext.ultimo.pesoMax | number: '1.0-2' }} <small>kg</small>
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+                <p
+                  class="recorrido__salto"
+                  [class.recorrido__salto--sube]="p.variacionPeso > 0"
+                  [class.recorrido__salto--baja]="p.variacionPeso < 0"
+                >
+                  {{ p.variacionPeso > 0 ? '+' : '' }}{{ p.variacionPeso | number: '1.0-2' }} kg entre el
+                  primero y el último
+                </p>
+              </div>
+            }
+
+            <p class="bloque__nota">
+              Peso máximo de cada día. El punto relleno es tu récord; los anillos, el primer y el último
+              registro.
+            </p>
           } @else {
             <p class="bloque__nota">
               Solo hay un día registrado ({{ p.puntos[0]?.dia | date: 'd MMM y' }}). Registra más para ver la gráfica.

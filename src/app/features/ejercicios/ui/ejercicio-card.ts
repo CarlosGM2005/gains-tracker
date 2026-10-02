@@ -79,13 +79,21 @@ import { type Ejercicio, ETIQUETA_MUSCULO, ETIQUETA_NIVEL } from '../domain/ejer
       font-family: var(--font-display);
       font-size: var(--font-size-lg);
       font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-display);
       line-height: 1.1;
       text-transform: uppercase;
       overflow-wrap: anywhere;
+      /* Un nombre de dos líneas las reparte en vez de dejar una palabra suelta abajo. */
+      text-wrap: balance;
     }
 
+    /* Papel de etiqueta, no de texto: pequeño, espaciado y apagado. Así no compite con el nombre,
+       que también va en mayúsculas. */
     .card__meta {
-      font-size: var(--font-size-sm);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-label);
+      text-transform: uppercase;
       color: var(--color-text-muted);
     }
 

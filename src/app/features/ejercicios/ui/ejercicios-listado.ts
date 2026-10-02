@@ -43,13 +43,17 @@ export function estadoListado(recurso: Resource<unknown>): EstadoListado {
         </div>
       }
       @case ('error') {
-        <app-empty-state tipo="error" titulo="No se pudieron cargar los ejercicios" detalle="Inténtalo de nuevo.">
+        <app-empty-state
+          tipo="error"
+          titulo="No se pudieron cargar los ejercicios"
+          detalle="Inténtalo de nuevo."
+        >
           <button type="button" class="btn btn--ghost" (click)="reintentar.emit()">Reintentar</button>
         </app-empty-state>
       }
       @default {
         @if (ejercicios().length === 0) {
-          <app-empty-state [titulo]="textoVacio()" />
+          <app-empty-state [titulo]="textoVacio()" [detalle]="detalleVacio()" />
         } @else {
           <ul class="lista">
             @for (ejercicio of ejercicios(); track ejercicio.id; let i = $index) {
@@ -74,6 +78,10 @@ export function estadoListado(recurso: Resource<unknown>): EstadoListado {
       align-items: center;
       justify-content: space-between;
       gap: var(--space-4);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-label);
+      text-transform: uppercase;
       color: var(--color-text-muted);
     }
 
@@ -113,6 +121,8 @@ export class EjerciciosListado {
   readonly ejercicios = input.required<readonly Ejercicio[]>();
   readonly resumen = input.required<string>();
   readonly textoVacio = input.required<string>();
+  /** Qué puede hacer el usuario cuando el filtro no devuelve nada. */
+  readonly detalleVacio = input.required<string>();
   readonly reintentar = output();
 
   /** Huecos del esqueleto mientras cargan los ejercicios. */

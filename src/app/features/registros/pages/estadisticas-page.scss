@@ -78,7 +78,7 @@
 
 .mini {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
   margin: 0;
 
@@ -109,11 +109,86 @@
   }
 }
 
-.mini--sube {
+// De dónde vengo y dónde estoy: los dos extremos del ejercicio, uno a cada lado, y debajo la
+// diferencia entre ellos. Es la comparación que se busca al abrir la gráfica.
+.recorrido {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+}
+
+.recorrido__hitos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.recorrido__hito {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+
+  dt {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  dd {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+  }
+
+  time {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+// El último se alinea a la derecha: los dos hitos se leen como los dos extremos de un recorrido.
+.recorrido__hito--fin {
+  justify-items: end;
+  text-align: right;
+}
+
+.recorrido__peso {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+
+  small {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+// La diferencia cruza los dos hitos, con una línea encima que los une visualmente.
+.recorrido__salto {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--letter-spacing-label);
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.recorrido__salto--sube {
   color: var(--color-success);
 }
 
-.mini--baja {
+.recorrido__salto--baja {
   color: var(--color-danger);
 }
 

@@ -18,7 +18,17 @@ const SEMANAS = 8;
 /** Resumen de todos los registros, progreso por ejercicio y actividad de las últimas semanas. */
 @Component({
   selector: 'app-estadisticas-page',
-  imports: [RouterLink, DatePipe, DecimalPipe, PageHeader, EmptyState, Spinner, Reveal, Contador, GraficaProgreso],
+  imports: [
+    RouterLink,
+    DatePipe,
+    DecimalPipe,
+    PageHeader,
+    EmptyState,
+    Spinner,
+    Reveal,
+    Contador,
+    GraficaProgreso,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './estadisticas-page.html',
   styleUrl: './estadisticas-page.scss',
@@ -47,5 +57,16 @@ export class EstadisticasPage {
   protected readonly progreso = computed(() => {
     const registro = this.registroElegido();
     return registro ? progresoEjercicio(registro) : null;
+  });
+
+  /**
+   * Primer y último día del ejercicio elegido, los dos extremos que compara la gráfica.
+   * `null` cuando solo hay un día: entonces no hay nada que comparar.
+   */
+  protected readonly extremos = computed(() => {
+    const puntos = this.progreso()?.puntos ?? [];
+    const primero = puntos[0];
+    const ultimo = puntos.at(-1);
+    return primero && ultimo && primero !== ultimo ? { primero, ultimo } : null;
   });
 }

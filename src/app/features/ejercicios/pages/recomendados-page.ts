@@ -28,8 +28,9 @@ import { OPCIONES_MUSCULO } from '../ui/opciones-musculo';
         <app-ejercicios-listado
           [estado]="estado()"
           [ejercicios]="ejercicios.hasValue() ? ejercicios.value() : []"
-          [resumen]="'Ejercicios recomendados de ' + etiquetaMusculo()"
-          [textoVacio]="'No hay ejercicios recomendados para ' + etiquetaMusculo()"
+          [resumen]="etiquetaMusculo() + ' · Recomendados'"
+          [textoVacio]="'Sin recomendados de ' + etiquetaMusculo().toLowerCase()"
+          detalleVacio="Elige otro músculo en la tira de arriba, o mira el catálogo completo por nivel."
           (reintentar)="ejercicios.reload()"
         />
       </div>
