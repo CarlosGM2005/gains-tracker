@@ -61,9 +61,11 @@
 // Dentro de un bloque con appReveal espera a que aparezca en pantalla (--entrada: paused).
 // Relleno "backwards": al terminar suelta transform y opacity, así :hover y :active del propio
 // elemento (tarjetas, opciones, niveles) pueden volver a moverlo.
+// Escalón corto y con tope en el sexto: con 70 ms sin tope, el último elemento de un listado o del
+// perfil tardaba más de un segundo en aparecer y la página parecía atascada.
 .stagger {
   animation: rise-in var(--duration-slow) var(--easing-out) backwards;
-  animation-delay: calc(var(--i, 0) * 70ms);
+  animation-delay: calc(min(var(--i, 0), 6) * 40ms);
   animation-play-state: var(--entrada, running);
 }
 

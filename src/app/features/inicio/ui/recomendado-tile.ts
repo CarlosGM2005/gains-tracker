@@ -105,7 +105,7 @@ import { Ripple } from '@shared/ui/ripple/ripple';
     .tile__digits {
       display: block;
       animation: line-up var(--duration-slow) var(--easing-out) both;
-      animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+      animation-delay: calc(min(var(--i, 0), 6) * 40ms + 120ms);
       animation-play-state: var(--entrada, running);
     }
 

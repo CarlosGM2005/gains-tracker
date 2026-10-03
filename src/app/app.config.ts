@@ -10,10 +10,12 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import {
+  PreloadAllModules,
   provideRouter,
   TitleStrategy,
   withComponentInputBinding,
   withInMemoryScrolling,
+  withPreloading,
   withRouterConfig,
   withViewTransitions,
 } from '@angular/router';
@@ -45,6 +47,9 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions({ skipInitialTransition: true, onViewTransitionCreated: omitirTransicionEnMismaRuta }),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
       withRouterConfig({ paramsInheritanceStrategy: 'always' }),
+      // Tras la primera pantalla se descargan en segundo plano el resto de páginas: al navegar ya
+      // están listas y no hay espera de red entre pulsar y ver la página nueva.
+      withPreloading(PreloadAllModules),
     ),
     { provide: LOCALE_ID, useValue: 'es' },
     { provide: TitleStrategy, useClass: AppTitleStrategy },

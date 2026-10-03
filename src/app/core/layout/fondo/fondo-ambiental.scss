@@ -29,14 +29,14 @@
 }
 
 // --- Brasas: la luz de fondo ------------------------------------------------
-// Cada sección las coloca en otro sitio: al cambiar de ruta la luz se desplaza (orientación).
+// Cada sección las coloca en otro sitio: al cambiar de ruta la luz cambia de sitio (orientación).
+// Sin `transition`: deslizarlas obligaba a crear y rasterizar una capa enorme (las brasas se salen
+// de la pantalla) justo al navegar, y la página nueva tardaba en aparecer. El cambio ya se ve suave
+// porque la transición de ruta (View Transitions) funde la pantalla vieja con la nueva.
 .fondo__brasas {
   position: absolute;
   inset: 0;
   transform: translate(var(--fondo-x, 0), var(--fondo-y, 0));
-  transition:
-    transform calc(var(--duration-slow) * 2.5) var(--easing-out),
-    opacity var(--duration-slow) var(--easing-standard);
 }
 
 .fondo__brasa {
