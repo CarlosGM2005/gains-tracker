@@ -26,6 +26,7 @@ import { ActualizacionService } from '@core/pwa/actualizacion.service';
 import { AppTitleStrategy } from '@core/routing/app-title-strategy';
 import { omitirTransicionEnMismaRuta } from '@core/routing/view-transitions';
 import { environment } from '@env/environment';
+import { SesionService } from '@features/auth/state/sesion.service';
 
 import { provideDataLayer } from './app.data';
 import { routes } from './app.routes';
@@ -56,5 +57,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAppInitializer(() => inject(AnalyticsService).iniciar()),
     provideAppInitializer(() => inject(ActualizacionService).iniciar()),
+    provideAppInitializer(() => inject(SesionService).iniciar()),
   ],
 };

@@ -167,11 +167,20 @@ export class ChipGroup<T extends string = string> {
       },
     });
 
-    // Las medidas cambian al cargar la fuente o al girar el móvil: se recoloca sin animar.
+    // Las medidas cambian al cargar la fuente, al girar el móvil o al hacer zoom: se recoloca sin
+    // animar. Se espera al siguiente fotograma porque medir y escribir dentro del propio aviso hace
+    // que el navegador lance "ResizeObserver loop", y el zoom manda muchos avisos seguidos.
     if (ventana && 'ResizeObserver' in ventana) {
-      const observador = new ResizeObserver(() => this.colocar(this.medir(), false));
+      let fotograma = 0;
+      const observador = new ResizeObserver(() => {
+        ventana.cancelAnimationFrame(fotograma);
+        fotograma = ventana.requestAnimationFrame(() => this.colocar(this.medir(), false));
+      });
       afterRenderEffect(() => observador.observe(this.grupo().nativeElement));
-      inject(DestroyRef).onDestroy(() => observador.disconnect());
+      inject(DestroyRef).onDestroy(() => {
+        observador.disconnect();
+        ventana.cancelAnimationFrame(fotograma);
+      });
     }
   }
 
