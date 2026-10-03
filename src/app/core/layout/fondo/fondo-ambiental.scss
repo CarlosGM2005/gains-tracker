@@ -1,7 +1,12 @@
-@use 'breakpoints' as bp;
-
 // Fondo ambiental de toda la app. Capa fija bajo el contenido, sin eventos de ratón.
 // Todo el movimiento es transform y opacity; nada de width, height, top ni left.
+
+// Presupuesto de capas: cada elemento con una animación continua es una capa propia que el móvil
+// guarda en memoria a tamaño de pantalla (o mayor), y en pantallas Retina con el triple de píxeles
+// por lado. Por eso lo grande y suave (brasas, rejilla, grano) es estático y se pinta una sola vez
+// en la capa del fondo. Solo se mueven las ondas (una capa para todas), el barrido y las chispas,
+// que son pequeñas. Antes eran unas diez capas grandes y Safari se quedaba sin memoria con el zoom.
+
 // Un solo mando para todo el naranja del fondo. Bájalo para apagarlo más, súbelo para que pese
 // más; cada capa mantiene su proporción respecto a las demás.
 :host {
@@ -41,9 +46,8 @@
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--color-accent-glow), transparent);
   opacity: calc(0.3 * var(--fondo-intensidad));
-  animation: brasa-deriva 26s ease-in-out infinite alternate;
 
-  // `translate` centra la brasa en su esquina; la deriva usa `transform`, así no se pisan.
+  // `translate` centra la brasa en su esquina.
   &--a {
     top: 0;
     right: 0;
@@ -56,62 +60,28 @@
     translate: -50% 50%;
     background: radial-gradient(closest-side, rgb(from var(--color-accent-strong) r g b / 45%), transparent);
     opacity: calc(0.22 * var(--fondo-intensidad));
-    animation-duration: 32s;
-    animation-delay: -11s;
-    animation-direction: alternate-reverse;
   }
 
-  // Brasa central pequeña: solo respira, no deriva.
+  // Brasa central pequeña. Su opacidad es la media de la respiración que tenía cuando se animaba.
   &--c {
     top: 45%;
     left: 55%;
     width: min(70vmax, 640px);
     translate: -50% -50%;
     background: radial-gradient(closest-side, rgb(from var(--color-focus) r g b / 30%), transparent);
-    opacity: calc(0.12 * var(--fondo-intensidad));
-    animation: brasa-respira 9s ease-in-out infinite alternate;
+    opacity: calc(0.19 * var(--fondo-intensidad));
   }
 }
 
-@keyframes brasa-deriva {
-  50% {
-    transform: translate(-8vw, 6vh) scale(1.12);
-  }
-
-  100% {
-    transform: translate(4vw, 12vh) scale(0.94);
-  }
-}
-
-@keyframes brasa-respira {
-  to {
-    opacity: calc(0.26 * var(--fondo-intensidad));
-    transform: scale(1.12);
-  }
-}
-
-// --- Rejilla de puntos con paralaje ----------------------------------------
+// --- Rejilla de puntos ------------------------------------------------------
+// Sin paralaje: la animación ligada al scroll la convertía en otra capa a pantalla completa, con su
+// máscara aparte.
 .fondo__rejilla {
-  --paralaje: -48px;
-
   position: absolute;
-  inset: 0 0 -96px;
+  inset: 0;
   background-image: radial-gradient(rgb(from var(--color-text) r g b / 9%) 1px, transparent 1.5px);
   background-size: 26px 26px;
   mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 20%, transparent 80%);
-}
-
-@supports (animation-timeline: scroll()) {
-  .fondo__rejilla {
-    animation: rejilla-paralaje linear both;
-    animation-timeline: scroll(root);
-  }
-}
-
-@keyframes rejilla-paralaje {
-  to {
-    transform: translateY(var(--paralaje));
-  }
 }
 
 // --- Barrido: una banda de luz cruza la pantalla de arriba abajo -------------
@@ -146,19 +116,14 @@
 }
 
 // --- Ondas: se dibujan al cargar y luego flotan -----------------------------
-// Ocupan la pantalla entera (el viewBox se estira), no solo el pie. Cada onda va en su propia capa
-// HTML: el vaivén se anima en el `span`, no dentro del SVG. Un `transform` sobre elementos SVG hace
-// que Chrome rasterice el dibujo a su tamaño natural (1440 × 800) y la onda deja de llegar al borde
-// derecho pasados unos segundos.
+// Ocupan la pantalla entera (el viewBox se estira), no solo el pie. Todas van en un solo SVG y
+// flotan juntas: una capa en lugar de cinco. El vaivén se anima en el `div`, no dentro del SVG. Un
+// `transform` sobre elementos SVG hace que Chrome rasterice el dibujo a su tamaño natural
+// (1440 × 800) y la onda deja de llegar al borde derecho pasados unos segundos.
 .fondo__ondas {
   position: absolute;
   inset: 0;
-}
-
-.fondo__onda-capa {
-  position: absolute;
-  inset: 0;
-  animation: onda-flota calc(6s + var(--i, 0) * 2s) ease-in-out calc(var(--i, 0) * -1.5s) infinite alternate;
+  animation: onda-flota 9s ease-in-out infinite alternate;
 
   svg {
     display: block;
@@ -323,19 +288,10 @@
   opacity: 0.5;
 }
 
-@include bp.up(md) {
-  .fondo__rejilla {
-    --paralaje: -96px;
-  }
-}
-
-// El reset global acorta duraciones, pero no para una animación ligada al scroll ni para el
-// movimiento que aquí sobra del todo.
+// El reset global acorta duraciones, pero no quita el movimiento que aquí sobra del todo.
 @media (prefers-reduced-motion: reduce) {
-  .fondo__brasa,
-  .fondo__rejilla,
   .fondo__onda,
-  .fondo__onda-capa {
+  .fondo__ondas {
     animation: none;
   }
 
