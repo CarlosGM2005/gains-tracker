@@ -18,6 +18,11 @@
   pointer-events: none;
 }
 
+// Zoom de pellizco: sin fondo, o Safari agota la memoria al rasterizar sus capas a la nueva escala.
+:host([data-zoom]) {
+  display: none;
+}
+
 // --- Brasas: la luz de fondo ------------------------------------------------
 // Cada sección las coloca en otro sitio: al cambiar de ruta la luz se desplaza (orientación).
 .fondo__brasas {

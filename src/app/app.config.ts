@@ -1,4 +1,4 @@
-import { registerLocaleData } from '@angular/common';
+import { DOCUMENT, registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import {
   type ApplicationConfig,
@@ -23,6 +23,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { GlobalErrorHandler } from '@core/errors/global-error-handler';
 import { ActualizacionService } from '@core/pwa/actualizacion.service';
+import { bloquearZoom } from '@core/pwa/bloquear-zoom';
 import { AppTitleStrategy } from '@core/routing/app-title-strategy';
 import { omitirTransicionEnMismaRuta } from '@core/routing/view-transitions';
 import { environment } from '@env/environment';
@@ -58,5 +59,6 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => inject(AnalyticsService).iniciar()),
     provideAppInitializer(() => inject(ActualizacionService).iniciar()),
     provideAppInitializer(() => inject(SesionService).iniciar()),
+    provideAppInitializer(() => bloquearZoom(inject(DOCUMENT))),
   ],
 };

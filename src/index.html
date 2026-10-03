@@ -4,8 +4,13 @@
     <meta charset="utf-8" />
     <title>GainsTracker</title>
     <base href="/" />
-    <!-- `viewport-fit=cover` deja que la app pinte bajo la barra de estado y el indicador de iOS. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- `viewport-fit=cover` deja que la app pinte bajo la barra de estado y el indicador de iOS.
+         Sin zoom: ampliar con los dedos hacía que Safari agotara la memoria y cerrara la página.
+         Safari ignora `user-scalable=no`; allí lo cortan `touch-action` y `core/pwa/bloquear-zoom.ts`. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
     <meta name="description" content="GainsTracker: mide, mejora y supera tus límites en el gimnasio." />
     <meta name="theme-color" content="#0e0e10" />
     <link rel="icon" href="favicon.ico" sizes="32x32" />

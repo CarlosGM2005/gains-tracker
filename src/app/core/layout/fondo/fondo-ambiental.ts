@@ -59,6 +59,23 @@ export class FondoAmbiental {
     const ventana = documento.defaultView;
     const destroyRef = inject(DestroyRef);
 
+    // Con zoom de pellizco Safari vuelve a rasterizar cada capa animada del fondo a la nueva escala.
+    // Son una decena de capas del tamaño de la pantalla o mayores: la memoria se dispara y iOS
+    // cierra la pestaña ("Se ha producido un problema repetidamente"). Mientras hay zoom el fondo
+    // se quita (ver `data-zoom` en el SCSS).
+    afterNextRender(() => {
+      const vista = ventana?.visualViewport;
+      if (!vista) {
+        return;
+      }
+      const alCambiarZoom = (): void => {
+        host.toggleAttribute('data-zoom', vista.scale > 1.01);
+      };
+      alCambiarZoom();
+      vista.addEventListener('resize', alCambiarZoom);
+      destroyRef.onDestroy(() => vista.removeEventListener('resize', alCambiarZoom));
+    });
+
     afterNextRender(() => {
       if (!ventana?.matchMedia || ventana.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return;
