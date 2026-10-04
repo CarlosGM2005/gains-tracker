@@ -39,6 +39,18 @@
   color: var(--color-accent);
 }
 
+.ultima__rpe {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+
+.ultima__nota {
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
 .ultima__repetir {
   flex-shrink: 0;
   padding-inline: var(--space-5);
@@ -86,4 +98,91 @@
     margin: 0;
     appearance: none;
   }
+}
+
+// Bloque opcional plegado (RPE y nota), para no alargar el registro rápido.
+.notas {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.notas__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--tap-target);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.notas__estado {
+  margin-left: auto;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.notas__chevron {
+  color: var(--color-accent);
+  transition: transform var(--duration-base) var(--easing-out);
+}
+
+.notas[open] .notas__chevron {
+  transform: rotate(90deg);
+}
+
+.notas__cuerpo {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-2) var(--space-4) var(--space-4);
+}
+
+// RPE de 1 a 10 en dos filas de cinco: caben en móvil con botones de 44 px.
+.rpe {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.rpe__opcion {
+  min-height: var(--tap-target);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  transition:
+    border-color var(--duration-base) var(--easing-standard),
+    background-color var(--duration-base) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-accent);
+    }
+  }
+}
+
+.rpe__opcion--activa {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.notas__texto {
+  resize: vertical;
+}
+
+.notas__contador {
+  justify-self: end;
+  font-variant-numeric: tabular-nums;
 }

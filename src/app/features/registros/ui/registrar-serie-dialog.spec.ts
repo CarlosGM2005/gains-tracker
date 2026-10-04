@@ -70,7 +70,38 @@ describe('RegistrarSerieDialog', () => {
     TestBed.tick();
     expect(toast).toHaveBeenCalledWith('¡Serie registrada con éxito!', 5000);
     const registros = TestBed.inject(RegistrosStore).registros();
-    expect(registros.find((r) => r.ejercicioId === 'ej-plancha')?.series[0]).toMatchObject({ series: 4, peso: 0 });
+    expect(registros.find((r) => r.ejercicioId === 'ej-plancha')?.series[0]).toMatchObject({
+      series: 4,
+      peso: 0,
+      rpe: null,
+      nota: null,
+    });
+  });
+
+  it('guarda el RPE y la nota; tocar otra vez el RPE elegido lo quita', async () => {
+    const { close } = await montar();
+    await TestBed.inject(AuthStore).loginConEmail(DEMO_USER.email, DEMO_PASSWORD);
+
+    const fixture = TestBed.createComponent(RegistrarSerieDialog);
+    await fixture.whenStable();
+    const html = fixture.nativeElement as HTMLElement;
+    // Los botones van del 1 al 10, en orden.
+    const rpe = (valor: number) => html.querySelectorAll<HTMLButtonElement>('.rpe__opcion')[valor - 1];
+
+    escribir(html, '#serie-series', '3');
+    escribir(html, '#serie-reps', '8');
+    escribir(html, '#serie-peso', '20');
+    escribir(html, '#serie-descanso', '2');
+    rpe(7)?.click();
+    rpe(7)?.click();
+    rpe(8)?.click();
+    escribir(html, '#serie-nota', '  Subir peso la próxima  ');
+    html.querySelector('form')?.dispatchEvent(new Event('submit'));
+
+    await vi.waitFor(() => expect(close).toHaveBeenCalledWith(true));
+    TestBed.tick();
+    const plancha = TestBed.inject(RegistrosStore).registros().find((r) => r.ejercicioId === 'ej-plancha');
+    expect(plancha?.series[0]).toMatchObject({ rpe: 8, nota: 'Subir peso la próxima' });
   });
 
   it('en modo edición precarga la serie y guarda los cambios', async () => {
@@ -82,6 +113,8 @@ describe('RegistrarSerieDialog', () => {
       repeticiones: 8,
       peso: 65,
       descansoMin: 2,
+      rpe: 8,
+      nota: 'La próxima, probar con 67,5 kg.',
       creadaEn: new Date('2025-06-09T18:30:00Z'),
     };
     const ejercicio = { id: 'ej-press-de-banca', nombre: 'Press de banca', imagenFinal: 'final.svg' };
@@ -94,6 +127,8 @@ describe('RegistrarSerieDialog', () => {
 
     expect(html.querySelector('h2')?.textContent).toContain('Editar serie');
     expect(html.querySelector<HTMLInputElement>('#serie-peso')?.value).toBe('65');
+    expect(html.querySelector<HTMLTextAreaElement>('#serie-nota')?.value).toBe(serie.nota);
+    expect(html.querySelector('details')?.open).toBe(true);
 
     escribir(html, '#serie-peso', '70');
     html.querySelector('form')?.dispatchEvent(new Event('submit'));
@@ -101,6 +136,7 @@ describe('RegistrarSerieDialog', () => {
     await vi.waitFor(() => expect(close).toHaveBeenCalledWith(true));
     TestBed.tick();
     const banca = TestBed.inject(RegistrosStore).registros().find((r) => r.ejercicioId === 'ej-press-de-banca');
-    expect(banca?.series.find((s) => s.id === 's-2')).toMatchObject({ peso: 70, repeticiones: 8 });
+    const editada = banca?.series.find((s) => s.id === 's-2');
+    expect(editada).toMatchObject({ peso: 70, repeticiones: 8, rpe: 8, nota: serie.nota });
   });
 });

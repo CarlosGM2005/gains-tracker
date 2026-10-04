@@ -21,9 +21,29 @@ const REGISTROS_DEMO: readonly RegistroEjercicio[] = [
     nombre: 'Press de banca',
     imagen: 'ejercicios/placeholder-final.svg',
     series: [
-      // Serie antigua: sin id propio ni fecha de creación, como las guarda la app actual.
-      { id: 'legacy-0', dia: '2025-06-02', series: 4, repeticiones: 10, peso: 60, descansoMin: 2, creadaEn: null },
-      { id: 's-2', dia: '2025-06-09', series: 4, repeticiones: 8, peso: 65, descansoMin: 2, creadaEn: new Date('2025-06-09T18:30:00Z') },
+      // Serie antigua: sin id propio, notas ni fecha de creación, como las guarda la app actual.
+      {
+        id: 'legacy-0',
+        dia: '2025-06-02',
+        series: 4,
+        repeticiones: 10,
+        peso: 60,
+        descansoMin: 2,
+        rpe: null,
+        nota: null,
+        creadaEn: null,
+      },
+      {
+        id: 's-2',
+        dia: '2025-06-09',
+        series: 4,
+        repeticiones: 8,
+        peso: 65,
+        descansoMin: 2,
+        rpe: 8,
+        nota: 'La próxima, probar con 67,5 kg.',
+        creadaEn: new Date('2025-06-09T18:30:00Z'),
+      },
     ],
   },
   {
@@ -31,7 +51,17 @@ const REGISTROS_DEMO: readonly RegistroEjercicio[] = [
     nombre: 'Sentadilla',
     imagen: 'ejercicios/placeholder-final.svg',
     series: [
-      { id: 's-3', dia: '2025-06-10', series: 5, repeticiones: 5, peso: 90, descansoMin: 3, creadaEn: new Date('2025-06-10T19:00:00Z') },
+      {
+        id: 's-3',
+        dia: '2025-06-10',
+        series: 5,
+        repeticiones: 5,
+        peso: 90,
+        descansoMin: 3,
+        rpe: null,
+        nota: null,
+        creadaEn: new Date('2025-06-10T19:00:00Z'),
+      },
     ],
   },
 ];

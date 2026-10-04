@@ -19,8 +19,28 @@ describe('mapper de registros', () => {
       nombre: 'Sentadilla',
       imagen: 'final.png',
       series: [
-        { id: 'legacy-0', dia: '2025-06-02', series: 4, repeticiones: 10, peso: 60, descansoMin: 2, creadaEn: null },
-        { id: 'legacy-1', dia: '2025-06-09', series: 5, repeticiones: 8, peso: 62.5, descansoMin: 3, creadaEn: null },
+        {
+          id: 'legacy-0',
+          dia: '2025-06-02',
+          series: 4,
+          repeticiones: 10,
+          peso: 60,
+          descansoMin: 2,
+          rpe: null,
+          nota: null,
+          creadaEn: null,
+        },
+        {
+          id: 'legacy-1',
+          dia: '2025-06-09',
+          series: 5,
+          repeticiones: 8,
+          peso: 62.5,
+          descansoMin: 3,
+          rpe: null,
+          nota: null,
+          creadaEn: null,
+        },
       ],
     });
   });
@@ -31,11 +51,42 @@ describe('mapper de registros', () => {
 
   it('escribe con los nombres de campo existentes (numero, descanso) y conserva id y fecha', () => {
     const creadaEn = new Date('2026-09-14T10:00:00Z');
-    const serie: Serie = { id: 's1', dia: '2026-09-14', series: 3, repeticiones: 12, peso: 20, descansoMin: 1, creadaEn };
+    const serie: Serie = {
+      id: 's1',
+      dia: '2026-09-14',
+      series: 3,
+      repeticiones: 12,
+      peso: 20,
+      descansoMin: 1,
+      rpe: 8,
+      nota: 'Buena técnica',
+      creadaEn,
+    };
 
     const dto = serieAFirestore(serie);
-    expect(dto).toEqual({ id: 's1', dia: '2026-09-14', numero: 3, repeticiones: 12, peso: 20, descanso: 1, creadaEn });
+    expect(dto).toEqual({
+      id: 's1',
+      dia: '2026-09-14',
+      numero: 3,
+      repeticiones: 12,
+      peso: 20,
+      descanso: 1,
+      rpe: 8,
+      nota: 'Buena técnica',
+      creadaEn,
+    });
     expect(serieDesdeFirestore({ ...dto, creadaEn: { toDate: () => creadaEn } }, 0)).toEqual(serie);
+  });
+
+  it('lee el RPE y la nota y descarta los valores no válidos', () => {
+    const serie = serieDesdeFirestore({ rpe: '9', nota: '  Subir peso  ' }, 0);
+    expect(serie).toMatchObject({ rpe: 9, nota: 'Subir peso' });
+    for (const rpe of [0, 11, 7.5, 'mucho', null]) {
+      expect(serieDesdeFirestore({ rpe }, 0).rpe).toBeNull();
+    }
+    for (const nota of ['   ', 42, null]) {
+      expect(serieDesdeFirestore({ nota }, 0).nota).toBeNull();
+    }
   });
 
   describe('modificarSeries', () => {
@@ -46,11 +97,28 @@ describe('mapper de registros', () => {
     ];
 
     it('edita una serie antigua por su id legacy y fija los ids de todas', () => {
-      const cambios = { dia: '2025-06-03', series: 3, repeticiones: 6, peso: 70, descansoMin: 4 };
+      const cambios = {
+        dia: '2025-06-03',
+        series: 3,
+        repeticiones: 6,
+        peso: 70,
+        descansoMin: 4,
+        rpe: 7,
+        nota: null,
+      };
       const resultado = modificarSeries(antiguas, 'legacy-1', cambios);
 
       expect(resultado.map((s) => s.id)).toEqual(['legacy-0', 'legacy-1', 's-nueva']);
-      expect(resultado[1]).toEqual({ id: 'legacy-1', dia: '2025-06-03', numero: 3, repeticiones: 6, peso: 70, descanso: 4 });
+      expect(resultado[1]).toEqual({
+        id: 'legacy-1',
+        dia: '2025-06-03',
+        numero: 3,
+        repeticiones: 6,
+        peso: 70,
+        descanso: 4,
+        rpe: 7,
+        nota: null,
+      });
       expect(resultado[2]?.creadaEn).toBe('ts');
     });
 

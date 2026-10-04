@@ -7,7 +7,15 @@ import { MockRegistrosRepository } from './mock-registros-repository';
 
 const UID = 'usuario-test';
 const EJERCICIO: EjercicioRegistrable = { id: 'ej-1', nombre: 'Ejercicio 1', imagenFinal: 'final.svg' };
-const SERIE: NuevaSerie = { dia: '2026-09-13', series: 3, repeticiones: 10, peso: 40, descansoMin: 2 };
+const SERIE: NuevaSerie = {
+  dia: '2026-09-13',
+  series: 3,
+  repeticiones: 10,
+  peso: 40,
+  descansoMin: 2,
+  rpe: null,
+  nota: null,
+};
 
 describe('MockRegistrosRepository', () => {
   let repo: RegistrosRepository;
@@ -53,10 +61,16 @@ describe('MockRegistrosRepository', () => {
     const [antes] = await firstValueFrom(repo.observar(UID));
     const serie = antes!.series[0]!;
 
-    await repo.actualizarSerie(UID, 'ej-1', serie.id, { ...SERIE, peso: 55 });
+    await repo.actualizarSerie(UID, 'ej-1', serie.id, { ...SERIE, peso: 55, rpe: 9, nota: 'Costó' });
     const [despues] = await firstValueFrom(repo.observar(UID));
 
-    expect(despues?.series[0]).toMatchObject({ id: serie.id, peso: 55, creadaEn: serie.creadaEn });
+    expect(despues?.series[0]).toMatchObject({
+      id: serie.id,
+      peso: 55,
+      rpe: 9,
+      nota: 'Costó',
+      creadaEn: serie.creadaEn,
+    });
   });
 
   it('al borrar la última serie desaparece el registro', async () => {

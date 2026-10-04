@@ -3,7 +3,17 @@ import { ejerciciosDelDia, type RegistroEjercicio, type Serie, ultimaSerie } fro
 
 let contador = 0;
 function serie(dia: string, repeticiones: number, peso: number, creadaEn: Date | null = null): Serie {
-  return { id: `s-${contador++}`, dia, series: 3, repeticiones, peso, descansoMin: 2, creadaEn };
+  return {
+    id: `s-${contador++}`,
+    dia,
+    series: 3,
+    repeticiones,
+    peso,
+    descansoMin: 2,
+    rpe: null,
+    nota: null,
+    creadaEn,
+  };
 }
 
 function registro(ejercicioId: string, series: Serie[]): RegistroEjercicio {

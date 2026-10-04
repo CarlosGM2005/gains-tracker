@@ -1,6 +1,13 @@
 import { fecha, numero, texto } from '@core/firebase/conversiones';
 
-import { type NuevaSerie, type RegistroEjercicio, type Serie, SerieNoEncontradaError } from '../../domain/registro.model';
+import {
+  notaONull,
+  type NuevaSerie,
+  type RegistroEjercicio,
+  rpeONull,
+  type Serie,
+  SerieNoEncontradaError,
+} from '../../domain/registro.model';
 
 /** Serie tal como se guarda en `usuarios/{uid}/registros/{idEjercicio}.series[]`. */
 export interface SerieDto {
@@ -13,6 +20,10 @@ export interface SerieDto {
   peso?: unknown;
   /** Minutos. */
   descanso?: unknown;
+  /** Esfuerzo percibido (1–10). Solo en series de la app nueva; `null` si no se indicó. */
+  rpe?: unknown;
+  /** Comentario libre. Solo en series de la app nueva; `null` si no hay. */
+  nota?: unknown;
   /** Solo en series guardadas por la app nueva. */
   creadaEn?: unknown;
 }
@@ -35,6 +46,8 @@ export function serieDesdeFirestore(dto: SerieDto, indice: number): Serie {
     repeticiones: numero(dto.repeticiones),
     peso: numero(dto.peso),
     descansoMin: numero(dto.descanso),
+    rpe: rpeONull(numero(dto.rpe, Number.NaN)),
+    nota: notaONull(texto(dto.nota)),
     creadaEn: fecha(dto.creadaEn),
   };
 }
@@ -58,6 +71,8 @@ export function serieAFirestore(serie: Serie): SerieDto {
     repeticiones: serie.repeticiones,
     peso: serie.peso,
     descanso: serie.descansoMin,
+    rpe: serie.rpe,
+    nota: serie.nota,
     creadaEn: serie.creadaEn ?? new Date(),
   };
 }
@@ -87,6 +102,8 @@ export function modificarSeries(series: unknown, serieId: string, cambios: Nueva
           repeticiones: cambios.repeticiones,
           peso: cambios.peso,
           descanso: cambios.descansoMin,
+          rpe: cambios.rpe,
+          nota: cambios.nota,
         }
       : dto,
   );

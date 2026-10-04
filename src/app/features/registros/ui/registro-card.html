@@ -71,6 +71,16 @@
                 <dd>{{ serie.descansoMin }} <small>min</small></dd>
               </div>
             </dl>
+            @if (serie.rpe !== null || serie.nota) {
+              <div class="serie__notas">
+                @if (serie.rpe !== null) {
+                  <span class="serie__rpe"><abbr title="Esfuerzo percibido, del 1 al 10">RPE</abbr> {{ serie.rpe }}</span>
+                }
+                @if (serie.nota) {
+                  <p class="serie__nota">{{ serie.nota }}</p>
+                }
+              </div>
+            }
           </li>
         }
       </ol>

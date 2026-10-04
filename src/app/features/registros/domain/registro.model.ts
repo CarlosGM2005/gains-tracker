@@ -11,6 +11,10 @@ export interface Serie {
   peso: number;
   /** Minutos. En Firestore el campo se llama `descanso`. */
   descansoMin: number;
+  /** Esfuerzo percibido de 1 a 10 (10 = no salía ni una repetición más). Opcional. */
+  rpe: number | null;
+  /** Comentario libre del usuario. Opcional. */
+  nota: string | null;
   /** `null` en series guardadas por la app antigua. */
   creadaEn: Date | null;
 }
@@ -33,7 +37,21 @@ export const LIMITES_SERIE = {
   repeticiones: { min: 1 },
   peso: { min: 0 },
   descansoMin: { min: 0 },
+  rpe: { min: 1, max: 10 },
+  nota: { maxLength: 200 },
 } as const;
+
+/** RPE válido (entero de 1 a 10) o `null`. */
+export function rpeONull(valor: number | null): number | null {
+  const { min, max } = LIMITES_SERIE.rpe;
+  return valor !== null && Number.isInteger(valor) && valor >= min && valor <= max ? valor : null;
+}
+
+/** Nota sin espacios sobrantes, recortada al máximo; `null` si queda vacía. */
+export function notaONull(valor: string | null): string | null {
+  const nota = valor?.trim().slice(0, LIMITES_SERIE.nota.maxLength) ?? '';
+  return nota ? nota : null;
+}
 
 /** La serie o el registro ya no existe (p. ej. se borró desde otro dispositivo). */
 export class SerieNoEncontradaError extends Error {

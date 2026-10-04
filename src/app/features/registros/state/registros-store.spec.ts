@@ -52,7 +52,7 @@ describe('RegistrosStore', () => {
 
     await store.agregarSerie(
       { id: 'ej-plancha', nombre: 'Plancha', imagenFinal: 'final.svg' },
-      { dia: '2026-09-13', series: 3, repeticiones: 1, peso: 0, descansoMin: 1 },
+      { dia: '2026-09-13', series: 3, repeticiones: 1, peso: 0, descansoMin: 1, rpe: null, nota: null },
     );
     TestBed.tick();
 

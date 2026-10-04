@@ -17,7 +17,13 @@
             @if (u.peso > 0) {
               <span class="ultima__peso">con {{ u.peso | number: '1.0-2' }} kg</span>
             }
+            @if (u.rpe !== null) {
+              <span class="ultima__rpe">· RPE {{ u.rpe }}</span>
+            }
           </span>
+          @if (u.nota) {
+            <span class="ultima__nota">“{{ u.nota }}”</span>
+          }
         </p>
         <button type="button" class="btn btn--primary ultima__repetir" [disabled]="enviando()" (click)="repetirUltima()">
           Repetir hoy
@@ -81,6 +87,36 @@
           <app-field-error [control]="form.controls.descansoMin" [mensajes]="mensajes.descansoMin" idError="serie-descanso-error" />
         </div>
       </div>
+
+      <details class="notas" [open]="notasAbiertas">
+        <summary class="notas__summary">
+          <span class="field__label">Esfuerzo y nota</span>
+          <span class="notas__estado">{{ resumenNotas() }}</span>
+          <span class="notas__chevron" aria-hidden="true">▸</span>
+        </summary>
+
+        @let rpe = form.controls.rpe.value;
+        <div class="notas__cuerpo">
+          <div class="field">
+            <span id="serie-rpe-label" class="field__label">Esfuerzo percibido (RPE)</span>
+            <div class="rpe" role="group" aria-labelledby="serie-rpe-label" aria-describedby="serie-rpe-ayuda">
+              @for (valor of valoresRpe; track valor) {
+                <button type="button" class="rpe__opcion" [class.rpe__opcion--activa]="valor === rpe"
+                  [attr.aria-pressed]="valor === rpe" (click)="elegirRpe(valor)">{{ valor }}</button>
+              }
+            </div>
+            <p id="serie-rpe-ayuda" class="field__hint">{{ ayudaRpe(rpe) }}</p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="serie-nota">Nota</label>
+            <textarea id="serie-nota" class="input notas__texto" rows="2" [attr.maxlength]="maxNota" formControlName="nota"
+              placeholder="Ej.: la última costó, subir peso la próxima" aria-describedby="serie-nota-contador serie-nota-error"></textarea>
+            <p id="serie-nota-contador" class="field__hint notas__contador">{{ form.controls.nota.value.length }}/{{ maxNota }}</p>
+            <app-field-error [control]="form.controls.nota" [mensajes]="mensajes.nota" idError="serie-nota-error" />
+          </div>
+        </div>
+      </details>
 
       <div class="dialog__actions">
         <button type="button" class="btn btn--ghost" (click)="cerrar()">Cancelar</button>

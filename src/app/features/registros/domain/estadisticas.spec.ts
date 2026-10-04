@@ -3,7 +3,17 @@ import { type RegistroEjercicio, type Serie } from './registro.model';
 
 let contador = 0;
 function serie(dia: string, series: number, repeticiones: number, peso: number): Serie {
-  return { id: `s-${contador++}`, dia, series, repeticiones, peso, descansoMin: 2, creadaEn: null };
+  return {
+    id: `s-${contador++}`,
+    dia,
+    series,
+    repeticiones,
+    peso,
+    descansoMin: 2,
+    rpe: null,
+    nota: null,
+    creadaEn: null,
+  };
 }
 
 const BANCA: RegistroEjercicio = {
