@@ -1,3 +1,5 @@
+import { diaLocal, lunesDe, sumarDias } from '@shared/utils/fechas';
+
 import { type RegistroEjercicio, type Serie } from './registro.model';
 
 /** Kilos movidos en una serie: series × repeticiones × peso. */
@@ -97,7 +99,7 @@ export function actividadSemanal(
   hoy: Date,
   semanas = 8,
 ): SemanaActividad[] {
-  const lunesActual = lunesDe(aDiaLocal(hoy));
+  const lunesActual = lunesDe(diaLocal(hoy));
   const resultado: SemanaActividad[] = Array.from({ length: semanas }, (_, i) => ({
     inicio: sumarDias(lunesActual, (i - semanas + 1) * 7),
     dias: 0,
@@ -118,20 +120,110 @@ export function actividadSemanal(
   return resultado.map((s) => ({ ...s, dias: diasPorSemana.get(s.inicio)?.size ?? 0 }));
 }
 
-function aDiaLocal(fecha: Date): string {
-  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-  const dia = String(fecha.getDate()).padStart(2, '0');
-  return `${fecha.getFullYear()}-${mes}-${dia}`;
+/** Repetición máxima estimada con la fórmula de Epley. Con una sola repetición, el propio peso. */
+export function unaRmEstimada(peso: number, repeticiones: number): number {
+  return repeticiones <= 1 ? peso : peso * (1 + repeticiones / 30);
 }
 
-/** Aritmética en UTC sobre la fecha `YYYY-MM-DD` para no depender del horario de verano. */
-function sumarDias(dia: string, dias: number): string {
-  const fecha = new Date(`${dia}T00:00:00Z`);
-  fecha.setUTCDate(fecha.getUTCDate() + dias);
-  return fecha.toISOString().slice(0, 10);
+/** La mejor marca de un ejercicio: su mejor serie. */
+export interface RecordPersonal {
+  ejercicioId: string;
+  nombre: string;
+  imagen: string;
+  /** Kilos. 0 en ejercicios sin carga: entonces la marca son las repeticiones. */
+  peso: number;
+  repeticiones: number;
+  /** Primer día en que se consiguió. */
+  dia: string;
+  /** Repetición máxima estimada (kg). `null` en ejercicios sin carga. */
+  unaRm: number | null;
 }
 
-function lunesDe(dia: string): string {
-  const diaSemana = new Date(`${dia}T00:00:00Z`).getUTCDay(); // 0 = domingo
-  return sumarDias(dia, -((diaSemana + 6) % 7));
+/**
+ * Mejor serie: la de más peso; a igual peso, la de más repeticiones; y a igualdad, la más antigua,
+ * que es cuando se consiguió la marca.
+ */
+export function mejorSerie(series: readonly Serie[]): Serie | null {
+  let mejor: Serie | null = null;
+  for (const serie of series) {
+    if (!mejor || superaA(serie, mejor) || (!superaA(mejor, serie) && serie.dia < mejor.dia)) {
+      mejor = serie;
+    }
+  }
+  return mejor;
+}
+
+/** Récord de cada ejercicio, del conseguido más recientemente al más antiguo. */
+export function recordsPersonales(registros: readonly RegistroEjercicio[]): RecordPersonal[] {
+  return registros
+    .flatMap((registro): RecordPersonal[] => {
+      const mejor = mejorSerie(registro.series);
+      if (!mejor) {
+        return [];
+      }
+      return [
+        {
+          ejercicioId: registro.ejercicioId,
+          nombre: registro.nombre,
+          imagen: registro.imagen,
+          peso: mejor.peso,
+          repeticiones: mejor.repeticiones,
+          dia: mejor.dia,
+          unaRm: mejor.peso > 0 ? unaRmEstimada(mejor.peso, mejor.repeticiones) : null,
+        },
+      ];
+    })
+    .sort((a, b) => b.dia.localeCompare(a.dia));
+}
+
+/**
+ * Si `nueva` bate la mejor serie anterior del ejercicio (más peso, o el mismo peso con más
+ * repeticiones). La primera serie de un ejercicio no cuenta: no hay marca con la que compararla.
+ */
+export function esNuevoRecord(
+  anteriores: readonly Serie[],
+  nueva: Pick<Serie, 'peso' | 'repeticiones'>,
+): boolean {
+  const mejor = mejorSerie(anteriores);
+  return mejor !== null && superaA(nueva, mejor);
+}
+
+function superaA(a: Pick<Serie, 'peso' | 'repeticiones'>, b: Pick<Serie, 'peso' | 'repeticiones'>): boolean {
+  return a.peso > b.peso || (a.peso === b.peso && a.repeticiones > b.repeticiones);
+}
+
+export interface Racha {
+  /** Días seguidos hasta hoy (o hasta ayer, si hoy aún no se ha entrenado). */
+  actual: number;
+  /** La racha más larga de todo el historial. */
+  mejor: number;
+  /** Si hoy ya hay alguna serie. Si no y `actual` > 0, la racha se pierde al acabar el día. */
+  entrenadoHoy: boolean;
+}
+
+/**
+ * Días seguidos entrenando. La racha actual sigue viva si hoy todavía no se ha entrenado pero ayer
+ * sí: no se rompe hasta que acaba el día.
+ */
+export function rachaDias(registros: readonly RegistroEjercicio[], hoy: Date): Racha {
+  const dias = new Set(registros.flatMap((r) => r.series.map((s) => s.dia)));
+
+  let mejor = 0;
+  let tramo = 0;
+  let anterior: string | null = null;
+  for (const dia of [...dias].sort()) {
+    tramo = anterior !== null && sumarDias(anterior, 1) === dia ? tramo + 1 : 1;
+    mejor = Math.max(mejor, tramo);
+    anterior = dia;
+  }
+
+  const hoyTexto = diaLocal(hoy);
+  const entrenadoHoy = dias.has(hoyTexto);
+  let cursor = entrenadoHoy ? hoyTexto : sumarDias(hoyTexto, -1);
+  let actual = 0;
+  while (dias.has(cursor)) {
+    actual++;
+    cursor = sumarDias(cursor, -1);
+  }
+  return { actual, mejor, entrenadoHoy };
 }

@@ -101,6 +101,15 @@
   overflow: hidden;
 }
 
+// Atajo para registrar otra serie del ejercicio: la ventana ya viene rellena con la última.
+.card__nueva {
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.card__nueva-btn {
+  width: 100%;
+}
+
 .card--abierta .series {
   animation: rise-in var(--duration-slow) var(--easing-out) both;
 }

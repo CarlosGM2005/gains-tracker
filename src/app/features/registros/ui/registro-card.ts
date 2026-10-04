@@ -20,6 +20,8 @@ export class RegistroCard {
   readonly registro = input.required<RegistroEjercicio>();
   readonly abierto = input.required<boolean>();
   readonly alternar = output();
+  /** Registrar otra serie de este ejercicio sin tener que buscarlo en el catálogo. */
+  readonly nueva = output();
   readonly editar = output<Serie>();
   readonly borrar = output<Serie>();
 }

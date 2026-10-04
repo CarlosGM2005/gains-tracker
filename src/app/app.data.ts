@@ -14,8 +14,11 @@ import { FavoritosRepository } from '@features/favoritos/data/favoritos-reposito
 import { FirebaseFavoritosRepository } from '@features/favoritos/data/firebase/firebase-favoritos-repository';
 import { MockFavoritosRepository } from '@features/favoritos/data/mock/mock-favoritos-repository';
 import { FirebasePerfilRepository } from '@features/perfil/data/firebase/firebase-perfil-repository';
+import { FirebasePesoCorporalRepository } from '@features/perfil/data/firebase/firebase-peso-corporal-repository';
 import { MockPerfilRepository } from '@features/perfil/data/mock/mock-perfil-repository';
+import { MockPesoCorporalRepository } from '@features/perfil/data/mock/mock-peso-corporal-repository';
 import { PerfilRepository } from '@features/perfil/data/perfil-repository';
+import { PesoCorporalRepository } from '@features/perfil/data/peso-corporal-repository';
 import { FirebaseRegistrosRepository } from '@features/registros/data/firebase/firebase-registros-repository';
 import { MockRegistrosRepository } from '@features/registros/data/mock/mock-registros-repository';
 import { RegistrosRepository } from '@features/registros/data/registros-repository';
@@ -37,6 +40,7 @@ export function provideDataLayer(env: Environment): EnvironmentProviders {
       { provide: EjerciciosRepository, useClass: FirebaseEjerciciosRepository },
       { provide: FavoritosRepository, useClass: FirebaseFavoritosRepository },
       { provide: PerfilRepository, useClass: FirebasePerfilRepository },
+      { provide: PesoCorporalRepository, useClass: FirebasePesoCorporalRepository },
       { provide: RegistrosRepository, useClass: FirebaseRegistrosRepository },
     ]);
   }
@@ -47,6 +51,7 @@ export function provideDataLayer(env: Environment): EnvironmentProviders {
     { provide: EjerciciosRepository, useClass: MockEjerciciosRepository },
     { provide: FavoritosRepository, useClass: MockFavoritosRepository },
     { provide: PerfilRepository, useClass: MockPerfilRepository },
+    { provide: PesoCorporalRepository, useClass: MockPesoCorporalRepository },
     { provide: RegistrosRepository, useClass: MockRegistrosRepository },
   ]);
 }

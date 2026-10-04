@@ -47,3 +47,23 @@ export class SerieNoEncontradaError extends Error {
 export function ultimoDia(registro: RegistroEjercicio): string | null {
   return registro.series.reduce<string | null>((max, s) => (max === null || s.dia > max ? s.dia : max), null);
 }
+
+/** Serie más reciente: la del último día y, dentro de ese día, la última que se creó. */
+export function ultimaSerie(series: readonly Serie[]): Serie | null {
+  let ultima: Serie | null = null;
+  for (const serie of series) {
+    const masNueva =
+      !ultima ||
+      serie.dia > ultima.dia ||
+      (serie.dia === ultima.dia && (serie.creadaEn?.getTime() ?? 0) >= (ultima.creadaEn?.getTime() ?? 0));
+    if (masNueva) {
+      ultima = serie;
+    }
+  }
+  return ultima;
+}
+
+/** Ids de los ejercicios con alguna serie en `dia` (`YYYY-MM-DD`). */
+export function ejerciciosDelDia(registros: readonly RegistroEjercicio[], dia: string): string[] {
+  return registros.filter((r) => r.series.some((s) => s.dia === dia)).map((r) => r.ejercicioId);
+}

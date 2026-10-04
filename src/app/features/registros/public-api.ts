@@ -2,3 +2,4 @@
 export * from './domain/registro.model';
 export { RegistrarSerieService } from './ui/registrar-serie.service';
 export { RegistrosRepository } from './data/registros-repository';
+export { RegistrosStore } from './state/registros-store';

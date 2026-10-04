@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -13,7 +14,7 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
  */
 @Component({
   selector: 'app-rutina-dia',
-  imports: [RouterLink, Icon],
+  imports: [RouterLink, NgTemplateOutlet, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let d = dia();
@@ -29,14 +30,24 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
         </p>
         <h3 class="dia__enfoque">{{ d.enfoque }}</h3>
         <p class="dia__resumen">{{ resumen() }}</p>
+        @if (progreso(); as p) {
+          <p class="dia__progreso" [class.dia__progreso--completo]="p.hechos === p.total">
+            {{ p.hechos === p.total ? '¡Día completado!' : p.hechos + ' de ' + p.total + ' hechos hoy' }}
+          </p>
+        }
       </header>
 
       <ol class="dia__musculos">
         @for (m of d.musculos; track m.musculo; let i = $index) {
           <li class="dia__fila" [style.--i]="i">
             @if (enlazable(m.musculo)) {
-              <a class="musculo" routerLink="/recomendados" [queryParams]="{ musculo: m.musculo }">
-                <span class="musculo__n" aria-hidden="true">0{{ i + 1 }}</span>
+              <a
+                class="musculo"
+                [class.musculo--hecho]="hecho(m.musculo)"
+                routerLink="/recomendados"
+                [queryParams]="{ musculo: m.musculo }"
+              >
+                <ng-container *ngTemplateOutlet="marca; context: { $implicit: m.musculo, i }" />
                 <span class="musculo__nombre">{{ etiquetas[m.musculo] }}</span>
                 @if (m.opcional) {
                   <span class="musculo__opcional">Opcional</span>
@@ -44,8 +55,8 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
                 <span class="musculo__flecha"><app-icon name="flecha-derecha" [size]="18" /></span>
               </a>
             } @else {
-              <span class="musculo musculo--sin-enlace">
-                <span class="musculo__n" aria-hidden="true">0{{ i + 1 }}</span>
+              <span class="musculo musculo--sin-enlace" [class.musculo--hecho]="hecho(m.musculo)">
+                <ng-container *ngTemplateOutlet="marca; context: { $implicit: m.musculo, i }" />
                 <span class="musculo__nombre">{{ etiquetas[m.musculo] }}</span>
                 @if (m.opcional) {
                   <span class="musculo__opcional">Opcional</span>
@@ -56,6 +67,16 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
         }
       </ol>
     </article>
+
+    <!-- Número de la fila, o un check si ese grupo ya se ha entrenado hoy. -->
+    <ng-template #marca let-musculo let-i="i">
+      @if (hecho(musculo)) {
+        <span class="musculo__n musculo__check"><app-icon name="check" [size]="18" /></span>
+        <span class="visually-hidden">Hecho hoy:</span>
+      } @else {
+        <span class="musculo__n" aria-hidden="true">0{{ i + 1 }}</span>
+      }
+    </ng-template>
   `,
   styles: `
     :host {
@@ -162,6 +183,35 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
       color: var(--color-accent);
     }
 
+    .musculo__check {
+      display: inline-grid;
+      place-items: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: var(--color-on-accent);
+    }
+
+    .musculo--hecho {
+      border-color: rgb(from var(--color-accent) r g b / 45%);
+    }
+
+    .dia__progreso {
+      justify-self: start;
+      padding: 2px var(--space-3);
+      border: 1px solid var(--color-accent);
+      border-radius: var(--radius-pill);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-accent);
+    }
+
+    .dia__progreso--completo {
+      background: var(--color-accent);
+      color: var(--color-on-accent);
+    }
+
     .musculo__nombre {
       font-family: var(--font-display);
       font-size: var(--font-size-lg);
@@ -213,6 +263,8 @@ import { type DiaRutina, NOMBRE_DIA_SEMANA } from '../domain/rutina';
 export class RutinaDia {
   readonly dia = input.required<DiaRutina>();
   readonly hoy = input(false);
+  /** Grupos ya entrenados hoy. Solo lo recibe la tarjeta del día de hoy; en las demás, `null`. */
+  readonly hechos = input<ReadonlySet<Musculo> | null>(null);
 
   protected readonly etiquetas = ETIQUETA_MUSCULO;
   protected readonly nombreDia = NOMBRE_DIA_SEMANA;
@@ -222,6 +274,20 @@ export class RutinaDia {
     const opcionales = musculos.filter((m) => m.opcional).length;
     return `${musculos.length} grupos musculares` + (opcionales ? ` · ${opcionales} opcional${opcionales > 1 ? 'es' : ''}` : '');
   });
+
+  /** Grupos obligatorios del día hechos y totales. Los opcionales no cuentan para completarlo. */
+  protected readonly progreso = computed(() => {
+    const hechos = this.hechos();
+    if (!hechos) {
+      return null;
+    }
+    const obligatorios = this.dia().musculos.filter((m) => !m.opcional);
+    return { hechos: obligatorios.filter((m) => hechos.has(m.musculo)).length, total: obligatorios.length };
+  });
+
+  protected hecho(musculo: Musculo): boolean {
+    return this.hechos()?.has(musculo) ?? false;
+  }
 
   /** Lumbares no tiene filtro en recomendados, así que no se enlaza. */
   protected enlazable(musculo: Musculo): boolean {

@@ -9,6 +9,13 @@
     <app-empty-state titulo="Aún no hay datos" detalle="Registra tu primera serie y aquí verás tu evolución.">
       <a class="btn btn--primary" routerLink="/ejercicios">Explorar ejercicios</a>
     </app-empty-state>
+    <!-- El peso corporal no depende de las series: se puede apuntar desde el primer día. -->
+    <div class="stats">
+      <section class="bloque" aria-labelledby="peso-titulo">
+        <h2 id="peso-titulo" class="bloque__titulo">Peso corporal</h2>
+        <app-peso-corporal />
+      </section>
+    </div>
   } @else {
     @let r = resumen();
     <div class="stats">
@@ -36,7 +43,17 @@
         }
       </section>
 
-      <section class="bloque stagger" style="--i: 5" aria-labelledby="progreso-titulo" appReveal>
+      <section class="bloque stagger" style="--i: 5" aria-labelledby="racha-titulo">
+        <h2 id="racha-titulo" class="bloque__titulo">Racha</h2>
+        <app-racha-dias [racha]="racha()" />
+      </section>
+
+      <section class="bloque stagger" style="--i: 6" aria-labelledby="records-titulo" appReveal>
+        <h2 id="records-titulo" class="bloque__titulo">Récords personales</h2>
+        <app-records-personales [records]="records()" />
+      </section>
+
+      <section class="bloque stagger" style="--i: 7" aria-labelledby="progreso-titulo" appReveal>
         <div class="bloque__head">
           <h2 id="progreso-titulo" class="bloque__titulo">Progreso por ejercicio</h2>
           <div class="field bloque__selector">
@@ -55,7 +72,25 @@
           <dl class="mini">
             <div>
               <dt>Récord</dt>
-              <dd>{{ p.mejorPeso | number: '1.0-2' }} <small>kg</small></dd>
+              <dd>
+                @if (mejor(); as m) {
+                  @if (m.peso > 0) {
+                    {{ m.peso | number: '1.0-2' }} <small>kg × {{ m.repeticiones }}</small>
+                  } @else {
+                    {{ m.repeticiones }} <small>reps</small>
+                  }
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>1RM estimado</dt>
+              <dd>
+                @if (mejor()?.unaRm; as unaRm) {
+                  {{ unaRm | number: '1.0-0' }} <small>kg</small>
+                } @else {
+                  —
+                }
+              </dd>
             </div>
             <div>
               <dt>Días registrados</dt>
@@ -64,7 +99,7 @@
           </dl>
 
           @if (p.puntos.length > 1) {
-            <app-grafica-progreso [puntos]="p.puntos" [titulo]="'Peso máximo por día en ' + registroElegido()?.nombre" />
+            <app-grafica-progreso [puntos]="puntosGrafica()" [titulo]="'Peso máximo por día en ' + registroElegido()?.nombre" />
 
             @if (extremos(); as ext) {
               <div class="recorrido">
@@ -111,7 +146,7 @@
         }
       </section>
 
-      <section class="bloque stagger" style="--i: 6" aria-labelledby="actividad-titulo" appReveal>
+      <section class="bloque stagger" style="--i: 8" aria-labelledby="actividad-titulo" appReveal>
         <div class="bloque__head">
           <h2 id="actividad-titulo" class="bloque__titulo">Últimas {{ semanas().length }} semanas</h2>
           <p class="text-label">{{ diasSemanas() }} días</p>
@@ -129,6 +164,11 @@
             </li>
           }
         </ol>
+      </section>
+
+      <section class="bloque stagger" style="--i: 9" aria-labelledby="peso-titulo" appReveal>
+        <h2 id="peso-titulo" class="bloque__titulo">Peso corporal</h2>
+        <app-peso-corporal />
       </section>
     </div>
   }

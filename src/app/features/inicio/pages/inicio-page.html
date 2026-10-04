@@ -22,12 +22,27 @@
       }
     </p>
 
+    @if (racha(); as r) {
+      @if (r.actual > 0) {
+        <p class="plan__racha">
+          Llevas <strong>{{ r.actual }} {{ r.actual === 1 ? 'día' : 'días' }} seguidos</strong> entrenando.
+          @if (!r.entrenadoHoy) {
+            Entrena hoy para no perder la racha.
+          }
+        </p>
+      }
+    }
+
     <!-- Un carrusel por plan: al cambiar los días se crea de nuevo y empieza en el día de hoy. -->
     @for (plan of [rutina()]; track plan) {
       <div class="plan__carrusel">
         <app-carousel [items]="plan" [etiqueta]="'Rutina de ' + dias() + ' días'" [inicial]="hoy()">
           <ng-template let-dia let-i="index">
-            <app-rutina-dia [dia]="dia" [hoy]="i === hoy()" />
+            <app-rutina-dia
+              [dia]="dia"
+              [hoy]="i === hoy()"
+              [hechos]="i === hoy() && musculosHoy.hasValue() ? musculosHoy.value() : null"
+            />
           </ng-template>
         </app-carousel>
       </div>

@@ -50,6 +50,7 @@ import { RegistroCard } from '../ui/registro-card';
                 [registro]="registro"
                 [abierto]="abiertoId() === registro.ejercicioId"
                 (alternar)="alternar(registro.ejercicioId)"
+                (nueva)="nuevaSerie(registro)"
                 (editar)="editar(registro, $event)"
                 (borrar)="borrar(registro, $event)"
               />
@@ -92,6 +93,10 @@ export class RegistrosPage {
 
   protected alternar(ejercicioId: string): void {
     this.abiertoId.update((actual) => (actual === ejercicioId ? null : ejercicioId));
+  }
+
+  protected nuevaSerie(registro: RegistroEjercicio): void {
+    void this.dialogoSerie.abrir({ id: registro.ejercicioId, nombre: registro.nombre, imagenFinal: registro.imagen });
   }
 
   protected editar(registro: RegistroEjercicio, serie: Serie): void {

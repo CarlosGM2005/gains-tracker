@@ -6,7 +6,8 @@ import { concatMap, distinctUntilChanged, filter } from 'rxjs';
 import { AuthStore } from '@core/auth/auth-store';
 import { destinoSeguro } from '@core/auth/auth.guards';
 import { type AuthUser } from '@core/auth/auth.model';
-import { type Perfil, PerfilRepository } from '@features/perfil/public-api';
+import { type Perfil, PerfilRepository, PesoCorporalRepository } from '@features/perfil/public-api';
+import { diaLocal } from '@shared/utils/fechas';
 
 export interface DatosRegistro {
   nombre: string;
@@ -23,6 +24,7 @@ export interface DatosRegistro {
 export class SesionService {
   private readonly auth = inject(AuthStore);
   private readonly perfiles = inject(PerfilRepository);
+  private readonly pesos = inject(PesoCorporalRepository);
   private readonly router = inject(Router);
   private readonly injector = inject(Injector);
   /** Mientras se registra, el perfil completo lo crea `registrar()`: no se adelanta uno vacío. */
@@ -75,6 +77,13 @@ export class SesionService {
         foto: null,
         creadoEn: new Date(),
       });
+      // El peso del alta es el primer punto del historial de peso corporal. Si falla, la cuenta ya
+      // está creada: no se da el registro por fallido.
+      if (datos.peso > 0) {
+        await this.pesos
+          .guardar(usuario.uid, { dia: diaLocal(new Date()), kg: datos.peso })
+          .catch((e: unknown) => console.error('No se pudo apuntar el primer peso', e));
+      }
     } finally {
       this.registrando = false;
     }

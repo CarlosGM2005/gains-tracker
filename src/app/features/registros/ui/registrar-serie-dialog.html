@@ -8,9 +8,26 @@
   </header>
 
   @if (autenticado()) {
-    <p class="dialog__text">
-      {{ editando ? 'Corrige los datos de la serie.' : 'Registra tu serie del ejercicio para tener un mejor seguimiento.' }}
-    </p>
+    @if (ultima(); as u) {
+      <div class="ultima">
+        <p class="ultima__texto">
+          <span class="text-label">Última vez · {{ u.dia | date: 'd MMM' }}</span>
+          <span class="ultima__marca">
+            {{ u.series }} × {{ u.repeticiones }}
+            @if (u.peso > 0) {
+              <span class="ultima__peso">con {{ u.peso | number: '1.0-2' }} kg</span>
+            }
+          </span>
+        </p>
+        <button type="button" class="btn btn--primary ultima__repetir" [disabled]="enviando()" (click)="repetirUltima()">
+          Repetir hoy
+        </button>
+      </div>
+    } @else {
+      <p class="dialog__text">
+        {{ editando ? 'Corrige los datos de la serie.' : 'Registra tu serie del ejercicio para tener un mejor seguimiento.' }}
+      </p>
+    }
 
     <form class="form" [formGroup]="form" (ngSubmit)="registrar()" novalidate>
       <div class="field">
@@ -22,14 +39,22 @@
       <div class="form__row dialog__row">
         <div class="field">
           <label class="field__label" for="serie-series">Series</label>
-          <input id="serie-series" class="input" type="number" inputmode="numeric" min="1"
-            formControlName="series" aria-describedby="serie-series-error" />
+          <div class="stepper">
+            <button type="button" class="stepper__btn" aria-label="Una serie menos" (click)="ajustar('series', -1)">−</button>
+            <input id="serie-series" class="input stepper__input" type="number" inputmode="numeric" min="1"
+              formControlName="series" aria-describedby="serie-series-error" />
+            <button type="button" class="stepper__btn" aria-label="Una serie más" (click)="ajustar('series', 1)">+</button>
+          </div>
           <app-field-error [control]="form.controls.series" [mensajes]="mensajes.series" idError="serie-series-error" />
         </div>
         <div class="field">
           <label class="field__label" for="serie-reps">Repeticiones</label>
-          <input id="serie-reps" class="input" type="number" inputmode="numeric" min="1"
-            formControlName="repeticiones" aria-describedby="serie-reps-error" />
+          <div class="stepper">
+            <button type="button" class="stepper__btn" aria-label="Una repetición menos" (click)="ajustar('repeticiones', -1)">−</button>
+            <input id="serie-reps" class="input stepper__input" type="number" inputmode="numeric" min="1"
+              formControlName="repeticiones" aria-describedby="serie-reps-error" />
+            <button type="button" class="stepper__btn" aria-label="Una repetición más" (click)="ajustar('repeticiones', 1)">+</button>
+          </div>
           <app-field-error [control]="form.controls.repeticiones" [mensajes]="mensajes.repeticiones" idError="serie-reps-error" />
         </div>
       </div>
@@ -37,14 +62,22 @@
       <div class="form__row dialog__row">
         <div class="field">
           <label class="field__label" for="serie-peso">Peso (kg)</label>
-          <input id="serie-peso" class="input" type="number" inputmode="decimal" step="0.01" min="0"
-            formControlName="peso" aria-describedby="serie-peso-error" />
+          <div class="stepper">
+            <button type="button" class="stepper__btn" aria-label="2,5 kg menos" (click)="ajustar('peso', -1)">−</button>
+            <input id="serie-peso" class="input stepper__input" type="number" inputmode="decimal" step="0.01" min="0"
+              formControlName="peso" aria-describedby="serie-peso-error" />
+            <button type="button" class="stepper__btn" aria-label="2,5 kg más" (click)="ajustar('peso', 1)">+</button>
+          </div>
           <app-field-error [control]="form.controls.peso" [mensajes]="mensajes.peso" idError="serie-peso-error" />
         </div>
         <div class="field">
           <label class="field__label" for="serie-descanso">Descanso (min)</label>
-          <input id="serie-descanso" class="input" type="number" inputmode="numeric" min="0"
-            formControlName="descansoMin" aria-describedby="serie-descanso-error" />
+          <div class="stepper">
+            <button type="button" class="stepper__btn" aria-label="Un minuto menos" (click)="ajustar('descansoMin', -1)">−</button>
+            <input id="serie-descanso" class="input stepper__input" type="number" inputmode="numeric" min="0"
+              formControlName="descansoMin" aria-describedby="serie-descanso-error" />
+            <button type="button" class="stepper__btn" aria-label="Un minuto más" (click)="ajustar('descansoMin', 1)">+</button>
+          </div>
           <app-field-error [control]="form.controls.descansoMin" [mensajes]="mensajes.descansoMin" idError="serie-descanso-error" />
         </div>
       </div>

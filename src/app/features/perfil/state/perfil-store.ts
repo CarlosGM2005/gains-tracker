@@ -3,8 +3,10 @@ import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-i
 import { catchError, combineLatest, filter, map, of, startWith, switchMap } from 'rxjs';
 
 import { AuthStore } from '@core/auth/auth-store';
+import { diaLocal } from '@shared/utils/fechas';
 
 import { PerfilRepository } from '../data/perfil-repository';
+import { PesoCorporalRepository } from '../data/peso-corporal-repository';
 import { type CambiosPerfil, type Perfil } from '../domain/perfil.model';
 
 type EstadoPerfil = { tipo: 'cargando' } | { tipo: 'listo'; perfil: Perfil | null } | { tipo: 'error' };
@@ -17,6 +19,7 @@ type EstadoPerfil = { tipo: 'cargando' } | { tipo: 'listo'; perfil: Perfil | nul
 export class PerfilStore {
   private readonly auth = inject(AuthStore);
   private readonly repo = inject(PerfilRepository);
+  private readonly pesos = inject(PesoCorporalRepository);
 
   private readonly estado = toSignal(
     toObservable(this.auth.usuario).pipe(
@@ -59,8 +62,16 @@ export class PerfilStore {
       });
   }
 
-  actualizar(cambios: CambiosPerfil): Promise<void> {
-    return this.repo.actualizar(this.auth.uidActual(), cambios);
+  async actualizar(cambios: CambiosPerfil): Promise<void> {
+    const uid = this.auth.uidActual();
+    await this.repo.actualizar(uid, cambios);
+    // Un peso nuevo en "Datos perfil" también se apunta en el historial de peso corporal. Si eso
+    // falla, el perfil ya está guardado: no se da el cambio por fallido.
+    if (typeof cambios.peso === 'number') {
+      await this.pesos
+        .guardar(uid, { dia: diaLocal(new Date()), kg: cambios.peso })
+        .catch((e: unknown) => console.error('No se pudo apuntar el peso en el historial', e));
+    }
   }
 
   /** Guarda una foto ya comprimida o la quita (`null`). */

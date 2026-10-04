@@ -2,13 +2,16 @@ import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { CatalogoStore, RECOMENDADOS_EN_INICIO } from '@features/ejercicios/public-api';
+import { CatalogoStore, type Musculo, RECOMENDADOS_EN_INICIO } from '@features/ejercicios/public-api';
+import { rachaDias } from '@features/registros/domain/estadisticas';
+import { ejerciciosDelDia, RegistrosStore } from '@features/registros/public-api';
 import { Carousel } from '@shared/ui/carousel/carousel';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { Icon } from '@shared/ui/icon/icon';
 import { PageHeader } from '@shared/ui/page-header/page-header';
 import { Reveal } from '@shared/ui/reveal/reveal';
 import { Skeleton } from '@shared/ui/skeleton/skeleton';
+import { diaLocal } from '@shared/utils/fechas';
 import { tomarAleatorios } from '@shared/utils/shuffle';
 
 import {
@@ -45,6 +48,7 @@ const CLAVE_DIAS = 'gt.rutina.dias';
 })
 export class InicioPage {
   private readonly catalogo = inject(CatalogoStore);
+  private readonly registros = inject(RegistrosStore);
   private readonly almacen = inject(DOCUMENT).defaultView?.localStorage;
 
   /** Días que entrena el usuario: elige el plan del carrusel. Se recuerda en este navegador. */
@@ -58,6 +62,29 @@ export class InicioPage {
   // La lista completa queda en caché y la reutilizan los recomendados por músculo.
   protected readonly recomendados = resource({
     loader: async () => tomarAleatorios(await this.catalogo.recomendados(), RECOMENDADOS_EN_INICIO),
+  });
+
+  /** Racha de días seguidos entrenando. Sin sesión no hay registros y vale 0. */
+  protected readonly racha = computed(() => rachaDias(this.registros.registros(), new Date()));
+
+  /** Ejercicios con alguna serie hoy. Solo cambia si cambia la lista, no con cada dato nuevo. */
+  private readonly ejerciciosHoy = computed(
+    () => ejerciciosDelDia(this.registros.registros(), diaLocal(new Date())),
+    {
+      equal: (a, b) => a.length === b.length && a.every((id, i) => id === b[i]),
+    },
+  );
+
+  /**
+   * Grupos musculares ya entrenados hoy, para marcarlos en la tarjeta del día. El músculo sale del
+   * catálogo (en caché), porque los registros solo guardan el id del ejercicio.
+   */
+  protected readonly musculosHoy = resource({
+    params: () => this.ejerciciosHoy(),
+    loader: async ({ params }): Promise<ReadonlySet<Musculo>> => {
+      const ejercicios = await Promise.all(params.map((id) => this.catalogo.porId(id)));
+      return new Set(ejercicios.flatMap((e) => (e ? [e.musculo] : [])));
+    },
   });
 
   protected cambiarDias(dias: DiasPorSemana): void {

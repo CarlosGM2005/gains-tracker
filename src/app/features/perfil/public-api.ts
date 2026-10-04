@@ -2,3 +2,6 @@
 export * from './domain/perfil.model';
 export * from './domain/perfil.rules';
 export { PerfilRepository } from './data/perfil-repository';
+export * from './domain/peso-corporal.model';
+export { PesoCorporalRepository } from './data/peso-corporal-repository';
+export { PesoCorporal } from './ui/peso-corporal';

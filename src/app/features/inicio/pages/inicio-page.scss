@@ -37,7 +37,8 @@
   font-size: var(--font-size-xl);
 }
 
-.plan__estado {
+.plan__estado,
+.plan__racha {
   color: var(--color-text-muted);
 
   strong {

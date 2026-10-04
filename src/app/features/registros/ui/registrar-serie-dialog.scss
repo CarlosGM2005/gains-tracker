@@ -9,3 +9,81 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-danger);
 }
+
+// Última serie del ejercicio con el atajo para repetirla hoy.
+.ultima {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+}
+
+.ultima__texto {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+}
+
+.ultima__marca {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.ultima__peso {
+  color: var(--color-accent);
+}
+
+.ultima__repetir {
+  flex-shrink: 0;
+  padding-inline: var(--space-5);
+}
+
+// Número con botones de restar y sumar a los lados, para no tener que abrir el teclado.
+.stepper {
+  display: grid;
+  grid-template-columns: var(--tap-target) minmax(0, 1fr) var(--tap-target);
+  gap: var(--space-1);
+  align-items: stretch;
+}
+
+.stepper__btn {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
+  transition:
+    border-color var(--duration-base) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-accent);
+    }
+  }
+}
+
+.stepper__input {
+  padding-inline: var(--space-1);
+  text-align: center;
+  appearance: textfield;
+
+  // Sin las flechas nativas: ya están los botones − y +.
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+  }
+}

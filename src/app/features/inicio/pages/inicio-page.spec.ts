@@ -2,7 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { type Ejercicio, EjerciciosRepository } from '@features/ejercicios/public-api';
+import { TEST_ENVIRONMENT } from '@env/environment.testing';
 
+import { provideDataLayer } from '../../../app.data';
 import { InicioPage } from './inicio-page';
 
 function ejercicio(n: number): Ejercicio {
@@ -22,7 +24,12 @@ function ejercicio(n: number): Ejercicio {
 async function renderizar(recomendados: () => Promise<Ejercicio[]>) {
   TestBed.configureTestingModule({
     imports: [InicioPage],
-    providers: [provideRouter([]), { provide: EjerciciosRepository, useValue: { recomendados } }],
+    // Datos mock para la sesión y los registros (racha y progreso del día); los recomendados, a medida.
+    providers: [
+      provideRouter([]),
+      provideDataLayer(TEST_ENVIRONMENT),
+      { provide: EjerciciosRepository, useValue: { recomendados } },
+    ],
   });
   const fixture = TestBed.createComponent(InicioPage);
   await fixture.whenStable();

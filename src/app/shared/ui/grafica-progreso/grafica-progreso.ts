@@ -1,16 +1,23 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal } from '@angular/core';
 
-import { type PuntoProgreso } from '../domain/estadisticas';
+/** Un día de la gráfica: peso máximo de un ejercicio, peso corporal… siempre en kilos. */
+export interface PuntoGrafica {
+  /** `YYYY-MM-DD`. */
+  dia: string;
+  valor: number;
+  /** Solo para la tabla accesible: si algún punto lo trae, la tabla añade su columna. */
+  volumen?: number;
+}
 
 const ANCHO = 600;
 const ALTO = 220;
 const MARGEN = { arriba: 18, derecha: 18, abajo: 14, izquierda: 46 };
 
 /**
- * Línea del peso máximo por día, en SVG y sin librerías. Para lectores de pantalla, la misma
- * información va en una tabla oculta. Al aparecer (y al cambiar de ejercicio) la línea se dibuja,
- * el área se funde y los puntos saltan al final.
+ * Línea de un valor en kilos por día, en SVG y sin librerías: el peso máximo de un ejercicio o el
+ * peso corporal. Para lectores de pantalla, la misma información va en una tabla oculta. Al
+ * aparecer (y al cambiar de datos) la línea se dibuja, el área se funde y los puntos saltan al final.
  *
  * Al pasar el puntero (o tocar) sobre un día se marca con una línea vertical y se lee su fecha y su
  * peso sobre el dibujo. El SVG es `aria-hidden`, así que los puntos no son enfocables a propósito:
@@ -109,11 +116,23 @@ const MARGEN = { arriba: 18, derecha: 18, abajo: 14, izquierda: 46 };
     <table class="visually-hidden">
       <caption>{{ titulo() }}</caption>
       <thead>
-        <tr><th scope="col">Día</th><th scope="col">Peso máximo (kg)</th><th scope="col">Volumen (kg)</th></tr>
+        <tr>
+          <th scope="col">Día</th>
+          <th scope="col">{{ columna() }}</th>
+          @if (conVolumen()) {
+            <th scope="col">Volumen (kg)</th>
+          }
+        </tr>
       </thead>
       <tbody>
         @for (p of puntos(); track p.dia) {
-          <tr><td>{{ p.dia | date: 'longDate' }}</td><td>{{ p.pesoMax }}</td><td>{{ p.volumen }}</td></tr>
+          <tr>
+            <td>{{ p.dia | date: 'longDate' }}</td>
+            <td>{{ p.valor }}</td>
+            @if (conVolumen()) {
+              <td>{{ p.volumen }}</td>
+            }
+          </tr>
         }
       </tbody>
     </table>
@@ -328,12 +347,18 @@ const MARGEN = { arriba: 18, derecha: 18, abajo: 14, izquierda: 46 };
   `,
 })
 export class GraficaProgreso {
-  readonly puntos = input.required<readonly PuntoProgreso[]>();
+  readonly puntos = input.required<readonly PuntoGrafica[]>();
   /** Descripción de la tabla accesible (p. ej. "Progreso de Press de banca"). */
   readonly titulo = input.required<string>();
+  /** Cabecera de la columna del valor en la tabla accesible. */
+  readonly columna = input('Peso máximo (kg)');
+  /** Rellena el punto del valor más alto: es el récord en un ejercicio, no en el peso corporal. */
+  readonly marcarMaximo = input(true);
 
-  /** Día señalado con el puntero. Vuelve a `null` en cuanto cambian los datos del ejercicio. */
-  protected readonly activo = linkedSignal<readonly PuntoProgreso[], number | null>({
+  protected readonly conVolumen = computed(() => this.puntos().some((p) => p.volumen !== undefined));
+
+  /** Día señalado con el puntero. Vuelve a `null` en cuanto cambian los datos. */
+  protected readonly activo = linkedSignal<readonly PuntoGrafica[], number | null>({
     source: this.puntos,
     computation: () => null,
   });
@@ -377,7 +402,7 @@ export class GraficaProgreso {
 
   protected readonly geometria = computed(() => {
     const puntos = this.puntos();
-    const pesos = puntos.map((p) => p.pesoMax);
+    const pesos = puntos.map((p) => p.valor);
     const maximo = Math.max(...pesos, 0);
     const minimo = Math.min(...pesos, maximo);
     // Margen vertical para que la línea no toque los bordes; con un solo valor, un rango fijo.
@@ -393,9 +418,9 @@ export class GraficaProgreso {
     const coordenadas = puntos.map((p, i) => ({
       dia: p.dia,
       x: redondear(x(i)),
-      y: redondear(y(p.pesoMax)),
-      peso: p.pesoMax,
-      record: p.pesoMax === maximo,
+      y: redondear(y(p.valor)),
+      peso: p.valor,
+      record: this.marcarMaximo() && p.valor === maximo,
       // El primer y el último día llevan anillo: son los extremos que compara la tira de hitos.
       extremo: i === 0 || i === puntos.length - 1,
     }));

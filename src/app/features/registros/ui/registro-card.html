@@ -22,6 +22,9 @@
 
   <div class="card__panel" [id]="'series-' + r.ejercicioId">
     <div class="card__recorte">
+      <div class="card__nueva">
+        <button type="button" class="btn btn--primary card__nueva-btn" (click)="nueva.emit()">+ Nueva serie</button>
+      </div>
       <ol class="series">
         @for (serie of r.series; track serie.id) {
           <li class="serie">
