@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, computed, inject, resource, signal 
 import { RouterLink } from '@angular/router';
 
 import { CatalogoStore, type Musculo, RECOMENDADOS_EN_INICIO } from '@features/ejercicios/public-api';
-import { rachaDias } from '@features/registros/domain/estadisticas';
-import { ejerciciosDelDia, RegistrosStore } from '@features/registros/public-api';
+import { nivelRacha, rachaDias } from '@features/registros/domain/estadisticas';
+import { ejerciciosDelDia, LlamaRacha, RegistrosStore } from '@features/registros/public-api';
 import { Carousel } from '@shared/ui/carousel/carousel';
 import { EmptyState } from '@shared/ui/empty-state/empty-state';
 import { Icon } from '@shared/ui/icon/icon';
@@ -41,6 +41,7 @@ const CLAVE_DIAS = 'gt.rutina.dias';
     RecomendadoTile,
     RutinaDia,
     PlanDias,
+    LlamaRacha,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './inicio-page.html',
@@ -66,6 +67,8 @@ export class InicioPage {
 
   /** Racha de días seguidos entrenando. Sin sesión no hay registros y vale 0. */
   protected readonly racha = computed(() => rachaDias(this.registros.registros(), new Date()));
+  /** Nivel de la llama que acompaña a la racha. */
+  protected readonly nivelRacha = computed(() => nivelRacha(this.racha().actual).nivel);
 
   /** Ejercicios con alguna serie hoy. Solo cambia si cambia la lista, no con cada dato nuevo. */
   private readonly ejerciciosHoy = computed(

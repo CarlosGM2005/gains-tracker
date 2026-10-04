@@ -1,0 +1,35 @@
+@let r = racha();
+@let n = nivel();
+<div class="racha" [class.racha--viva]="r.actual > 0">
+  <app-llama-racha class="racha__llama" [nivel]="n.nivel" [encendida]="r.entrenadoHoy" tamano="grande" />
+
+  <p class="racha__cifra">
+    <app-contador class="racha__numero" [valor]="r.actual" />
+    <span class="racha__unidad">{{ r.actual === 1 ? 'día seguido' : 'días seguidos' }}</span>
+  </p>
+
+  <div class="racha__info">
+    @if (n.nombre) {
+      <p class="racha__nivel">
+        <strong>{{ n.nombre }}</strong> ·
+        <span class="racha__ordinal">nivel {{ n.nivel }} de {{ totalNiveles }}</span>
+      </p>
+      @if (n.siguiente; as s) {
+        <div class="racha__progreso">
+          <!-- La barra repite lo que dice el texto de debajo: solo se ve. -->
+          <span class="racha__barra" aria-hidden="true">
+            <span class="racha__relleno" [style.--progreso]="s.progreso"></span>
+          </span>
+          <p class="racha__siguiente">
+            {{ s.faltan }} {{ s.faltan === 1 ? 'día más' : 'días más' }} para <strong>{{ s.nombre }}</strong>
+          </p>
+        </div>
+      } @else {
+        <p class="racha__siguiente">Nivel máximo: tu llama ya no puede arder más.</p>
+      }
+    }
+
+    <p class="racha__mensaje">{{ mensaje() }}</p>
+    <p class="racha__mejor text-label">Mejor racha: {{ r.mejor }} {{ r.mejor === 1 ? 'día' : 'días' }}</p>
+  </div>
+</div>

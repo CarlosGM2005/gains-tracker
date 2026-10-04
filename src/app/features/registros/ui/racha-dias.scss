@@ -1,0 +1,131 @@
+@use 'breakpoints' as bp;
+
+// Móvil: la llama junto a la cifra, con las bases alineadas, y el resto a todo el ancho debajo.
+// Desde md la llama ocupa la altura de todo el bloque y el texto queda a su derecha.
+.racha {
+  display: grid;
+  grid-template-areas:
+    'llama cifra'
+    'info info';
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-4) var(--space-5);
+
+  @include bp.up(md) {
+    grid-template-areas:
+      'llama cifra'
+      'llama info';
+    align-items: start;
+  }
+}
+
+.racha__llama {
+  grid-area: llama;
+
+  @include bp.up(md) {
+    align-self: center;
+  }
+}
+
+.racha__info {
+  display: grid;
+  grid-area: info;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+// Cifra y unidad apiladas: así la unidad nunca salta de línea a medias según el número.
+.racha__cifra {
+  display: grid;
+  grid-area: cifra;
+  gap: var(--space-1);
+  margin: 0;
+}
+
+.racha__numero {
+  font-family: var(--font-display);
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+
+.racha--viva .racha__numero {
+  color: var(--color-accent);
+}
+
+.racha__unidad {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+}
+
+.racha__nivel {
+  margin: 0;
+  color: var(--color-text-muted);
+
+  strong {
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    letter-spacing: var(--letter-spacing-display);
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+}
+
+.racha__ordinal {
+  white-space: nowrap;
+}
+
+.racha__progreso {
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: 18rem;
+}
+
+.racha__barra {
+  display: block;
+  block-size: 0.375rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+}
+
+// Al entrar se llena desde 0 hasta su valor (el keyframe solo tiene `from`); después, cada cambio
+// se desliza con la transición.
+.racha__relleno {
+  display: block;
+  block-size: 100%;
+  background: var(--color-accent);
+  transform: scaleX(var(--progreso, 0));
+  transform-origin: left;
+  transition: transform var(--duration-slow) var(--easing-out);
+  animation: racha-llena 700ms var(--easing-out) 250ms backwards;
+  animation-play-state: var(--entrada, running);
+}
+
+.racha__siguiente {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+
+  strong {
+    color: var(--color-text);
+  }
+}
+
+.racha__mensaje {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.racha__mejor {
+  margin: 0;
+}
+
+@keyframes racha-llena {
+  from {
+    transform: scaleX(0);
+  }
+}

@@ -1,4 +1,11 @@
-import { esNuevoRecord, mejorSerie, rachaDias, recordsPersonales, unaRmEstimada } from './estadisticas';
+import {
+  esNuevoRecord,
+  mejorSerie,
+  nivelRacha,
+  rachaDias,
+  recordsPersonales,
+  unaRmEstimada,
+} from './estadisticas';
 import { ejerciciosDelDia, type RegistroEjercicio, type Serie, ultimaSerie } from './registro.model';
 
 let contador = 0;
@@ -107,5 +114,32 @@ describe('última serie y ejercicios del día', () => {
       registro('remo', [serie('2026-10-03', 10, 50)]),
     ];
     expect(ejerciciosDelDia(registros, '2026-10-04')).toEqual(['banca']);
+  });
+});
+
+describe('nivelRacha', () => {
+  it('sin racha no hay nivel y la Chispa está a un día', () => {
+    expect(nivelRacha(0)).toEqual({
+      nivel: 0,
+      nombre: null,
+      siguiente: { nombre: 'Chispa', faltan: 1, progreso: 0 },
+    });
+  });
+
+  it('sube en los días 1, 3, 7, 14 y 30', () => {
+    const niveles = [1, 2, 3, 6, 7, 13, 14, 29, 30, 365].map((dias) => nivelRacha(dias).nivel);
+    expect(niveles).toEqual([1, 1, 2, 2, 3, 3, 4, 4, 5, 5]);
+  });
+
+  it('cuenta lo que falta para el siguiente nivel y el avance dentro del actual', () => {
+    expect(nivelRacha(9)).toEqual({
+      nivel: 3,
+      nombre: 'Hoguera',
+      siguiente: { nombre: 'Fragua', faltan: 5, progreso: 2 / 7 },
+    });
+  });
+
+  it('en el nivel máximo no hay siguiente', () => {
+    expect(nivelRacha(30)).toEqual({ nivel: 5, nombre: 'Llama azul', siguiente: null });
   });
 });

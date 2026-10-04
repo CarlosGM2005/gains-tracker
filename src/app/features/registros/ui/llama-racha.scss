@@ -1,0 +1,189 @@
+// Llama de la racha. Las formas están en llama-racha.ts; aquí van el tamaño por nivel, el color y el
+// movimiento. Todo es transform sobre un SVG pequeño; con prefers-reduced-motion queda quieta
+// (_reset.scss) y conserva el color de su estado.
+
+:host {
+  --escala: 0.9;
+
+  display: inline-block;
+  flex-shrink: 0;
+  block-size: 1.75rem;
+  aspect-ratio: 64 / 80;
+  vertical-align: middle;
+}
+
+:host(.llama--grande) {
+  block-size: clamp(6.5rem, 4.5rem + 8vw, 9rem);
+}
+
+// Crece hasta Fragua; la Llama azul ya no crece: se calienta.
+:host([data-nivel='1']) {
+  --escala: 0.62;
+}
+
+:host([data-nivel='2']) {
+  --escala: 0.78;
+}
+
+:host([data-nivel='4']),
+:host([data-nivel='5']) {
+  --escala: 1;
+}
+
+.llama__svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+
+  // Las chispas suben por encima de la rejilla.
+  overflow: visible;
+  transform-origin: 50% 100%;
+  transition: filter var(--duration-slow) var(--easing-out);
+}
+
+// El origen va en unidades de la rejilla (base de la llama) y no en fill-box: así no se mueve
+// cuando las chispas cambian la caja del grupo al subir.
+.llama__cuerpo {
+  transform: scale(var(--escala));
+  transform-origin: 32px 76px;
+
+  // Subir de nivel o volver a arder tras las brasas: un estirón con un rebote corto, como al prender.
+  transition: transform var(--duration-slow) var(--easing-spring);
+}
+
+// Sin racha: solo el contorno, con el mismo trazo que los iconos de la app.
+.llama__contorno {
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.llama__exterior {
+  fill: var(--color-accent);
+}
+
+.llama__lengua {
+  fill: var(--color-accent-strong);
+}
+
+.llama__nucleo,
+.llama__chispa {
+  fill: var(--color-fuego-ambar);
+}
+
+.llama__corazon--blanco,
+.llama__centro {
+  fill: var(--color-fuego-blanco);
+}
+
+.llama__corazon--azul {
+  fill: var(--color-fuego-azul);
+}
+
+// Cada capa ondea desde su propia base.
+.llama__exterior,
+.llama__lengua,
+.llama__nucleo,
+.llama__corazon,
+.llama__centro {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.llama__chispa {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+// Brasas: hay racha pero hoy aún no se ha entrenado. Más baja, sin color y quieta.
+:host(.llama--brasas) {
+  .llama__svg {
+    filter: saturate(0.2) brightness(0.75);
+  }
+
+  .llama__cuerpo {
+    transform: scale(calc(var(--escala) * 0.8));
+  }
+}
+
+// Viva: cada capa con su ritmo y su desfase, para que el conjunto nunca se repita igual. Movimiento
+// pequeño (≤ 8 % y 2°): ambiente, no un aviso.
+:host(.llama--viva) {
+  .llama__exterior {
+    animation: llama-ondea 1.9s ease-in-out infinite alternate;
+  }
+
+  .llama__lengua {
+    animation: llama-ondea 2.3s ease-in-out -0.9s infinite alternate;
+  }
+
+  .llama__lengua--dcha {
+    animation-duration: 2.1s;
+    animation-delay: -1.5s;
+  }
+
+  .llama__nucleo {
+    animation: llama-late 1.3s ease-in-out -0.4s infinite alternate;
+  }
+
+  .llama__corazon,
+  .llama__centro {
+    animation: llama-late 1.05s ease-in-out -0.2s infinite alternate;
+  }
+
+  // El retardo de cada chispa viene de la plantilla.
+  .llama__chispa {
+    animation: llama-chispa 1.9s linear infinite backwards;
+  }
+}
+
+// Entrada en Estadísticas: la llama prende desde la base. Si el bloque usa appReveal, espera a verse.
+:host(.llama--grande) .llama__svg {
+  animation: llama-prende 600ms var(--easing-out) 120ms backwards;
+  animation-play-state: var(--entrada, running);
+}
+
+@keyframes llama-ondea {
+  0% {
+    transform: none;
+  }
+
+  50% {
+    transform: scale(0.97, 1.04) skewX(-2deg);
+  }
+
+  100% {
+    transform: scale(1.02, 0.98) skewX(1.5deg);
+  }
+}
+
+@keyframes llama-late {
+  to {
+    transform: scale(0.93, 1.08);
+  }
+}
+
+@keyframes llama-chispa {
+  0% {
+    opacity: 0;
+    transform: none;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--deriva, 0), -22px) scale(0.4);
+  }
+}
+
+@keyframes llama-prende {
+  from {
+    opacity: 0;
+    transform: scale(0.8, 0.4);
+  }
+}

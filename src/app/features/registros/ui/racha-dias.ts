@@ -1,75 +1,34 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { type Racha } from '../domain/estadisticas';
+import { Contador } from '@shared/ui/contador/contador';
 
-/** Racha de días seguidos entrenando: la actual en grande, la mejor y qué hacer para no perderla. */
+import { NIVELES_RACHA, nivelRacha, type Racha } from '../domain/estadisticas';
+import { LlamaRacha } from './llama-racha';
+
+/**
+ * Racha de días seguidos entrenando: la llama de su nivel, la cifra, cuánto falta para el siguiente
+ * nivel, qué hacer para no perderla y la mejor racha.
+ */
 @Component({
   selector: 'app-racha-dias',
+  imports: [Contador, LlamaRacha],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    @let r = racha();
-    <div class="racha" [class.racha--viva]="r.actual > 0">
-      <p class="racha__cifra">
-        <span class="racha__numero">{{ r.actual }}</span>
-        <span class="racha__unidad">{{ r.actual === 1 ? 'día seguido' : 'días seguidos' }}</span>
-      </p>
-      <p class="racha__mensaje">{{ mensaje() }}</p>
-      <p class="racha__mejor text-label">Mejor racha: {{ r.mejor }} {{ r.mejor === 1 ? 'día' : 'días' }}</p>
-    </div>
-  `,
-  styles: `
-    .racha {
-      display: grid;
-      gap: var(--space-2);
-    }
-
-    .racha__cifra {
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-3);
-      margin: 0;
-    }
-
-    .racha__numero {
-      font-family: var(--font-display);
-      font-size: var(--font-size-hero);
-      font-weight: var(--font-weight-bold);
-      font-variant-numeric: tabular-nums;
-      line-height: 1;
-      color: var(--color-text-muted);
-    }
-
-    .racha--viva .racha__numero {
-      color: var(--color-accent);
-    }
-
-    .racha__unidad {
-      font-family: var(--font-display);
-      font-size: var(--font-size-lg);
-      font-weight: var(--font-weight-semibold);
-      text-transform: uppercase;
-    }
-
-    .racha__mensaje {
-      margin: 0;
-      color: var(--color-text-muted);
-    }
-
-    .racha__mejor {
-      margin: 0;
-    }
-  `,
+  templateUrl: './racha-dias.html',
+  styleUrl: './racha-dias.scss',
 })
 export class RachaDias {
   readonly racha = input.required<Racha>();
 
+  protected readonly nivel = computed(() => nivelRacha(this.racha().actual));
+  protected readonly totalNiveles = NIVELES_RACHA.length;
+
   protected readonly mensaje = computed(() => {
     const { actual, mejor, entrenadoHoy } = this.racha();
     if (actual === 0) {
-      return 'Registra una serie hoy para empezar una racha.';
+      return 'Registra una serie hoy para encender la llama.';
     }
     if (!entrenadoHoy) {
-      return 'Entrena hoy para no perderla.';
+      return 'Tu llama está en brasas: entrena hoy para que no se apague.';
     }
     return actual >= mejor
       ? '¡Es tu mejor racha! Sigue así.'

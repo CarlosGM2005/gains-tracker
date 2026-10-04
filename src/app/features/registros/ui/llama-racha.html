@@ -1,0 +1,42 @@
+<!-- Dibujo sobre una rejilla de 64 × 80 con la base en y = 76. Decorativo: el nivel y el estado los dice el texto de al lado. -->
+@let n = nivel();
+<svg class="llama__svg" viewBox="0 0 64 80" aria-hidden="true" focusable="false">
+  <g class="llama__cuerpo">
+    @if (n === 0) {
+      <path class="llama__contorno" [attr.d]="formas.exterior" />
+    } @else {
+      @if (n >= 3) {
+        <!-- El giro va en el grupo: el `transform` del CSS de la lengua lo sustituiría. -->
+        <g transform="translate(9 46) rotate(-20 8 30)">
+          <path class="llama__lengua" [attr.d]="formas.lengua" />
+        </g>
+        <g transform="translate(40 42) rotate(18 8 30)">
+          <path class="llama__lengua llama__lengua--dcha" [attr.d]="formas.lengua" />
+        </g>
+      }
+      <path class="llama__exterior" [attr.d]="formas.exterior" />
+      @if (n >= 2) {
+        <path class="llama__nucleo" [attr.d]="formas.nucleo" />
+      }
+      @if (n === 4) {
+        <path class="llama__corazon llama__corazon--blanco" [attr.d]="formas.corazon" />
+      }
+      @if (n === 5) {
+        <path class="llama__corazon llama__corazon--azul" [attr.d]="formas.corazon" />
+        <path class="llama__centro" [attr.d]="formas.centro" />
+      }
+      @if (n >= 3 && encendida() && tamano() === 'grande') {
+        @for (chispa of chispas(); track $index) {
+          <circle
+            class="llama__chispa"
+            [attr.cx]="chispa.x"
+            [attr.cy]="chispa.y"
+            [attr.r]="chispa.r"
+            [style.--deriva]="chispa.deriva + 'px'"
+            [style.animation-delay.ms]="chispa.retardo"
+          />
+        }
+      }
+    }
+  </g>
+</svg>

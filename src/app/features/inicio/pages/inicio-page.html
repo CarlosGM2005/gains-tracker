@@ -25,10 +25,13 @@
     @if (racha(); as r) {
       @if (r.actual > 0) {
         <p class="plan__racha">
-          Llevas <strong>{{ r.actual }} {{ r.actual === 1 ? 'día' : 'días' }} seguidos</strong> entrenando.
-          @if (!r.entrenadoHoy) {
-            Entrena hoy para no perder la racha.
-          }
+          <app-llama-racha [nivel]="nivelRacha()" [encendida]="r.entrenadoHoy" />
+          <span>
+            Llevas <strong>{{ r.actual }} {{ r.actual === 1 ? 'día' : 'días' }} seguidos</strong> entrenando.
+            @if (!r.entrenadoHoy) {
+              Entrena hoy para no perder la racha.
+            }
+          </span>
         </p>
       }
     }

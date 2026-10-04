@@ -20,6 +20,12 @@
   --color-danger: #ff5a5f;
   --color-focus: #ffb27a;
 
+  // Llama de la racha (features/registros/ui/llama-racha): única excepción al acento único. Se
+  // calienta como un fuego real según los días seguidos: naranja, ámbar, blanco y, al final, azul.
+  --color-fuego-ambar: #ffb02e;
+  --color-fuego-blanco: #fff4dc;
+  --color-fuego-azul: #4cc2ff;
+
   // Tipografía. Display condensada en mayúsculas; cuerpo con la fuente del sistema.
   // 'Oswald Variable' viene de @fontsource-variable/oswald (angular.json → styles), autoalojada.
   --font-display: 'Oswald Variable', oswald, 'Arial Narrow', 'Roboto Condensed', impact, sans-serif;

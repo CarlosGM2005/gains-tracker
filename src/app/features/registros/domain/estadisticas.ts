@@ -227,3 +227,46 @@ export function rachaDias(registros: readonly RegistroEjercicio[], hoy: Date): R
   }
   return { actual, mejor, entrenadoHoy };
 }
+
+/**
+ * Niveles de la llama de la racha, de menos a más días seguidos. La llama se calienta como un fuego
+ * real: naranja, núcleo amarillo, lenguas y chispas, núcleo blanco y, al final, base azul.
+ */
+export const NIVELES_RACHA = [
+  { nivel: 1, nombre: 'Chispa', desde: 1 },
+  { nivel: 2, nombre: 'Llama', desde: 3 },
+  { nivel: 3, nombre: 'Hoguera', desde: 7 },
+  { nivel: 4, nombre: 'Fragua', desde: 14 },
+  { nivel: 5, nombre: 'Llama azul', desde: 30 },
+] as const;
+
+/** 0 sin racha; de 1 (Chispa) a 5 (Llama azul). */
+export type NumeroNivelRacha = 0 | (typeof NIVELES_RACHA)[number]['nivel'];
+
+export interface NivelRacha {
+  nivel: NumeroNivelRacha;
+  /** `null` sin racha. */
+  nombre: string | null;
+  /** Próximo nivel; `null` en el máximo. `progreso` va de 0 a 1 dentro del nivel actual. */
+  siguiente: { nombre: string; faltan: number; progreso: number } | null;
+}
+
+/** Nivel de la llama para `dias` seguidos y cuánto falta para el siguiente. */
+export function nivelRacha(dias: number): NivelRacha {
+  // NIVELES_RACHA va ordenado por `desde`: el actual es el último alcanzado.
+  const indice = NIVELES_RACHA.filter((n) => dias >= n.desde).length - 1;
+  const actual = NIVELES_RACHA[indice];
+  const siguiente = NIVELES_RACHA[indice + 1];
+  const desde = actual?.desde ?? 0;
+  return {
+    nivel: actual?.nivel ?? 0,
+    nombre: actual?.nombre ?? null,
+    siguiente: siguiente
+      ? {
+          nombre: siguiente.nombre,
+          faltan: siguiente.desde - dias,
+          progreso: (dias - desde) / (siguiente.desde - desde),
+        }
+      : null,
+  };
+}
